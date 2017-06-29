@@ -1,0 +1,23 @@
+{
+  "name": "pagusie",
+  "homepage": "https://github.com/jhonan360/pagusie",
+  "authors": [
+    "jhonan360 <jhonan360@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "jquery": "^3.2.1",
+    "vee-validate": "^0.9.3",
+    "vue": "^2.3.4"
+  }
+}
