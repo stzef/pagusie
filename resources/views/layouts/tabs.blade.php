@@ -12,8 +12,8 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="{{ URL::asset('bower_components/bootstrap/dist/css/bootstrap.css') }}" >
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-  <link rel="stylesheet" href="/resources/demos/style.css">
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
   
     
 </head>
@@ -60,7 +60,7 @@
                                         <a href="{{ route('logout') }}"
                                             onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                            Logout
+                                            Salir
                                         </a>
 
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -74,14 +74,15 @@
                 </div>
             </div>
         </nav>
-<div id="tabs">
+<div class="container">
+<div id="tabs" class="row">
   <ul>
-    <li><a href="#tabs-1">Datos</a></li>
-    <li><a href="#tabs-2">Presupuesto</a></li>
-    <li><a href="#tabs-3">Impuestos</a></li>
-    <li><a href="#tabs-4">Bancos</a></li>
-    <li><a href="#tabs-5">Contratos</a></li>
-    <li><a href="#tabs-6">Reporte</a></li>
+    <li class="col-md-1 col-lg-1"><a href="#tabs-1">Datos</a></li>
+    <li class="col-md-1 col-lg-1"><a href="#tabs-2">Presupuesto</a></li>
+    <li class="col-md-1 col-lg-1"><a href="#tabs-3">Impuestos</a></li>
+    <li class="col-md-1 col-lg-1"><a href="#tabs-4">Bancos</a></li>
+    <li class="col-md-1 col-lg-1"><a href="#tabs-5">Contratos</a></li>
+    <li class="col-md-1 col-lg-1"><a href="#tabs-6">Reporte</a></li>
   </ul>
   <div id="tabs-1">
     @include('datos')
@@ -92,8 +93,18 @@
   <div id="tabs-3">
     
   </div>
-</div>
+  <div id="tabs-4">
+    
+  </div>
+  <div id="tabs-5">
+    
+  </div>
+  <div id="tabs-6">
+    
+  </div>
     </div>
+    </div>
+</div>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
@@ -104,8 +115,12 @@
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script>
   $( function() {
-    $( "#tabs" ).tabs({
-      collapsible: true
+    var tabs = $( "#tabs" ).tabs();
+    tabs.find( ".ui-tabs-nav" ).sortable({
+      axis: "x",
+      stop: function() {
+        tabs.tabs( "refresh" );
+      }
     });
   } );
   </script>

@@ -16,29 +16,82 @@
 </head>
 <body>
 <form>
-  <div class="form-group">
-    <label for="vigencia">Vigencia</label>
+ <div class="row">
+  <div class="form-group col-md-3">
+    <label for="vigencia" class="form-label">Vigencia</label>
+   
+    
     <input type="text" class="form-control" id="vigencia" aria-describedby="vigencia" placeholder="Ingrese el año de vigencia">
+    
+    
   </div>
-	<div class="form-group">
-		<label for="cegreso">Vigencia</label>
-		<input type="text" class="form-control" id="vigencia" aria-describedby="vigencia" placeholder="Ingrese el año de vigencia">
-	</div>
+	<div class="form-group col-md-3">
+		<label for="cegreso">Codigo comprobante egreso</label>
+		
+    
+    <input type="text" class="form-control" id="cegreso" aria-describedby="cegreso" placeholder="Ingrese codigo de egreso">
 
+</div>
 
+<div class="form-group col-md-3">
+    <label for="fechaPago">Fecha de pago</label>
+    <input class="form-control" type="date" value="{{ date('Y-m-d') }}" id="fechaPago">
+  </div>
 
-  <div class="form-group">
+  <div class="form-group col-md-3">
+    <label for="tercero">Tercero</label>
+    <input type="text" class="form-control" id="tercero" aria-describedby="tercero" placeholder="Ingrese el tipo de documento">
+  </div>
+</div>
+<div class="row">
+  <div class="form-group col-md-3">
     <label for="tidocumento">Tipo de documento</label>
     <input type="text" class="form-control" id="tidocumento" aria-describedby="tidocumento" placeholder="Ingrese el tipo de documento">
   </div>
-  <div class="form-group">
-    <label for="tercero">Tercero</label>
-    <input type="text" class="form-control" id="tercero" aria-describedby="tercero" placeholder="Ingrese el tipo de documento">
+
+<div class="form-group col-md-3">
+    <label for="fechaFactura">Fecha de pago</label>
+    <input class="form-control" type="date" value="{{ date('Y-m-d') }}" id="fechaFactura">  
+</div>
+
+  <div class="form-group col-md-3">
+    <label for="numfactura">Número de factura</label>
+    <input type="text" class="form-control" id="numfactura" aria-describedby="numfactura" placeholder="Ingrese el número de factura">
+  </div>
   </div>
   <div class="form-group">
-    <label for="tercero">Tercero</label>
-    <input type="text" class="form-control" id="tercero" aria-describedby="tercero" placeholder="Ingrese el tipo de documento">
+    <label for="concepto">Concepto</label>
+    <textarea class="form-control" id="concepto" rows="3"></textarea>
   </div>
+  <div class="form-group">
+    <label for="Justificacion">Justificación</label>
+    <textarea class="form-control" id="Justificacion" rows="3"></textarea>
+  </div>
+  <div class="row">
+  <div class="form-group col-md-3">
+    <label for="plazo">Plazo de realización</label>
+    <input type="text" class="form-control" id="plazo" aria-describedby="plazo" placeholder="Ingrese el plazo de realización">
+  </div>
+  <div class="form-group col-md-3">
+    <label for="fechaCompras">Fecha estudio comité de compras</label>
+    <input class="form-control" type="date" value="{{ date('Y-m-d') }}" id="fechaCompras">  
+</div>
+<div class="form-group col-md-3">
+    <label for="fechaDisponibilidad">Fecha disponibilidad</label>
+    <input class="form-control" type="date" value="{{ date('Y-m-d') }}" id="fechaDisponibilidad">  
+</div>
+<div class="form-group col-md-3">
+    <label for="fechaRegistro">Fecha registro</label>
+    <input class="form-control" type="date" value="{{ date('Y-m-d') }}" id="fechaRegistro">  
+</div>
+</div>
+<div class="form-group">
+                            <div class="col-md-8 col-md-offset-4">
+                                <button type="submit" class="btn btn-primary">
+                                    Guardar
+                                </button>
+</div>
+</div>
  </form> 
 
 	 <!-- Scripts -->
