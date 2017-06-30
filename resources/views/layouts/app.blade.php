@@ -15,7 +15,7 @@
     
 </head>
 <body>
-    <div id="app">
+    <div id="app-vue">
         <nav class="navbar navbar-default navbar-static-top">
             <div class="container">
                 <div class="navbar-header">
@@ -77,6 +77,7 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset('pagusie/dist/build.js') }}"></script>
       <!-- Bootstrap JavaScript -->
     <!-- Bootstrap Core JavaScript -->
     <script src="{{ URL::asset('bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
