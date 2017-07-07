@@ -10,6 +10,7 @@
     "watch": "cross-env NODE_ENV=development webpack -w --progress --hide-modules"
   },
   "dependencies": {
+    "moment": "^2.18.1",
     "vue": "^2.3.3"
   },
   "devDependencies": {

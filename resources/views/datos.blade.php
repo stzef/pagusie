@@ -14,8 +14,9 @@
 	<link rel="stylesheet" href="{{ URL::asset('bower_components/bootstrap/dist/css/bootstrap.css') }}" >
 
 </head>
+
 <body>
-	<form>
+	<form method="POST">
 		<div class="row">
 			<div class="form-group col-md-3">
 				<label for="vigencia" class="form-label">Vigencia</label>
@@ -28,23 +29,25 @@
 
 			<div class="form-group col-md-3">
 				<label for="fechaPago">Fecha de pago</label>
-				<input class="form-control" type="date" value="{{ date('Y-m-d') }}" id="fechaPago">
+				<datepicker language="es"></datepicker>
 			</div>
 
 			<div class="form-group col-md-3">
 				<label for="tercero">Tercero</label>
-				<input type="text" class="form-control" id="tercero" aria-describedby="tercero" placeholder="Ingrese el tipo de documento">
+				<input type="text" class="form-control" id="tercero" aria-describedby="tercero" placeholder="Ingrese documento">
+				<a></a>
 			</div>
 		</div>
 		<div class="row">
 			<div class="form-group col-md-3">
 				<label for="tidocumento">Tipo de documento</label>
-				<input type="text" class="form-control" id="tidocumento" aria-describedby="tidocumento" placeholder="Ingrese el tipo de documento">
+				<!--<input type="text" class="form-control" id="tidocumento" aria-describedby="tidocumento" placeholder="Ingrese el tipo de documento">-->
+				<select-documento :id="tidocumento" :tidocumento="tidocumento" :dato="dato"></select-documento>
 			</div>
 
 			<div class="form-group col-md-3">
-				<label for="fechaFactura">Fecha de pago</label>
-				<input class="form-control" type="date" value="{{ date('Y-m-d') }}" id="fechaFactura">  
+				<label for="fechaFactura">Fecha factura</label>
+				<datepicker language="es"></datepicker> 
 			</div>
 
 			<div class="form-group col-md-3">
@@ -67,25 +70,26 @@
 			</div>
 			<div class="form-group col-md-3">
 				<label for="fechaCompras">Fecha estudio comité de compras</label>
-				<input class="form-control" type="date" value="{{ date('Y-m-d') }}" id="fechaCompras">  
+				<datepicker language="es" ></datepicker>
 			</div>
 			<div class="form-group col-md-3">
 				<label for="fechaDisponibilidad">Fecha disponibilidad</label>
-				<input class="form-control" type="date" value="{{ date('Y-m-d') }}" id="fechaDisponibilidad">  
+				<datepicker language="es"></datepicker> 
 			</div>
 			<div class="form-group col-md-3">
 				<label for="fechaRegistro">Fecha registro</label>
-				<input class="form-control" type="date" value="{{ date('Y-m-d') }}" id="fechaRegistro">  
+				<datepicker language="es"></datepicker>
+				
 			</div>
 		</div>
 		<div class="row">
 			<div class="form-group col-md-3">
 				<label for="valorSinIva">Valor sin IVA</label>
-				<input type="text" class="form-control" id="valorSinIva" aria-describedby="valorSinIva" placeholder="Ingrese el valor sin el IVA">
+				<input type="text" class="form-control" id="valorSinIva" aria-describedby="valorSinIva" placeholder="Ingrese el valor sin IVA">
 			</div>
 			<div class="form-group col-md-3">
 				<label for="valorIva">Valor con IVA</label>
-				<input type="text" class="form-control" id="valorIva" aria-describedby="valorIva" placeholder="Ingrese el valor con el IVA">
+				<input type="text" class="form-control" id="valorIva" aria-describedby="valorIva" placeholder="Ingrese el valor con IVA">
 			</div>
 			<div class="form-group col-md-3">
 				<label for="valorIva">Valor total</label>
@@ -100,5 +104,7 @@
 			</div>
 		</div></center>
 	</form> 
+
+</script>
 </body>
 </html>
