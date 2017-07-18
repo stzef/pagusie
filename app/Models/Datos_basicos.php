@@ -10,7 +10,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer $ctidocumento
  * @property integer $cterce
  * @property integer $vigencia
- * @property integer $ccoegre
+ * @property integer $cegre
+ * @property string $fpago
  * @property string $ffactu
  * @property string $nfactu
  * @property string $concepto
@@ -22,6 +23,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property float $vsiva
  * @property float $viva
  * @property float $vtotal
+ * @property string $created_at
+ * @property string $update_at
  * @property Estado $estado
  * @property TipoDocumento $tipoDocumento
  * @property Tercero $tercero
@@ -35,7 +38,7 @@ class Datos_basicos extends Model
     /**
      * @var array
      */
-    protected $fillable = ['cestado', 'ctidocumento', 'cterce', 'vigencia', 'ccoegre', 'ffactu', 'nfactu', 'concepto', 'justificacion', 'plazo', 'festcomp', 'fdispo', 'fregis', 'vsiva', 'viva', 'vtotal'];
+    protected $fillable = ['cestado', 'ctidocumento', 'cterce', 'vigencia', 'cegre', 'fpago', 'ffactu', 'nfactu', 'concepto', 'justificacion', 'plazo', 'festcomp', 'fdispo', 'fregis', 'vsiva', 'viva', 'vtotal'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

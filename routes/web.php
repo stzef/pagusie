@@ -1,5 +1,5 @@
 <?php
-use App\Models\Tipo_documento;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,17 +17,18 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/layouts.tabs', 'HomeController@index')->name('home');
+Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/prueba', function () {
-	return view('layouts.tabs');
+
+
+
+Route::group(['prefix'=>'datos'], function(){
+	Route::post('/create','DatosBasicosController@create')->name('create');
 });
-Route::get('/tres', function () {
-	return view('terceros');
-});
-Route::get('/h', function () {
-	$tidocumento = Tipo_documento::all();
-	dd($pasteles);
+Route::group(['prefix'=>'terceros'], function(){
+	Route::get('/', 'TercerosController@index')->name('terceros');
+	Route::get('/show', 'TercerosController@show')->name('tercerosShow');
+	Route::post('/create','TercerosController@create')->name('create');
 });
 
 
@@ -40,6 +41,6 @@ Route::group(['prefix' => 'api'], function(){
 	});
 	Route::group(['prefix' => 'ciudades'], function(){
 		Route::get('/', "APIController@ciudades");
-		
+
 	});
 });
