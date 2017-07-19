@@ -13,6 +13,7 @@
 	<!-- Styles -->
 	<link rel="stylesheet" href="{{ URL::asset('bower_components/bootstrap/dist/css/bootstrap.css') }}" >
 	
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<!--multiselect -->
 	<link rel="stylesheet" href="https://unpkg.com/vue-multiselect@2.0.0/dist/vue-multiselect.min.css">
 	
@@ -31,16 +32,15 @@
 				<label for="cegreso">Codigo comprobante egreso</label>
 				<input type="text" class="form-control" id="cegreso" aria-describedby="cegreso" placeholder="Ingrese codigo de egreso" v-model="datos.cegre" required>
 			</div>
-
 			<div class="form-group col-md-3">
 				<label for="fechaPago">Fecha de pago</label>
-				<datepicker bootstrap-styling type="text" class="date" language="es" id="fechaPago" v-model="datos.fpago" format="yyyy-MM-dd" required></datepicker>
+				<datepicker calendar-button calendar-button-icon="fa fa-calendar" disabled-picker bootstrap-styling language="es" id="fechaPago" v-model="datos.fpago" format="yyyy-MM-dd" required></datepicker>
 			</div>
 			<div class="form-group col-md-3">
 				<label for="tercero">Tercero</label>
 				<template>
 					<div>
-						<multiselect v-model="value" :options="options" placeholder="Select one" label="nit" track-by="nit" :custom-label="nameWithLang"></multiselect>
+						<multiselect v-model="valueTercero" :options="tercero" placeholder="Select one" label="nit" track-by="nit" :custom-label="showTerceros"></multiselect>
 					</div>
 				</template>
 			</div>
@@ -48,12 +48,17 @@
 		<div class="row">
 			<div class="form-group col-md-3">
 				<label for="tidocumento">Tipo de documento</label>
-				<select-documento :id="tidocumento" :tidocumento="tidocumento" :datos="datos"></select-documento>
+				<!--<select-documento :id="tidocumento" :tidocumento="tidocumento" :datos="datos"></select-documento>-->
+				<template>
+					<div>
+						<multiselect v-model="valueTdocu" :options="tidocumento" placeholder="Select one" label="ntidocumento" track-by="ntidocumento" :custom-label="showTidocumento"></multiselect>
+					</div>
+				</template>
 			</div>
 
 			<div class="form-group col-md-3">
 				<label for="fechaFactura">Fecha factura</label>
-				<datepicker language="es" id="fechaFactura" v-model="datos.ffactu" format="yyyy-MM-dd" required></datepicker> 
+				<datepicker calendar-button calendar-button-icon="fa fa-calendar" disabled-picker bootstrap-styling language="es" id="fechaFactura" v-model="datos.ffactu" format="yyyy-MM-dd" required></datepicker> 
 			</div>
 
 			<div class="form-group col-md-3">
@@ -76,15 +81,15 @@
 			</div>
 			<div class="form-group col-md-3">
 				<label for="fechaCompras">Fecha estudio comité de compras</label>
-				<datepicker language="es" id="fechaCompras" v-model="datos.festcomp" format="yyyy-MM-dd" required></datepicker>
+				<datepicker calendar-button calendar-button-icon="fa fa-calendar" disabled-picker bootstrap-styling language="es" id="fechaCompras" v-model="datos.festcomp" format="yyyy-MM-dd" required></datepicker>
 			</div>
 			<div class="form-group col-md-3">
 				<label for="fechaDisponibilidad">Fecha disponibilidad</label>
-				<datepicker language="es" id="fechaDisponibilidad" v-model="datos.fdispo" format="yyyy-MM-dd" required></datepicker> 
+				<datepicker calendar-button calendar-button-icon="fa fa-calendar" disabled-picker bootstrap-styling language="es" id="fechaDisponibilidad" v-model="datos.fdispo" format="yyyy-MM-dd" required></datepicker> 
 			</div>
 			<div class="form-group col-md-3">
 				<label for="fechaRegistro">Fecha registro</label>
-				<datepicker language="es" id="fechaRegistro" v-model="datos.fregis" format="yyyy-MM-dd" required></datepicker>
+				<datepicker calendar-button calendar-button-icon="fa fa-calendar" disabled-picker bootstrap-styling language="es" id="fechaRegistro" v-model="datos.fregis" format="yyyy-MM-dd" required></datepicker>
 
 			</div>
 		</div>

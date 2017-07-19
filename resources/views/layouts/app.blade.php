@@ -12,9 +12,17 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="{{ URL::asset('bower_components/bootstrap/dist/css/bootstrap.css') }}" >
+    
     <!-- Alertify-->
     <link href="{{URL::asset('node_modules/alertifyjs/build/css/alertify.min.css') }}" rel="stylesheet">
     
+    <!--image fa fa-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <!--multiselect -->
+    <link rel="stylesheet" href="https://unpkg.com/vue-multiselect@2.0.0/dist/vue-multiselect.min.css">
+    
+    <link rel="stylesheet" href="{{ URL::asset('pagusie/node_modules/vue-multiselect/dist/vue-multiselect.min.css')}}"></link>
 </head>
 <body>
     <div id="app-vue">

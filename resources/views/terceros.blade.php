@@ -37,20 +37,30 @@
 		<div class="row">
 			<div class="form-group col-md-3 col-lg-3">
 				<label for="departamento" class="form-label">Departamento</label>
-				<select v-model="terceros.cdepar" name="departamento" id="departamento" class="form-control input-sm" @change="GetCiudades($event.target.value)" >
+				<!--<select v-model="terceros.cdepar" name="departamento" id="departamento" class="form-control input-sm" @change="GetCiudades($event.target.value)" >
 					<template v-for="departa in departamentos">
 						<option :value="departa.cdepar"> [[ departa.ndepartamento ]]</option>
 					</template>
-				</select>
+				</select>-->
+				<template>
+					<div>
+						<multiselect v-model="valueDepartamento" :options="departamentos" placeholder="Seleccione un departamento" label="ndepartamento" track-by="ndepartamento" :custom-label="showDepartamentos"></multiselect>
+					</div>
+				</template>
 
 			</div>
 			<div class="form-group col-md-3 col-lg-3">
 				<label for="ciudad" class="form-label">Ciudad</label>
-				<select v-model="terceros.cciud" name="ciudad" id="ciudad" class="form-control input-sm">
+				<!--<select v-model="terceros.cciud" name="ciudad" id="ciudad" class="form-control input-sm">
 					<template v-for="obj in ciudades">
 						<option :value="obj.cciud"> [[obj.nciudad]] </option>
 					</template>
-				</select>
+				</select>-->
+				<template>
+					<div>
+						<multiselect v-model="valueCiudad" :options="ciudades" placeholder="Select one" label="nciudad" track-by="nciudad" :custom-label="showCiudades"></multiselect>
+					</div>
+				</template>
 				
 			</div>
 			<div class="form-group col-md-3 col-lg-3">

@@ -11,16 +11,12 @@
 |
 */
 
-Route::get('/', function () {
+/*Route::get('/login', function () {
 	return view('auth.login');
-});
-
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
+});*/
 
 
-
+Route::get('/', 'HomeController@index');
 
 Route::group(['prefix'=>'datos'], function(){
 	Route::post('/create','DatosBasicosController@create')->name('create');
@@ -30,7 +26,6 @@ Route::group(['prefix'=>'terceros'], function(){
 	Route::get('/show', 'TercerosController@show')->name('tercerosShow');
 	Route::post('/create','TercerosController@create')->name('create');
 });
-
 
 Route::group(['prefix' => 'api'], function(){
 	Route::group(['prefix' => 'tipo_documento'], function(){
@@ -44,3 +39,5 @@ Route::group(['prefix' => 'api'], function(){
 
 	});
 });
+
+Auth::routes();

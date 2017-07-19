@@ -3,27 +3,6 @@ import Vue from 'vue'
 import Datepicker from 'vuejs-datepicker'
 import moment from 'moment'
 import Multiselect from 'vue-multiselect';
-Vue.component('select-documento',{
-	props: ['id','tidocumento','datos'],
-	template:
-	`<div class="col-md-12">
-	<select v-model="datos.ctidocumento" :name="id" :id="id" class="form-control input-sm"> 
-	<option v-for="tidocu in tidocumento"  :value="tidocu.ctidocumento">{{tidocu.ntidocumento}}</option> 
-	</select>
-	</div>`,
-	created: function(){
-    fetch("api/tipo_documento",{ //ruta 
-    	credentials: 'include',
-    	type : "GET",
-    })
-    .then(response => {
-    	return response.json()
-    }).then(tidocumentos => {
-    	console.log(tidocumentos)
-    	app.tidocumento = tidocumentos
-    	app.datos.ctidocumento = "1"
-    });
-}})
 
 var app=new Vue({
 	el: '#app-vue',
@@ -34,10 +13,14 @@ var app=new Vue({
 	data : {
 		date: moment().locale('es').format('YYYY-MM-DD'),
 		tidocumento:[],
+		valueTdocu: {},
 		departamentos:[],
+		valueDepartamento: {},
 		ciudades:[],
+		valueCiudad: {},
 		_token:'',
 		tercero:[],
+		valueTercero: {},
 		datos:{
 			'cterce':'',
 			'ctidocumento':'',
@@ -68,15 +51,28 @@ var app=new Vue({
 			'direccion':'',
 			'email':''
 		},
-		value: {},
-		options: []
-
 	},
 	methods:{
-		nameWithLang ({cterce, nit, nombre }) {
+		showDepartamentos ({ndepartamento}) {
 			var vm = this
-			vm.datos.cterce= vm.value.cterce
+			vm.terceros.cdepar= vm.valueDepartamento.cdepar
+			return `${ndepartamento}`
+		},
+		showCiudades ({nciudad}) {
+			var vm = this
+			vm.terceros.cciud= vm.valueCiudad.cciud
+			return `${nciudad}`
+		},
+
+		showTerceros ({nit, nombre }) {
+			var vm = this
+			vm.datos.cterce= vm.valueTercero.cterce
 			return `${nit} — ${nombre}`
+		},
+		showTidocumento ({ntidocumento }) {
+			var vm = this
+			vm.datos.ctidocumento= vm.valueTdocu.ctidocumento
+			return `${ntidocumento}`
 		},
 		GetCiudades: function(cdepar){
 			var vm = this
@@ -87,17 +83,15 @@ var app=new Vue({
 		.then(response => {
 			return response.json()
 		}).then(ciudades => {
-
 			console.log(ciudades)
 			vm.ciudades =ciudades
 			console.log(vm.ciudades)
-			if (vm.terceros.cdepar=="29") {
-				vm.terceros.cciud = "1042"
+			if (vm.valueDepartamento[cdepar]=="29") {
+				vm.valueCiudad = vm.ciudades[1042]
 			}else{
-	    		//alert(JSON.parse(app.ciudades))
-	    		vm.terceros.cciud = ciudades[0].cciud
-	    	}
-	    });
+				vm.terceros.cciud = ciudades[0].cciud
+			}
+		});
 		},// end ciudades function
 		// start getTercerero function
 
@@ -191,8 +185,9 @@ var app=new Vue({
 	    	return response.json()
 	    }).then(departamentos => {
 	    	vm.departamentos = departamentos
-	    	vm.terceros.cdepar="29"
-	    	this.GetCiudades(vm.terceros.cdepar)
+	    	//vm.terceros.cdepar="29"
+	    	vm.valueDepartamento=departamentos[28]
+	    	this.GetCiudades(vm.valueDepartamento.cdepar)
 
 	    });
 	    fetch("terceros/show",{ //ruta 
@@ -202,9 +197,20 @@ var app=new Vue({
 	    	return response.json()
 	    }).then(terceros => {
 	    	console.log(terceros)
-	    	this.options = terceros
-	    	this.value = terceros[0]
+	    	vm.tercero = terceros
+	    	vm.valueTercero = terceros[0]
 	    });
 
-	}
-})
+	      fetch("api/tipo_documento",{ //ruta 
+	      	credentials: 'include',
+	      	type : "GET",
+	      }).then(response => {
+	      	return response.json()
+	      }).then(tidocumentos => {
+	      	console.log(tidocumentos)
+	      	vm.tidocumento = tidocumentos
+	      	vm.valueTdocu=tidocumentos[0]
+	      });
+
+	  }
+	})
