@@ -74,8 +74,9 @@ var app=new Vue({
 			vm.datos.ctidocumento= vm.valueTdocu.ctidocumento
 			return `${ntidocumento}`
 		},
-		GetCiudades: function(cdepar){
+		GetCiudades: function(){
 			var vm = this
+			var cdepar= vm.valueDepartamento.cdepar
 		fetch("api/ciudades?cdepar="+cdepar,{ //ruta 
 			credentials: 'include',
 			type : "GET",
@@ -83,13 +84,13 @@ var app=new Vue({
 		.then(response => {
 			return response.json()
 		}).then(ciudades => {
-			console.log(ciudades)
+			
 			vm.ciudades =ciudades
-			console.log(vm.ciudades)
-			if (vm.valueDepartamento[cdepar]=="29") {
-				vm.valueCiudad = vm.ciudades[1042]
+			console.log(vm.valueDepartamento.cdepar==29)
+			if (vm.valueDepartamento.cdepar==29) {
+				vm.valueCiudad = vm.ciudades[26]
 			}else{
-				vm.terceros.cciud = ciudades[0].cciud
+				vm.valueCiudad = vm.ciudades[0]
 			}
 		});
 		},// end ciudades function
@@ -187,7 +188,7 @@ var app=new Vue({
 	    	vm.departamentos = departamentos
 	    	//vm.terceros.cdepar="29"
 	    	vm.valueDepartamento=departamentos[28]
-	    	this.GetCiudades(vm.valueDepartamento.cdepar)
+	    	this.GetCiudades()
 
 	    });
 	    fetch("terceros/show",{ //ruta 

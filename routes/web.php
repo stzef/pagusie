@@ -39,5 +39,11 @@ Route::group(['prefix' => 'api'], function(){
 
 	});
 });
-
+Route::get('pdf', function(){
+	$pdf = PDF::loadView('contrato_prestacion_servicios');
+	return $pdf->setPaper('a4')->stream();
+});
+Route::get('pdfv', function(){
+return view('contrato_prestacion_servicios');
+});
 Auth::routes();

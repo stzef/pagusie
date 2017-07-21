@@ -176,9 +176,12 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        #My providers 
         Krlove\EloquentModelGenerator\Provider\GeneratorServiceProvider::class,
         Way\Generators\GeneratorsServiceProvider::class,
         Xethron\MigrationsGenerator\MigrationsGeneratorServiceProvider::class,
+                #PDF
+        Barryvdh\DomPDF\ServiceProvider::class,
         ],
 
     /*
@@ -227,7 +230,8 @@ return [
     'URL' => Illuminate\Support\Facades\URL::class,
     'Validator' => Illuminate\Support\Facades\Validator::class,
     'View' => Illuminate\Support\Facades\View::class,
-
+    #PDF
+        'PDF' => Barryvdh\DomPDF\Facade::class,
     ],
 
     ];

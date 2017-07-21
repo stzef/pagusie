@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 12-07-2017 a las 15:39:22
+-- Tiempo de generación: 21-07-2017 a las 18:23:19
 -- Versión del servidor: 10.1.24-MariaDB
 -- Versión de PHP: 7.1.6
 
@@ -55,6 +55,14 @@ CREATE TABLE `cargo` (
   `ccargo` int(11) NOT NULL,
   `ncargo` varchar(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `cargo`
+--
+
+INSERT INTO `cargo` (`ccargo`, `ncargo`) VALUES
+(1, 'rector'),
+(2, 'secretario');
 
 -- --------------------------------------------------------
 
@@ -1270,7 +1278,8 @@ CREATE TABLE `datos_basicos` (
   `ctidocumento` int(11) NOT NULL COMMENT 'ejemplo factura',
   `cestado` int(11) NOT NULL,
   `vigencia` int(11) NOT NULL COMMENT 'año presupuestal',
-  `ccoegre` int(11) NOT NULL COMMENT 'codigo comprobante egreso',
+  `cegre` int(11) NOT NULL COMMENT 'codigo comprobante egreso',
+  `fpago` date NOT NULL,
   `ffactu` date NOT NULL COMMENT 'fecha factura',
   `nfactu` varchar(20) NOT NULL COMMENT 'numero de factura',
   `concepto` text NOT NULL,
@@ -1281,8 +1290,19 @@ CREATE TABLE `datos_basicos` (
   `fregis` date NOT NULL COMMENT 'fecha registro presupuestal',
   `vsiva` double(10,2) NOT NULL COMMENT 'valor sin iva',
   `viva` double(10,2) NOT NULL COMMENT 'valor con iva',
-  `vtotal` double(10,2) NOT NULL COMMENT 'valor total'
+  `vtotal` double(10,2) NOT NULL COMMENT 'valor total',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `datos_basicos`
+--
+
+INSERT INTO `datos_basicos` (`cdatos`, `cterce`, `ctidocumento`, `cestado`, `vigencia`, `cegre`, `fpago`, `ffactu`, `nfactu`, `concepto`, `justificacion`, `plazo`, `festcomp`, `fdispo`, `fregis`, `vsiva`, `viva`, `vtotal`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, 1, 2017, 1, '2017-07-13', '2017-07-04', '4', '4', '4', '4', '2017-07-04', '2017-07-04', '2017-07-13', 4.00, 4.00, 4.00, '2017-07-18 13:33:15', '2017-07-18 13:33:15'),
+(4, 1, 1, 1, 2017, 2, '2017-07-18', '2017-07-04', '122', '1212', '1221', '5 dias', '2017-07-18', '2017-07-18', '2017-07-18', 1000.00, 1000.00, 1000.00, '2017-07-18 13:54:37', '2017-07-18 13:54:37'),
+(5, 22, 1, 1, 2017, 14, '2017-07-21', '2017-07-19', '232', 'prueba', 'prueba', '4 dias', '2017-07-21', '2017-07-22', '2017-07-19', 20000.00, 20000.00, 20000.00, '2017-07-21 13:12:11', '2017-07-21 13:12:11');
 
 -- --------------------------------------------------------
 
@@ -1408,6 +1428,40 @@ CREATE TABLE `impuestos` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `migrations`
+--
+
+CREATE TABLE `migrations` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `batch` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `migrations`
+--
+
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
+(1, '2017_07_12_085806_create_departamentos_table', 0),
+(2, '2017_07_12_085806_create_ciudades_table', 0),
+(3, '2017_07_12_085807_add_foreign_keys_to_ciudades_table', 0),
+(4, '2014_10_12_000000_create_users_table', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `password_resets`
+--
+
+CREATE TABLE `password_resets` (
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `persona`
 --
 
@@ -1415,11 +1469,18 @@ CREATE TABLE `persona` (
   `cpersona` int(11) NOT NULL,
   `ccargo` int(11) NOT NULL,
   `identificacion` varchar(45) NOT NULL,
-  `nombres` varchar(45) NOT NULL,
+  `nombres` varchar(255) NOT NULL,
   `apellidos` varchar(255) NOT NULL,
   `direccion` varchar(255) NOT NULL,
   `telefono` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `persona`
+--
+
+INSERT INTO `persona` (`cpersona`, `ccargo`, `identificacion`, `nombres`, `apellidos`, `direccion`, `telefono`) VALUES
+(1, 2, '1106896645', 'Jhonan', 'Vargas', 'CR 30 a', 31332);
 
 -- --------------------------------------------------------
 
@@ -1445,10 +1506,24 @@ CREATE TABLE `terceros` (
   `cciud` int(11) NOT NULL,
   `nit` int(11) NOT NULL,
   `nombre` varchar(45) NOT NULL,
-  `telefono` varchar(15) NOT NULL,
+  `telefono` int(15) NOT NULL,
   `direccion` varchar(45) NOT NULL,
-  `email` varchar(255) NOT NULL
+  `email` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `terceros`
+--
+
+INSERT INTO `terceros` (`cterce`, `cciud`, `nit`, `nombre`, `telefono`, `direccion`, `email`, `created_at`, `updated_at`) VALUES
+(1, 1042, 11542, 'telecom', 312564, 'cra 30 a', 'nano1@gmail.com', '2017-07-13 12:37:49', '2017-07-13 12:37:49'),
+(2, 553, 12345, 'gas', 2146541, 'cra 4541', 'nano@gmail.com', '2017-07-13 13:16:23', '2017-07-13 13:16:23'),
+(4, 1042, 1154244, 'telmex', 312564, 'cra 30 a', 'sistematizaref.programador5@gmail.com', '2017-07-14 13:51:55', '2017-07-14 13:51:55'),
+(16, 1042, 115428788, 'Juan B', 3132154, 'CRA 24', 'nano1@gmail.com', '2017-07-14 14:39:21', '2017-07-14 14:39:21'),
+(21, 1042, 123454, 'Marco', 3132, 'cra 30 a', 'nano1@gmail.com', '2017-07-18 14:16:28', '2017-07-18 14:16:28'),
+(22, 180, 1106896645, 'Rodrigo', 31454215, 'av x', 'rodrigo@x.com', '2017-07-21 13:09:23', '2017-07-21 13:09:23');
 
 -- --------------------------------------------------------
 
@@ -1479,6 +1554,15 @@ CREATE TABLE `tiusuario` (
   `tiusuariocol` varchar(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Volcado de datos para la tabla `tiusuario`
+--
+
+INSERT INTO `tiusuario` (`ctiusuario`, `tiusuariocol`) VALUES
+(1, 'registrados'),
+(2, 'administrador'),
+(3, 'super admin');
+
 -- --------------------------------------------------------
 
 --
@@ -1493,10 +1577,10 @@ CREATE TABLE `unidades` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `users`
+-- Estructura de tabla para la tabla `user`
 --
 
-CREATE TABLE `users` (
+CREATE TABLE `user` (
   `id` int(11) NOT NULL,
   `username` varchar(255) NOT NULL,
   `cpersona` int(11) NOT NULL,
@@ -1508,6 +1592,29 @@ CREATE TABLE `users` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `users`
+--
+
+CREATE TABLE `users` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `users`
+--
+
+INSERT INTO `users` (`id`, `name`, `email`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
+(1, 'jhonan360', 'nano@gmail.com', '$2y$10$QCv5ZDfS3pOitOEymIcr9u9ECeDJGqD1YgLXhLPzJxqwzQcq1RCAa', 'qMT7CND8bqHNiV49i0BjzZBn6bKcXhw9oeWY0KQfVSm2Oaf4wsOFXiwSqP7q', '2017-07-12 14:39:19', '2017-07-12 14:39:19');
 
 --
 -- Índices para tablas volcadas
@@ -1583,7 +1690,7 @@ ALTER TABLE `cuentas_bancos`
 --
 ALTER TABLE `datos_basicos`
   ADD PRIMARY KEY (`cdatos`),
-  ADD UNIQUE KEY `ccoegre_UNIQUE` (`ccoegre`),
+  ADD UNIQUE KEY `ccoegre_UNIQUE` (`cegre`),
   ADD UNIQUE KEY `nfactu_UNIQUE` (`nfactu`),
   ADD KEY `fk_datos_terceros1_idx` (`cterce`),
   ADD KEY `fk_datos_basicos_tipo_documento1_idx` (`ctidocumento`),
@@ -1632,6 +1739,12 @@ ALTER TABLE `impuestos`
   ADD PRIMARY KEY (`cimpu`);
 
 --
+-- Indices de la tabla `migrations`
+--
+ALTER TABLE `migrations`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `persona`
 --
 ALTER TABLE `persona`
@@ -1671,14 +1784,21 @@ ALTER TABLE `unidades`
   ADD PRIMARY KEY (`cunidad`);
 
 --
--- Indices de la tabla `users`
+-- Indices de la tabla `user`
 --
-ALTER TABLE `users`
+ALTER TABLE `user`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `username_UNIQUE` (`username`),
   ADD UNIQUE KEY `email_UNIQUE` (`email`),
   ADD KEY `fk_user_persona1_idx` (`cpersona`),
   ADD KEY `fk_user_tiusuario1_idx` (`ctiusuario`);
+
+--
+-- Indices de la tabla `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `users_email_unique` (`email`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -1698,7 +1818,7 @@ ALTER TABLE `bancos`
 -- AUTO_INCREMENT de la tabla `cargo`
 --
 ALTER TABLE `cargo`
-  MODIFY `ccargo` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ccargo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT de la tabla `cheques`
 --
@@ -1723,7 +1843,7 @@ ALTER TABLE `cuentas_bancos`
 -- AUTO_INCREMENT de la tabla `datos_basicos`
 --
 ALTER TABLE `datos_basicos`
-  MODIFY `cdatos` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `cdatos` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT de la tabla `datos_cuentas`
 --
@@ -1750,15 +1870,20 @@ ALTER TABLE `estados`
 ALTER TABLE `impuestos`
   MODIFY `cimpu` int(11) NOT NULL AUTO_INCREMENT;
 --
+-- AUTO_INCREMENT de la tabla `migrations`
+--
+ALTER TABLE `migrations`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
 -- AUTO_INCREMENT de la tabla `persona`
 --
 ALTER TABLE `persona`
-  MODIFY `cpersona` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `cpersona` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT de la tabla `terceros`
 --
 ALTER TABLE `terceros`
-  MODIFY `cterce` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `cterce` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 --
 -- AUTO_INCREMENT de la tabla `tipo_documento`
 --
@@ -1768,17 +1893,22 @@ ALTER TABLE `tipo_documento`
 -- AUTO_INCREMENT de la tabla `tiusuario`
 --
 ALTER TABLE `tiusuario`
-  MODIFY `ctiusuario` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ctiusuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT de la tabla `unidades`
 --
 ALTER TABLE `unidades`
   MODIFY `cunidad` int(11) NOT NULL AUTO_INCREMENT;
 --
+-- AUTO_INCREMENT de la tabla `user`
+--
+ALTER TABLE `user`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- Restricciones para tablas volcadas
 --
@@ -1807,8 +1937,8 @@ ALTER TABLE `ciudades`
 --
 ALTER TABLE `colegio`
   ADD CONSTRAINT `fk_colegio_ciudades1` FOREIGN KEY (`ciud`) REFERENCES `ciudades` (`cciud`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_colegio_user1` FOREIGN KEY (`rector`) REFERENCES `users` (`username`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_colegio_user2` FOREIGN KEY (`auxad`) REFERENCES `users` (`username`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_colegio_user1` FOREIGN KEY (`rector`) REFERENCES `user` (`username`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_colegio_user2` FOREIGN KEY (`auxad`) REFERENCES `user` (`username`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `contrato_articulo_detalle`
@@ -1865,9 +1995,9 @@ ALTER TABLE `terceros`
   ADD CONSTRAINT `fk_terceros_ciudades1` FOREIGN KEY (`cciud`) REFERENCES `ciudades` (`cciud`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Filtros para la tabla `users`
+-- Filtros para la tabla `user`
 --
-ALTER TABLE `users`
+ALTER TABLE `user`
   ADD CONSTRAINT `fk_user_persona1` FOREIGN KEY (`cpersona`) REFERENCES `persona` (`cpersona`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_user_tiusuario1` FOREIGN KEY (`ctiusuario`) REFERENCES `tiusuario` (`ctiusuario`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 COMMIT;

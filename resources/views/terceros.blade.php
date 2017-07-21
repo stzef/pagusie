@@ -44,7 +44,7 @@
 				</select>-->
 				<template>
 					<div>
-						<multiselect v-model="valueDepartamento" :options="departamentos" placeholder="Seleccione un departamento" label="ndepartamento" track-by="ndepartamento" :custom-label="showDepartamentos"></multiselect>
+						<multiselect v-model="valueDepartamento" :options="departamentos" placeholder="Seleccione un departamento" label="ndepartamento" track-by="ndepartamento" :custom-label="showDepartamentos" @input="GetCiudades()"></multiselect>
 					</div>
 				</template>
 
