@@ -61,7 +61,7 @@ class Datos_basicos extends Model
      */
     public function tercero()
     {
-        return $this->belongsTo('App\Tercero', 'cterce', 'cterce');
+        return $this->belongsTo('App\Models\Terceros', 'cterce', 'cterce');
     }
 
     /**

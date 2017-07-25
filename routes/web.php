@@ -39,11 +39,15 @@ Route::group(['prefix' => 'api'], function(){
 
 	});
 });
-Route::get('pdf', function(){
-	$pdf = PDF::loadView('contrato_prestacion_servicios');
+/*Route::get('pdf', function(){
+	$pdf = PDF::loadView('pdf.documento_equivalente');
 	return $pdf->setPaper('a4')->stream();
-});
+});*/
+
+Route::get('pdf','DocumentoEquivalenteController@pdf');
+//Route::get('pdf/{cdatos}','DocumentoEquivalenteController@pdf');
+
 Route::get('pdfv', function(){
-return view('contrato_prestacion_servicios');
+return view('pdf.documento_equivalente');
 });
 Auth::routes();
