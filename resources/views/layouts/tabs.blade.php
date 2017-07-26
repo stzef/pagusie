@@ -13,10 +13,10 @@
     <!-- Styles -->
     <link rel="stylesheet" href="{{ URL::asset('bower_components/bootstrap/dist/css/bootstrap.css') }}" >
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="/resources/demos/style.css">
+    <!-- <link rel="stylesheet" href="/resources/demos/style.css"> -->
     <!-- Alertify-->
-    <link href="{{ asset('node_modules/alertifyjs/build/css/alertify.min.css') }}" rel="stylesheet">
-    
+    <link href="{{ URL::asset('bower_components/alertifyjs/dist/css/alertify.css') }}" rel="stylesheet">
+
 </head>
 <body>
     <div id="app-vue">
@@ -128,6 +128,6 @@
 } );
 </script>
 <!-- Alertify-->
- <script src="{{ asset('node_modules/alertifyjs/build/alertify.min.js') }}"></script>
+ <script src="{{ URL::asset('bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
 </body>
 </html>
