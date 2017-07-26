@@ -36,7 +36,7 @@ class Colegio extends Model
     /**
      * @var array
      */
-    protected $fillable = ['cciud', 'rector', 'auxad', 'nombre', 'nit', 'direccion'];
+    protected $fillable = ['cciud', 'rector', 'auxad', 'nombre', 'nit','dv', 'direccion'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

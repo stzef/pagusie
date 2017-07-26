@@ -4,6 +4,8 @@ import Datepicker from 'vuejs-datepicker'
 import moment from 'moment'
 import Multiselect from 'vue-multiselect';
 
+import calcularDigitoVerificacion from './../../calcularDigitoVerificacion'
+
 var app=new Vue({
 	el: '#app-vue',
 	components:{
@@ -46,6 +48,7 @@ var app=new Vue({
 			'cdepar':'',
 			'cciud':'',
 			'nit':'',
+			'dv':'5',
 			'nombre':'',
 			'telefono':'',
 			'direccion':'',
@@ -53,6 +56,11 @@ var app=new Vue({
 		},
 	},
 	methods:{
+		calcularDigitoVerificacion,
+		setDv(dv){
+			console.info("dv",dv)
+			this.terceros.dv=dv
+		},
 		showDepartamentos ({ndepartamento}) {
 			var vm = this
 			vm.terceros.cdepar= vm.valueDepartamento.cdepar

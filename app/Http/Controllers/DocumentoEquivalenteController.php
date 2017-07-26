@@ -12,7 +12,6 @@ class DocumentoEquivalenteController extends Controller
 {
 	public function pdf(Request $request ){
 		$cdatos = $request->input('cdatos');
-		// var_dump($cdatos);exit();
 		if ( !$cdatos ) return view('errors/generic',array('title' => 'Error PDF.', 'message' => "El registro $cdatos no existe" ));
 		$datos=Datos_basicos::where('cdatos',$cdatos)->first();
 		if ( !$datos ) return view('errors/generic',array('title' => 'Error PDF.', 'message' => "El registro $cdatos no existe" ));
@@ -21,7 +20,7 @@ class DocumentoEquivalenteController extends Controller
 
 		$tercero=$datos->tercero;
 		$data = array("datos" => $datos,"tercero" => $tercero,"colegio"=>$colegio,);
-		\PDF::setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif']);
+		PDF::setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif']);
 		$pdf = PDF::loadView('pdf.documento_equivalente', $data);
 		return $pdf->setPaper('a4')->stream();
 	}

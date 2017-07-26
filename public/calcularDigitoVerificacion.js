@@ -51,3 +51,5 @@ function  calcularDigitoVerificacion ( myNit )  {
 
   return ( y > 1 ) ? 11 - y : y ;
 }
+
+export default calcularDigitoVerificacion

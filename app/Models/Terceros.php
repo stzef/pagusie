@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $telefono
  * @property string $direccion
  * @property string $email
- * @property Ciudade $ciudade
+ * @property Ciudades $ciudad
  * @property DatosBasico[] $datosBasicos
  */
 class Terceros extends Model
@@ -20,14 +20,14 @@ class Terceros extends Model
     /**
      * @var array
      */
-    protected $fillable = ['cciud', 'nit', 'nombre', 'telefono', 'direccion', 'email'];
+    protected $fillable = ['cciud', 'nit','dv', 'nombre', 'telefono', 'direccion', 'email'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function ciudade()
+    public function ciudad()
     {
-        return $this->belongsTo('App\Ciudade', 'cciud', 'cciud');
+        return $this->belongsTo('App\Models\Ciudade', 'cciud', 'cciud');
     }
 
     /**
@@ -35,6 +35,6 @@ class Terceros extends Model
      */
     public function datosBasicos()
     {
-        return $this->hasMany('App\DatosBasico', 'cterce', 'cterce');
+        return $this->hasMany('App\Models\DatosBasico', 'cterce', 'cterce');
     }
 }

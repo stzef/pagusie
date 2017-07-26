@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.0
+-- version 4.7.3
 -- https://www.phpmyadmin.net/
 --
--- Servidor: 127.0.0.1
--- Tiempo de generación: 21-07-2017 a las 18:23:19
--- Versión del servidor: 10.1.24-MariaDB
--- Versión de PHP: 7.1.6
+-- Servidor: localhost
+-- Tiempo de generación: 25-07-2017 a las 23:47:03
+-- Versión del servidor: 5.7.19
+-- Versión de PHP: 5.6.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -1217,13 +1217,21 @@ INSERT INTO `ciudades` (`cciud`, `cdepar`, `nciudad`) VALUES
 
 CREATE TABLE `colegio` (
   `ccolegio` int(11) NOT NULL,
-  `ciud` int(11) NOT NULL,
+  `cciud` int(11) NOT NULL,
   `rector` varchar(16) NOT NULL,
   `auxad` varchar(16) NOT NULL,
   `nombre` varchar(45) NOT NULL,
   `nit` varchar(15) NOT NULL,
+  `dv` int(1) NOT NULL,
   `direccion` varchar(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `colegio`
+--
+
+INSERT INTO `colegio` (`ccolegio`, `cciud`, `rector`, `auxad`, `nombre`, `nit`, `dv`, `direccion`) VALUES
+(1, 1042, 'nano', 'nano', 'INSTITUCION EDUCATIVA TECNICA SUMAPAZ', '800.029.382', 7, 'CARRERA 25 Nº 5-43');
 
 -- --------------------------------------------------------
 
@@ -1505,6 +1513,7 @@ CREATE TABLE `terceros` (
   `cterce` int(11) NOT NULL,
   `cciud` int(11) NOT NULL,
   `nit` int(11) NOT NULL,
+  `dv` int(1) NOT NULL,
   `nombre` varchar(45) NOT NULL,
   `telefono` int(15) NOT NULL,
   `direccion` varchar(45) NOT NULL,
@@ -1517,13 +1526,13 @@ CREATE TABLE `terceros` (
 -- Volcado de datos para la tabla `terceros`
 --
 
-INSERT INTO `terceros` (`cterce`, `cciud`, `nit`, `nombre`, `telefono`, `direccion`, `email`, `created_at`, `updated_at`) VALUES
-(1, 1042, 11542, 'telecom', 312564, 'cra 30 a', 'nano1@gmail.com', '2017-07-13 12:37:49', '2017-07-13 12:37:49'),
-(2, 553, 12345, 'gas', 2146541, 'cra 4541', 'nano@gmail.com', '2017-07-13 13:16:23', '2017-07-13 13:16:23'),
-(4, 1042, 1154244, 'telmex', 312564, 'cra 30 a', 'sistematizaref.programador5@gmail.com', '2017-07-14 13:51:55', '2017-07-14 13:51:55'),
-(16, 1042, 115428788, 'Juan B', 3132154, 'CRA 24', 'nano1@gmail.com', '2017-07-14 14:39:21', '2017-07-14 14:39:21'),
-(21, 1042, 123454, 'Marco', 3132, 'cra 30 a', 'nano1@gmail.com', '2017-07-18 14:16:28', '2017-07-18 14:16:28'),
-(22, 180, 1106896645, 'Rodrigo', 31454215, 'av x', 'rodrigo@x.com', '2017-07-21 13:09:23', '2017-07-21 13:09:23');
+INSERT INTO `terceros` (`cterce`, `cciud`, `nit`, `dv`, `nombre`, `telefono`, `direccion`, `email`, `created_at`, `updated_at`) VALUES
+(1, 1042, 11542, 8, 'telecom', 312564, 'cra 30 a', 'nano1@gmail.com', '2017-07-13 12:37:49', '2017-07-13 12:37:49'),
+(2, 553, 12345, 8, 'gas', 2146541, 'cra 4541', 'nano@gmail.com', '2017-07-13 13:16:23', '2017-07-13 13:16:23'),
+(4, 1042, 1154244, 5, 'telmex', 312564, 'cra 30 a', 'sistematizaref.programador5@gmail.com', '2017-07-14 13:51:55', '2017-07-14 13:51:55'),
+(16, 1042, 115428788, 0, 'Juan B', 3132154, 'CRA 24', 'nano1@gmail.com', '2017-07-14 14:39:21', '2017-07-14 14:39:21'),
+(21, 1042, 123454, 9, 'Marco', 3132, 'cra 30 a', 'nano1@gmail.com', '2017-07-18 14:16:28', '2017-07-18 14:16:28'),
+(22, 180, 1106896645, 0, 'Rodrigo', 31454215, 'av x', 'rodrigo@x.com', '2017-07-21 13:09:23', '2017-07-21 13:09:23');
 
 -- --------------------------------------------------------
 
@@ -1593,6 +1602,13 @@ CREATE TABLE `user` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Volcado de datos para la tabla `user`
+--
+
+INSERT INTO `user` (`id`, `username`, `cpersona`, `ctiusuario`, `email`, `password`, `active`, `remember_token`, `created_at`, `updated_at`) VALUES
+(1, 'nano', 1, 3, 'nano@gmail.com', '1234567', 1, '', NULL, NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -1660,7 +1676,7 @@ ALTER TABLE `ciudades`
 ALTER TABLE `colegio`
   ADD PRIMARY KEY (`ccolegio`),
   ADD UNIQUE KEY `nit_UNIQUE` (`nit`),
-  ADD KEY `fk_colegio_ciudades1_idx` (`ciud`),
+  ADD KEY `fk_colegio_ciudades1_idx` (`cciud`),
   ADD KEY `fk_colegio_user1_idx` (`rector`),
   ADD KEY `fk_colegio_user2_idx` (`auxad`);
 
@@ -1828,7 +1844,7 @@ ALTER TABLE `cheques`
 -- AUTO_INCREMENT de la tabla `colegio`
 --
 ALTER TABLE `colegio`
-  MODIFY `ccolegio` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ccolegio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT de la tabla `contratos`
 --
@@ -1903,7 +1919,7 @@ ALTER TABLE `unidades`
 -- AUTO_INCREMENT de la tabla `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT de la tabla `users`
 --
@@ -1936,7 +1952,7 @@ ALTER TABLE `ciudades`
 -- Filtros para la tabla `colegio`
 --
 ALTER TABLE `colegio`
-  ADD CONSTRAINT `fk_colegio_ciudades1` FOREIGN KEY (`ciud`) REFERENCES `ciudades` (`cciud`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_colegio_ciudades1` FOREIGN KEY (`cciud`) REFERENCES `ciudades` (`cciud`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_colegio_user1` FOREIGN KEY (`rector`) REFERENCES `user` (`username`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_colegio_user2` FOREIGN KEY (`auxad`) REFERENCES `user` (`username`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 

@@ -13,15 +13,16 @@
 		</div>
 	</div>
 	<form @submit.prevent="CreateTercero" accept-charset="utf-8" >
+	[[terceros.dv]]
 		<input type="hidden" name="_token" id="token"  value="{{csrf_token()}}"></input>
 		<div class="row">
 			<div class="form-group col-md-4 col-lg-4">
 				<label for="nit" class="form-label">NIT o cedula</label>
 				<div class="form-inline">
-					<input type="text" class="form-control" id="nit" aria-describedby="nit" placeholder="Ingrese el número de identificación" v-model="terceros.nit" size="26" onblur="document.getElementById('dv').value= calcularDigitoVerificacion(document.getElementById('nit').value)" required>
+					<input type="text" class="form-control" id="nit" aria-describedby="nit" placeholder="Ingrese el número de identificación" v-model="terceros.nit" size="26" @blur="setDv(calcularDigitoVerificacion($event.target.value))" required>
 					<div class="input-group mb-1 mr-sm-1 mb-sm-0">
 						<div class="input-group-addon">-DV</div>
-						<input name="dv" class="form-control" id="dv" size="1" maxlength="1" Disabled="true" type="text">
+						<input v-model="terceros.dv" name="dv" class="form-control" id="dv" size="1" maxlength="1" disabled="true" type="text">
 					</div>
 				</div>
 			</div>	
@@ -83,4 +84,3 @@
 	</form>
 </div>
 @endsection
-<script src="{{ URL::asset('calcularDigitoVerificacion.js') }}" ></script>

@@ -57,18 +57,18 @@
 		<br><br>
 		<div class="row">
 			<div class="col-sm-4 col-xs-4 col-md-3 col-lg-3">
-				<table WIDTH="400" border="3">
+				<table WIDTH="400">
 					<tr>
-						<td WIDTH="60">NOMBRE:</td>
-						<td  align="left">{{$tercero->nombre}}</td>
+						<td WIDTH="70">NOMBRE:</td>
+						<td  >{{$tercero->nombre}}</td>
 					</tr>
 				</table>
 				<table WIDTH="180" >
 					<tr>
 						<td WIDTH="25">NIT:</td>
-						<td WIDTH="80" align="center">1106896645</td>
+						<td WIDTH="80" align="center">{{$tercero->nit}}</td>
 						<td WIDTH="25">DV:</td>
-						<td WIDTH="25" align="center">45</td>
+						<td WIDTH="25" align="center">{{$tercero->dv}}</td>
 					</tr>
 				</table>
 
@@ -76,11 +76,11 @@
 				<table WIDTH="400" >
 					<tr>
 						<td WIDTH="80">DIRECCION:</td>
-						<td colspan="2" >CRA 29 </td>
+						<td colspan="2" >{{$tercero->direccion}}</td>
 					</tr>
 					<tr>
 						<td WIDTH="80">TELEFONO:</td>
-						<td colspan="2" >2454015 </td>
+						<td colspan="2" >{{$tercero->telefono}} </td>
 					</tr>
 				</table>
 			</div></div>
@@ -90,7 +90,7 @@
 					<th class="text-center">CONCEPTO</th>
 				</tr>
 				<tr>
-					<td>DOCUMENTO EQUIVALENTE A LA FACTURA EN ADQUISICIONES EFECTUADAS A PERSONAS NATURALES NO COMERCIANTES O INSCRITAS EN EL REGIMEN SIMPLIFICADO. DECRETO 1001 DE 1997 ABRIL 8 ARTICULO 17</td>
+					<td>{{$datos->concepto}}</td>
 				</tr>
 			</table>
 			<br><br>
@@ -99,7 +99,7 @@
 					<th class="text-center" colspan="2">VALOR DE LA OPERACIÓN</th>
 				</tr>
 				<tr>
-					<td align="center" width="100">112.15 </td>
+					<td align="center" width="100">{{$datos->vtotal}}</td>
 					<td align="center">DINERO </td>
 
 				</tr>
