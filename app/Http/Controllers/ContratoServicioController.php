@@ -8,17 +8,17 @@ use App\Models\Terceros;
 use App\Models\Colegio;
 use PDF;
 use NumeroALetras;
-
-class DocumentoEquivalenteController extends Controller
+class ContratoServicioController extends Controller
 {
-	public function pdf(Request $request ){
+    public function pdf(Request $request ){
 		$cdatos = $request->input('cdatos');
 		if ( !$cdatos ) return view('errors/generic',array('title' => 'Error PDF.', 'message' => "El registro $cdatos no existe" ));
 		$datos=Datos_basicos::where('cdatos',$cdatos)->first();
 		if ( !$datos ) return view('errors/generic',array('title' => 'Error PDF.', 'message' => "El registro $cdatos no existe" ));
 
 		$colegio=Colegio::all()->first();
-		$letras = NumeroALetras::convertir($datos->vtotal,'pesos').' M/CTE.';
+		$letras = NumeroALetras::convertir($datos->vsiva,'pesos').' M/CTE.';
+		$datos->ffactu=$this->formatDate($datos->ffactu,0);
 		$datos->fpago=$this->formatDate($datos->fpago,0);
 		$datos->ffactu=$this->formatDate($datos->ffactu,0);
 		$datos->festcomp=$this->formatDate($datos->festcomp,0);
@@ -27,11 +27,11 @@ class DocumentoEquivalenteController extends Controller
 		$tercero=$datos->tercero;
 		$data = array("datos" => $datos,"tercero" => $tercero,"colegio"=>$colegio,"letras"=>$letras,);
 		PDF::setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif']);
-		$pdf = PDF::loadView('pdf.documento_equivalente', $data);
+		$pdf = PDF::loadView('pdf.contrato_prestacion_servicios', $data);
 		return $pdf->setPaper('a4')->stream();
 	}
 
-	function formatDate($fecha,$opcion){
+		function formatDate($fecha,$opcion){
 		$fecha = substr($fecha, 0, 10);
 		$numeroDia = date('d', strtotime($fecha));
 		$dia = date('l', strtotime($fecha));

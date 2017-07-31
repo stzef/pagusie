@@ -44,9 +44,9 @@ Route::group(['prefix' => 'api'], function(){
 	return $pdf->setPaper('a4')->stream();
 });*/
 
-Route::get('pdf','DocumentoEquivalenteController@pdf');
+Route::get('documentoequivalente','DocumentoEquivalenteController@pdf');
 //Route::get('pdf/{cdatos}','DocumentoEquivalenteController@pdf');
-
+Route::get('contratoservicio','ContratoServicioController@pdf');
 Route::get('pdfv', function(){
 return view('pdf.documento_equivalente');
 });

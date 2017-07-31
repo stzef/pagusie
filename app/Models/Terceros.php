@@ -27,7 +27,7 @@ class Terceros extends Model
      */
     public function ciudad()
     {
-        return $this->belongsTo('App\Models\Ciudade', 'cciud', 'cciud');
+        return $this->belongsTo('App\Models\Ciudades', 'cciud', 'cciud');
     }
 
     /**

@@ -13,7 +13,6 @@
 		</div>
 	</div>
 	<form @submit.prevent="CreateTercero" accept-charset="utf-8" >
-	[[terceros.dv]]
 		<input type="hidden" name="_token" id="token"  value="{{csrf_token()}}"></input>
 		<div class="row">
 			<div class="form-group col-md-4 col-lg-4">
@@ -25,15 +24,15 @@
 						<input v-model="terceros.dv" name="dv" class="form-control" id="dv" size="1" maxlength="1" disabled="true" type="text">
 					</div>
 				</div>
-			</div>	
+			</div>
 			<div class="form-group col-md-5 col-lg-5">
 				<label for="nombre" class="form-label">Nombre</label>
 				<input type="text" class="form-control" id="nombre" aria-describedby="nombre" placeholder="Ingrese nombre" v-model="terceros.nombre" required>
-			</div>	
+			</div>
 			<div class="form-group col-md-3 col-lg-3">
 				<label for="telefono" class="form-label">Teléfono</label>
 				<input type="text" class="form-control" id="telefono" aria-describedby="telefono" placeholder="Ingrese teléfono" v-model="terceros.telefono" required>
-			</div>	
+			</div>
 		</div>
 		<div class="row">
 			<div class="form-group col-md-3 col-lg-3">
@@ -62,7 +61,7 @@
 						<multiselect v-model="valueCiudad" :options="ciudades" placeholder="Select one" label="nciudad" track-by="nciudad" :custom-label="showCiudades"></multiselect>
 					</div>
 				</template>
-				
+
 			</div>
 			<div class="form-group col-md-3 col-lg-3">
 				<label for="direccion" class="form-label">Dirección</label>
@@ -72,7 +71,7 @@
 				<label for="email" class="form-label">Email</label>
 				<input type="email" class="form-control" id="email" aria-describedby="email" placeholder="Ingrese Email" v-model="terceros.email" required>
 			</div>
-			
+
 		</div>
 		<center><div class="form-group">
 			<div class="col-md-4 col-md-offset-4">

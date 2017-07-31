@@ -3,16 +3,7 @@
 
 @section('styles')
 <style>
-	.cuadrado-2 {
-		width: 45px; 
-		height: 20px; 
-		border: 1px solid #555;
-	}
-	.firma {
-		width: 25%; 
-		height: 0px; 
-		border: 1px solid #555;
-	}
+
 	hr {
 		height: 3px;
 		width: 50%;
@@ -24,10 +15,8 @@
 
 
 @endsection
-
-@section('body')
-<div class="container">
-	<strong><table style="margin: 0 auto;" WIDTH="500">
+@section('header')
+<strong><table style="margin: 0 auto;" WIDTH="500">
 		<tr>
 			<td colspan="3" align="center">{{$colegio->nombre}}</td>
 		</tr>
@@ -39,7 +28,11 @@
 			<td colspan="2" align="center">{{$colegio->direccion}}</td>
 		</tr>
 	</table></strong>
-	<br><br><br>
+@endsection
+@section('body')
+<div class="container">
+
+
 	<table WIDTH="100%" class="text-center" style="margin: 0 auto;">
 		<tr>
 			<td>DOCUMENTO EQUIVALENTE A LA FACTURA EN ADQUISICIONES EFECTUADAS A PERSONAS NATURALES NO COMERCIANTES O INSCRITAS EN EL REGIMEN SIMPLIFICADO. DECRETO 1001 DE 1997 ABRIL 8 ARTICULO 17</td>
@@ -49,26 +42,26 @@
 
 	<div class="row">
 		<div class="col-sm-4 col-xs-4 col-md-3 col-lg-3">
-			DOCUMENTO EQUIVALENTE N°</div>
-			<div class="col-sm-1 col-xs-1 cuadrado-2 text-center">16</div>
+			<strong>DOCUMENTO EQUIVALENTE N° </strong></div>
+			<div class="col-sm-1 col-xs-1 cuadrado text-center"><strong>16</strong></div>
 			<div class="col-sm-1 col-xs-1"></div>
-			<div class="col-sm-4 col-xs-4">Fecha: {{$datos->ffactu}}</div>
-		</div> 
+			<div class="col-sm-4 col-xs-4"><strong> Fecha: {{$datos->ffactu}} </strong></div>
+		</div>
 		<br><br>
 		<div class="row">
 			<div class="col-sm-4 col-xs-4 col-md-3 col-lg-3">
 				<table WIDTH="400">
 					<tr>
 						<td WIDTH="70">NOMBRE:</td>
-						<td  >{{$tercero->nombre}}</td>
+						<td  ><strong>{{strtoupper($tercero->nombre)}}</strong></td>
 					</tr>
 				</table>
 				<table WIDTH="180" >
 					<tr>
 						<td WIDTH="25">NIT:</td>
-						<td WIDTH="80" align="center">{{$tercero->nit}}</td>
+						<td WIDTH="80" align="center"><strong>{{$tercero->nit}}</strong></td>
 						<td WIDTH="25">DV:</td>
-						<td WIDTH="25" align="center">{{$tercero->dv}}</td>
+						<td WIDTH="25" align="center"><strong>{{$tercero->dv}}</strong></td>
 					</tr>
 				</table>
 
@@ -76,7 +69,7 @@
 				<table WIDTH="400" >
 					<tr>
 						<td WIDTH="80">DIRECCION:</td>
-						<td colspan="2" >{{$tercero->direccion}}</td>
+						<td colspan="2" >{{strtoupper($tercero->direccion)}}</td>
 					</tr>
 					<tr>
 						<td WIDTH="80">TELEFONO:</td>
@@ -99,8 +92,8 @@
 					<th class="text-center" colspan="2">VALOR DE LA OPERACIÓN</th>
 				</tr>
 				<tr>
-					<td align="center" width="100">{{$datos->vtotal}}</td>
-					<td align="center">DINERO </td>
+					<td align="center" width="100" height="5%">{{number_format($datos->vtotal,2)}}</td>
+					<td align="center">{{ $letras }} </td>
 
 				</tr>
 			</table>

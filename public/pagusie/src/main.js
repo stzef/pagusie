@@ -48,7 +48,7 @@ var app=new Vue({
 			'cdepar':'',
 			'cciud':'',
 			'nit':'',
-			'dv':'5',
+			'dv':'',
 			'nombre':'',
 			'telefono':'',
 			'direccion':'',
@@ -85,14 +85,14 @@ var app=new Vue({
 		GetCiudades: function(){
 			var vm = this
 			var cdepar= vm.valueDepartamento.cdepar
-		fetch("api/ciudades?cdepar="+cdepar,{ //ruta 
+		fetch("api/ciudades?cdepar="+cdepar,{ //ruta
 			credentials: 'include',
 			type : "GET",
 		})
 		.then(response => {
 			return response.json()
 		}).then(ciudades => {
-			
+
 			vm.ciudades =ciudades
 			console.log(vm.valueDepartamento.cdepar==29)
 			if (vm.valueDepartamento.cdepar==29) {
@@ -118,12 +118,12 @@ var app=new Vue({
 					'X-CSRF-TOKEN' : this._token,
 				},
 				body: tercero,
-			}) 
+			})
 			.then(response => {
 				//console.info(response)
 				return response.json();
 			})
-			
+
 			.then(response => {
 				console.log(response["message"])
 				if(response.status == 400){
@@ -159,7 +159,7 @@ var app=new Vue({
 					'X-CSRF-TOKEN' : this._token,
 				},
 				body: dato,
-			}) 
+			})
 			.then(response => {
 				console.info(response)
 				return response.json();
@@ -186,7 +186,7 @@ var app=new Vue({
 		vm.datos.festcomp=vm.date
 		vm.datos.fdispo=vm.date
 		vm.datos.fregis=vm.date
-	    fetch("api/departamentos/",{ //ruta 
+	    fetch("api/departamentos/",{ //ruta
 	    	credentials: 'include',
 	    	type : "GET",
 	    })
@@ -199,7 +199,7 @@ var app=new Vue({
 	    	this.GetCiudades()
 
 	    });
-	    fetch("terceros/show",{ //ruta 
+	    fetch("terceros/show",{ //ruta
 	    	credentials: 'include',
 	    	type : "GET",
 	    }).then(response => {
@@ -210,7 +210,7 @@ var app=new Vue({
 	    	vm.valueTercero = terceros[0]
 	    });
 
-	      fetch("api/tipo_documento",{ //ruta 
+	      fetch("api/tipo_documento",{ //ruta
 	      	credentials: 'include',
 	      	type : "GET",
 	      }).then(response => {
