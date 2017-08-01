@@ -16,38 +16,29 @@
 });*/
 
 
-Route::get('/', 'HomeController@index');
+Route::get('/', 'HomeController@index')->name("index");
 
 Route::group(['prefix'=>'datos'], function(){
-	Route::post('/create','DatosBasicosController@create')->name('create');
+	Route::post('/create','DatosBasicosController@create')->name('datos.create');
 });
+
 Route::group(['prefix'=>'terceros'], function(){
-	Route::get('/', 'TercerosController@index')->name('terceros');
-	Route::get('/show', 'TercerosController@show')->name('tercerosShow');
-	Route::post('/create','TercerosController@create')->name('create');
+	Route::get('/', 'TercerosController@index')->name('terceros.index');
+	Route::get('/show', 'TercerosController@show')->name('terceros.show');
+	Route::post('/create','TercerosController@create')->name('terceros.create');
 });
 
-Route::group(['prefix' => 'api'], function(){
-	Route::group(['prefix' => 'tipo_documento'], function(){
-		Route::get('/', "APIController@tipo_documento");
-	});
-	Route::group(['prefix' => 'departamentos'], function(){
-		Route::get('/', "APIController@departamentos");
-	});
-	Route::group(['prefix' => 'ciudades'], function(){
-		Route::get('/', "APIController@ciudades");
-
-	});
-});
 /*Route::get('pdf', function(){
 	$pdf = PDF::loadView('pdf.documento_equivalente');
 	return $pdf->setPaper('a4')->stream();
 });*/
 
-Route::get('documentoequivalente','DocumentoEquivalenteController@pdf');
+Route::get('documentoequivalente','DocumentoEquivalenteController@pdf')->name("report.documentoequivalente.generate");
 //Route::get('pdf/{cdatos}','DocumentoEquivalenteController@pdf');
-Route::get('contratoservicio','ContratoServicioController@pdf');
+Route::get('contratoservicio','ContratoServicioController@pdf')->name("report.contratoservicio.generate");
+
 Route::get('pdfv', function(){
-return view('pdf.documento_equivalente');
+	return view('pdf.documento_equivalente');
 });
+
 Auth::routes();
