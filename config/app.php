@@ -232,6 +232,7 @@ return [
     'View' => Illuminate\Support\Facades\View::class,
     #PDF
         'PDF' => Barryvdh\DomPDF\Facade::class,
+
     ],
 
     ];

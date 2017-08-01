@@ -16,7 +16,7 @@
 @endsection
 @section('body')
 <div class="container">
-	<center><strong>{{ $tercero->nombre }}<br>NIT: {{ $tercero->nit }}</strong></center><br>
+	<div class="text-center"><strong>{{ $tercero->nombre }}<br>NIT: {{ $tercero->nit }}</strong></div><br>
 	<div class="row">
 		<div class="col-sm-6 col-xs-6 col-md-6 col-lg-6">
 			<strong>CONTRATO DE PRESTACION DE SERVICIO Nº </strong></div>
@@ -65,8 +65,8 @@
 		</div>
 		<br>
 		<div class="row">
-			<div class="col-sm-12 col-xs-12 col-md-12 col-lg-12">
-				<center><strong>CONDICIONES DE CONTRATACIÓN</strong></center>
+			<div class="col-sm-12 col-xs-12 col-md-12 col-lg-12 text-center">
+				<strong>CONDICIONES DE CONTRATACIÓN</strong>
 			</div>
 		</div>
 		<div class="row">
@@ -80,7 +80,7 @@
 
 			<table border="2" width="100%" >
 					<tr>
-						<td >1.  Se compromete a prestar servicios consistentes en :</td>
+						<td >1.  Se compromete a prestar servicios consistentes en :<br><div class="text-center"> {{ $datos->concepto }}</div></td>
 					</tr>
 					<tr>
 					<td align="center">{{ $datos->concepto }}</td>
