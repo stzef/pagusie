@@ -21,6 +21,7 @@
 	<link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
 	<link rel="stylesheet" href="{{ URL::asset('bower_components/bootstrap/dist/css/bootstrap.css') }}" >
+	<link rel="stylesheet" href="{{ URL::asset('bower_components/datatables.net-dt/css/jquery.dataTables.css') }}" >
 </head>
 <body>
 	<div id="app-vue">
@@ -87,6 +88,8 @@
 	<script src="{{ URL::asset('bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
 	<script src="{{ asset('pagusie/dist/build.js') }}"></script>
 	<script src="{{ asset('bower_components/alertifyjs/dist/js/alertify.js') }}"></script>
+	<script src="{{ URL::asset('bower_components/datatables.net/js/jquery.dataTables.js') }}" ></script>
+
 	<script>
 		$( function() {
 			var tabs = $( "#tabs" ).tabs();

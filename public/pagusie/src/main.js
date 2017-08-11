@@ -5,6 +5,9 @@ import moment from 'moment'
 import Multiselect from 'vue-multiselect';
 
 import calcularDigitoVerificacion from './../../calcularDigitoVerificacion'
+import $ from 'jquery';
+import 'datatables.net'
+//window.$ = $;
 
 var app=new Vue({
 	el: '#app-vue',
@@ -23,7 +26,10 @@ var app=new Vue({
 		_token:'',
 		tercero:[],
 		valueTercero: {},
+		rubros:[],
+		valueRubros: {},
 		datos:{
+			'cdatos':'',
 			'cterce':'',
 			'ctidocumento':'',
 			'cestado':'1',
@@ -54,9 +60,27 @@ var app=new Vue({
 			'direccion':'',
 			'email':''
 		},
+		presupuesto:{
+			crubro:'',
+			valor:'',
+			rubrosSeleccionados: [],
+		},
 	},
 	methods:{
 		calcularDigitoVerificacion,
+		addRubro () {
+			var vm = this
+			var presupuesto = new Object();
+			presupuesto.crubro=vm.valueRubros.crubro
+			presupuesto.nrubro=vm.valueRubros.nrubro
+			presupuesto.valor=vm.presupuesto.valor
+			if (vm.presupuesto.rubrosSeleccionados.some( (object) => object.crubro == presupuesto.crubro )){
+				alertify.error("No se puede repetir el rubro")
+			}else{
+				vm.presupuesto.rubrosSeleccionados.push(presupuesto)
+				alertify.success("Rubro Agregado")
+			}
+		},
 		setDv(dv){
 			console.info("dv",dv)
 			this.terceros.dv=dv
@@ -71,7 +95,11 @@ var app=new Vue({
 			vm.terceros.cciud= vm.valueCiudad.cciud
 			return `${nciudad}`
 		},
-
+		showRubros ({crubro, nrubro }) {
+			var vm = this
+			vm.presupuesto.crubro = vm.valueRubros.crubro
+			return `${crubro} — ${nrubro}`
+		},
 		showTerceros ({nit, nombre }) {
 			var vm = this
 			vm.datos.cterce= vm.valueTercero.cterce
@@ -170,6 +198,63 @@ var app=new Vue({
 					alertify.error(response["message"])
 				}else{
 					alertify.success('Creación Exitosa')
+					this.datos.cdatos=response.obj.id
+					alertify.success(this.datos.cdatos)
+
+				}
+			})
+			.catch(function(error) {
+				console.warn(error)
+				alertify.error('Error al crear los datos basicos')
+			})
+		},
+		GetRubros: function(){
+			var vm = this
+		fetch("presupuesto/show",{ //ruta
+			credentials: 'include',
+			type : "GET",
+		})
+		.then(response => {
+			return response.json()
+		}).then(rubros => {
+
+			vm.rubros =rubros
+			vm.valueRubros = rubros[0]
+			
+		});
+		},// end ciudades function
+		list(table){
+			$('.'+table).DataTable().destroy();
+			$('.'+table).DataTable();
+		},
+		createPresupuesto(){
+			this._token = $('form').find("input").val()
+			this.SetFormatDate()
+			var presupuesto = $.param(this.presupuesto.rubrosSeleccionados)
+			var cdatos = $.param(this.datos.cdatos);
+			console.log(presupuesto)
+
+			fetch("/datos/create",{
+				credentials: 'include',
+				method : "POST",
+				type: "POST",
+				headers: {
+					'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+					'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+					'X-CSRF-TOKEN' : this._token,
+				},
+				body: presupuesto,cdatos
+			})
+			.then(response => {
+				console.info(response)
+				return response.json();
+			})
+			.then(response => {
+				console.log(response["message"])
+				if(response.status == 400){
+					alertify.error(response["message"])
+				}else{
+					alertify.success('Creación Exitosa')
 				}
 			})
 			.catch(function(error) {
@@ -180,12 +265,14 @@ var app=new Vue({
 	},// end methods
 	delimiters : ["[[","]]"],
 	mounted (){
+		//$("#table").DataTable();
 		var vm = this
 		vm.datos.fpago=vm.date
 		vm.datos.ffactu=vm.date
 		vm.datos.festcomp=vm.date
 		vm.datos.fdispo=vm.date
 		vm.datos.fregis=vm.date
+		vm.GetRubros()
 	    fetch("api/departamentos/",{ //ruta
 	    	credentials: 'include',
 	    	type : "GET",

@@ -26,3 +26,4 @@ Route::group(['prefix' => 'departamentos'], function(){
 Route::group(['prefix' => 'ciudades'], function(){
 	Route::get('/', "APIController@ciudades")->name("api.ciudades.index");
 });
+

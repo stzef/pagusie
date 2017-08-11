@@ -21,6 +21,9 @@ Route::get('/', 'HomeController@index')->name("index");
 Route::group(['prefix'=>'datos'], function(){
 	Route::post('/create','DatosBasicosController@create')->name('datos.create');
 });
+Route::group(['prefix'=>'presupuesto'], function(){
+	Route::get('/show','PresupuestoController@show')->name('presupuesto.show');
+});
 
 Route::group(['prefix'=>'terceros'], function(){
 	Route::get('/', 'TercerosController@index')->name('terceros.index');
@@ -36,9 +39,11 @@ Route::group(['prefix'=>'terceros'], function(){
 Route::get('documentoequivalente','DocumentoEquivalenteController@pdf')->name("report.documentoequivalente.generate");
 //Route::get('pdf/{cdatos}','DocumentoEquivalenteController@pdf');
 Route::get('contratoservicio','ContratoServicioController@pdf')->name("report.contratoservicio.generate");
+Route::get('comprobanteegreso','ComprobanteEgresoController@pdf')->name("report.comprobanteegreso.generate");
+
 
 Route::get('pdfv', function(){
-	return view('pdf.documento_equivalente');
+	return view('pdf.comprobante_egreso');
 });
 
 Auth::routes();

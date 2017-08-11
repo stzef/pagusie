@@ -6,7 +6,7 @@
 
 			<ul>
 				<li class="col-md-1 col-lg-1"><a href="#tabs-1">Datos</a></li>
-				<li class="col-md-1 col-lg-1"><a href="#tabs-2">Presupuesto </a></li>
+				<li class="col-md-1 col-lg-1"><a href="#tabs-2" @click = "list('table-presupuestos-seleccionados')">Presupuesto </a></li>
 				<li class="col-md-1 col-lg-1"><a href="#tabs-3">Impuestos </a></li>
 				<li class="col-md-1 col-lg-1"><a href="#tabs-4">Bancos </a></li>
 				<li class="col-md-1 col-lg-1"><a href="#tabs-5">Contratos </a></li>
@@ -18,8 +18,9 @@
 			</div>
 
 			<div id="tabs-2">
+			@include("Presupuesto")
 			</div>
-
+				
 			<div id="tabs-3">
 			</div>
 

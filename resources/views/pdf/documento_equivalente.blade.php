@@ -93,7 +93,7 @@
 				</tr>
 				<tr>
 					<td align="center" width="100" height="5%">{{number_format($datos->vtotal,2)}}</td>
-					<td align="center">{{ $letras }} </td>
+					<td align="center">{{ $datos->vtotal_letras }} </td>
 
 				</tr>
 			</table>

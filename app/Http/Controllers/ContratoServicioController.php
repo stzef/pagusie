@@ -22,7 +22,6 @@ class ContratoServicioController extends Controller
 		$letras = NumeroALetras::convertir($datos->vsiva,'pesos').' M/CTE.';
 		$datos->ffactu=Helper::formatDate($datos->ffactu,0);
 		$datos->fpago=Helper::formatDate($datos->fpago,0);
-		$datos->ffactu=Helper::formatDate($datos->ffactu,0);
 		$datos->festcomp=Helper::formatDate($datos->festcomp,0);
 		$datos->fdispo=Helper::formatDate($datos->fdispo,0);
 		$datos->fregis=Helper::formatDate($datos->fregis,0);
