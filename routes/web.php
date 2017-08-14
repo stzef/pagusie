@@ -24,6 +24,9 @@ Route::group(['prefix'=>'datos'], function(){
 Route::group(['prefix'=>'presupuesto'], function(){
 	Route::get('/show','PresupuestoController@show')->name('presupuesto.show');
 });
+Route::group(['prefix'=>'datospresupuesto'], function(){
+	Route::post('/create','DatosPresupuestoController@create')->name('datospresupuesto.create');
+});
 
 Route::group(['prefix'=>'terceros'], function(){
 	Route::get('/', 'TercerosController@index')->name('terceros.index');

@@ -29,7 +29,7 @@ var app=new Vue({
 		rubros:[],
 		valueRubros: {},
 		datos:{
-			'cdatos':'',
+			'cdatos':'5',
 			'cterce':'',
 			'ctidocumento':'',
 			'cestado':'1',
@@ -220,7 +220,7 @@ var app=new Vue({
 
 			vm.rubros =rubros
 			vm.valueRubros = rubros[0]
-			
+
 		});
 		},// end ciudades function
 		list(table){
@@ -228,25 +228,27 @@ var app=new Vue({
 			$('.'+table).DataTable();
 		},
 		createPresupuesto(){
-			this._token = $('form').find("input").val()
-			this.SetFormatDate()
-			var presupuesto = $.param(this.presupuesto.rubrosSeleccionados)
-			var cdatos = $.param(this.datos.cdatos);
-			console.log(presupuesto)
-
-			fetch("/datos/create",{
+			var vm = this
+			vm._token = $('form').find("input").val()
+			var cdatos=vm.datos.cdatos
+			var presupuestoArray =vm.presupuesto.rubrosSeleccionados
+			presupuestoArray.forEach(function (item, index, array) {
+			var presupuesto = $.param(item)
+			presupuesto=presupuesto+"&cdatos="+cdatos
+			console.log("body",item.nrubro)
+			fetch("/datos-presupuesto/create",{
 				credentials: 'include',
 				method : "POST",
 				type: "POST",
 				headers: {
 					'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
 					'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
-					'X-CSRF-TOKEN' : this._token,
+					'X-CSRF-TOKEN' : vm._token,
 				},
-				body: presupuesto,cdatos
+				body: presupuesto
 			})
 			.then(response => {
-				console.info(response)
+				console.log(response)
 				return response.json();
 			})
 			.then(response => {
@@ -259,8 +261,10 @@ var app=new Vue({
 			})
 			.catch(function(error) {
 				console.warn(error)
-				alertify.error('Error al crear los datos basicos')
+				alertify.error('Error al agregar el presupuesto '+item.nrubro)
 			})
+});
+
 		},
 	},// end methods
 	delimiters : ["[[","]]"],
