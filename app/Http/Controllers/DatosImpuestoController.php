@@ -3,14 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Datos_presupuesto;
+use App\Models\Datos_impuesto;
 use App\Models\Datos_basicos;
-use App\Models\Presupuesto;
+use App\Models\Impuesto;
 use Illuminate\Support\Facades\Validator;
-
-class DatosPresupuestoController extends Controller
+class DatosImpuestoController extends Controller
 {
-	public function __construct(){
+public function __construct(){
 		$this->middleware('auth');
 	}
     /**
@@ -33,16 +32,20 @@ class DatosPresupuestoController extends Controller
     	
     	$validator = Validator::make($data,
     		[
-    		'crubro'=>'required|exists:Presupuesto,crubro',
+    		'cimpu'=>'required|exists:Impuesto,cimpu',
     		'cdatos'=>'required|exists:Datos_basicos,cdatos',
-    		'valor'=>'required|numeric',
+    		'vbase'=>'required|numeric',
+    		'porcentaje'=>'required|numeric',
+    		'vimpuesto'=>'required|numeric',
     		],
     		[
-    		'crubro.exists'=> 'El RUBRO no se encuentra en la base de datos',
+    		'cimpu.exists'=> 'El IMPUESTO no se encuentra en la base de datos',
     		'cdatos.exists'=>'Los DATOS basicos no se encuentra en la base de datos',
             'cdatos.required'=>'Los DATOS basicos son requeridos',
 
-    		'valor.numeric'=> 'El VALOR debe ser un valor monetario',
+    		'vbase.numeric'=> 'El VALOR BASE debe ser un valor monetario',
+    		'vimpuesto.numeric'=> 'El VALOR DEL IMPUESTO debe ser un valor monetario',
+    		'porcentaje.numeric'=> 'El PORCENTAJE debe ser un valor numérico',
     		]
     		);
     	//var_dump($validator);exit();
@@ -56,9 +59,9 @@ class DatosPresupuestoController extends Controller
     		}
     		return response()->json(array("message"=>$message,"status"=>400),400);
     	}else{
-    		$datos_presupuesto = Datos_presupuesto::create($data);
+    		$datos_impuesto = Datos_impuesto::create($data);
     	}
-    	return response()->json(array("obj" => $datos_presupuesto->toArray()));
+    	return response()->json(array("obj" => $datos_impuesto->toArray()));
     }
 
     /**
@@ -78,15 +81,15 @@ class DatosPresupuestoController extends Controller
      * @param  \App\Models\Datos_basicos  $datos_basicos
      * @return \Illuminate\Http\Response
      */
-    public function show(Presupuesto $presupuestos, Request $request)
+    public function show(Impuesto $presupuestos, Request $request)
     {
     	if(!$request->cdatos){
-    		$presupuesto = Datos_presupuesto::all();
+    		$impuesto = Datos_impuesto::all();
     	}else{
     		$cdatos=$request->cdatos;
-    		$presupuesto = Datos_presupuesto::where('cdatos',$cdatos)->get();
+    		$impuesto = Datos_impuesto::where('cdatos',$cdatos)->get();
     	}
-    	return response()->json($presupuesto->toArray());
+    	return response()->json($impuesto->toArray());
     }
 
     /**
@@ -95,7 +98,7 @@ class DatosPresupuestoController extends Controller
      * @param  \App\Models\Datos_basicos  $datos_basicos
      * @return \Illuminate\Http\Response
      */
-    public function edit(Presupuesto $presupuestos)
+    public function edit(Impuesto $presupuestos)
     {
         //
     }
@@ -107,7 +110,7 @@ class DatosPresupuestoController extends Controller
      * @param  \App\Models\Datos_basicos  $datos_basicos
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Presupuesto $presupuestos)
+    public function update(Request $request, Impuesto $presupuestos)
     {
         //
     }
@@ -118,7 +121,7 @@ class DatosPresupuestoController extends Controller
      * @param  \App\Models\Datos_basicos  $datos_basicos
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Presupuesto $presupuestos)
+    public function destroy(Impuesto $presupuestos)
     {
         //
     }

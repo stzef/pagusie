@@ -18,10 +18,11 @@
 			</div>
 
 			<div id="tabs-2">
-			@include("Presupuesto")
+				@include("presupuesto")
 			</div>
-				
+
 			<div id="tabs-3">
+			@include("impuesto")
 			</div>
 
 			<div id="tabs-4">

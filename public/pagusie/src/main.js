@@ -1,4 +1,3 @@
-
 import Vue from 'vue'
 import Datepicker from 'vuejs-datepicker'
 import moment from 'moment'
@@ -28,8 +27,10 @@ var app=new Vue({
 		valueTercero: {},
 		rubros:[],
 		valueRubros: {},
+		impuestos:[],
+		valueImpuesto: {},
 		datos:{
-			'cdatos':'5',
+			'cdatos':'',
 			'cterce':'',
 			'ctidocumento':'',
 			'cestado':'1',
@@ -65,6 +66,13 @@ var app=new Vue({
 			valor:'',
 			rubrosSeleccionados: [],
 		},
+		impuesto:{
+			cimpu:'',
+			vbase:'',
+			porcentaje_Impuesto:'',
+			vimpuesto:'',
+			impuestosSeleccionados: [],
+		},
 	},
 	methods:{
 		calcularDigitoVerificacion,
@@ -94,6 +102,11 @@ var app=new Vue({
 			var vm = this
 			vm.terceros.cciud= vm.valueCiudad.cciud
 			return `${nciudad}`
+		},
+		showImpuestos ({nimpuesto, porcentajeImpuesto }) {
+			var vm = this
+			vm.presupuesto.cimpu = vm.valueImpuesto.cimpu
+			return `${nimpuesto} — ${porcentajeImpuesto}`
 		},
 		showRubros ({crubro, nrubro }) {
 			var vm = this
@@ -217,12 +230,23 @@ var app=new Vue({
 		.then(response => {
 			return response.json()
 		}).then(rubros => {
-
 			vm.rubros =rubros
 			vm.valueRubros = rubros[0]
-
 		});
-		},// end ciudades function
+		},
+	GetImpuestos: function(){
+		var vm = this
+		fetch("impuesto/show",{ //ruta
+			credentials: 'include',
+			type : "GET",
+		})
+		.then(response => {
+			return response.json()
+		}).then(impuesto => {
+			vm.impuesto =impuesto
+			vm.valueImpuesto = impuesto[0]
+		});
+		},
 		list(table){
 			$('.'+table).DataTable().destroy();
 			$('.'+table).DataTable();
@@ -232,38 +256,40 @@ var app=new Vue({
 			vm._token = $('form').find("input").val()
 			var cdatos=vm.datos.cdatos
 			var presupuestoArray =vm.presupuesto.rubrosSeleccionados
+			if (presupuestoArray.length == 0){
+				alertify.error("Seleccione un rubro")
+			}
 			presupuestoArray.forEach(function (item, index, array) {
-			var presupuesto = $.param(item)
-			presupuesto=presupuesto+"&cdatos="+cdatos
-			console.log("body",item.nrubro)
-			fetch("/datos-presupuesto/create",{
-				credentials: 'include',
-				method : "POST",
-				type: "POST",
-				headers: {
-					'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
-					'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
-					'X-CSRF-TOKEN' : vm._token,
-				},
-				body: presupuesto
-			})
-			.then(response => {
-				console.log(response)
-				return response.json();
-			})
-			.then(response => {
-				console.log(response["message"])
-				if(response.status == 400){
-					alertify.error(response["message"])
-				}else{
-					alertify.success('Creación Exitosa')
-				}
-			})
-			.catch(function(error) {
-				console.warn(error)
-				alertify.error('Error al agregar el presupuesto '+item.nrubro)
-			})
-});
+				var presupuesto = $.param(item)
+				presupuesto=presupuesto+"&cdatos="+cdatos
+				fetch("/datospresupuesto/create",{
+					credentials: 'include',
+					method : "POST",
+					type: "POST",
+					headers: {
+						'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+						'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+						'X-CSRF-TOKEN' : vm._token,
+					},
+					body: presupuesto
+				})
+				.then(response => {
+					console.log(response)
+					return response.json();
+				})
+				.then(response => {
+					console.log(response["message"])
+					if(response.status == 400){
+						alertify.error(response["message"])
+					}else{
+						alertify.success('Creación Exitosa')
+					}
+				})
+				.catch(function(error) {
+					console.warn(error)
+					alertify.error('Error al agregar el presupuesto '+item.nrubro)
+				})
+			});
 
 		},
 	},// end methods
@@ -277,6 +303,7 @@ var app=new Vue({
 		vm.datos.fdispo=vm.date
 		vm.datos.fregis=vm.date
 		vm.GetRubros()
+		vm.GetImpuestos()
 	    fetch("api/departamentos/",{ //ruta
 	    	credentials: 'include',
 	    	type : "GET",

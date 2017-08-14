@@ -1,23 +1,30 @@
-<form @submit.prevent="addRubro" accept-charset="utf-8">
+<form @submit.prevent="addImpuesto" accept-charset="utf-8">
 	<div class="row">
 
 		<div class="form-group col-md-3">
-			<label for="tercero">Rubro</label>
+			<label for="tercero">Impuesto</label>
 			<template>
 				<div>
-					<multiselect v-model="valueRubros" :options="rubros" placeholder="Select one" label="crubro" track-by="crubro" :custom-label="showRubros"></multiselect>
+					<multiselect v-model="valueImpuesto" :options="impuestos" placeholder="Select one" label="nimpuesto" track-by="nimpuesto" :custom-label="showImpuestos"></multiselect>
 				</div>
 			</template>
 		</div>
 		<div class="form-group col-md-2">
-			<label for="vrubro">Valor</label>
-			<input type="text" class="form-control" id="vrubro" aria-describedby="vrubro" placeholder="Ingrese el valor" v-model="presupuesto.valor" required>
-		
+			<label for="vbase">Valor Base</label>
+			<input type="text" class="form-control" id="vbase" aria-describedby="vbase" placeholder="Ingrese el valor" v-model="impuesto.vbase" required>
+		</div>	
+		<div class="form-group col-md-2">
+			<label for="porcentaje">Porcentaje</label>
+			<input type="text" class="form-control" id="porcentaje" aria-describedby="porcentaje" placeholder="Ingrese porcentaje" v-model="impuesto.porcentaje" required>
+		</div>
+		<div class="form-group col-md-2">
+			<label for="vimpuesto">Valor Impuesto</label>
+			<input type="text" class="form-control" id="vimpuesto" aria-describedby="vimpuesto" placeholder="Ingrese el valor" v-model="impuesto.vimpuesto" required>
+		</div>
+
+		<button type="submit" class="btn btn-success " style="margin-top:25px ">+</button>
+
 	</div>
-
-	<button type="submit" class="btn btn-success " style="margin-top:25px ">+</button>
-
-</div>
 </form>
 <hr>
 <table  class="table" width="100%" cellspacing="0">
@@ -40,7 +47,7 @@
 
 	</tbody>
 </table>
-<form @submit.prevent="createPresupuesto" accept-charset="utf-8">
+<form @submit.prevent="createImpuesto" accept-charset="utf-8">
 	<div class="form-group text-center">
 		<div class="col-md-4 col-md-offset-4">
 			<button type="submit" class="btn btn-primary">
