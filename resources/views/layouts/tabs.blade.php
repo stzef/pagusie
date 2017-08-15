@@ -10,7 +10,7 @@
 				<li class="col-md-1 col-lg-1"><a href="#tabs-3">Impuestos </a></li>
 				<li class="col-md-1 col-lg-1"><a href="#tabs-4">Bancos </a></li>
 				<li class="col-md-1 col-lg-1"><a href="#tabs-5">Contratos </a></li>
-				<li class="col-md-1 col-lg-1"><a href="#tabs-6">Reporte </a></li>
+				<li class="col-md-1 col-lg-1"><a href="#tabs-6" @click = "list('table-reportes')">Reporte </a></li>
 			</ul>
 
 			<div id="tabs-1">
@@ -32,6 +32,7 @@
 			</div>
 
 			<div id="tabs-6">
+			@include("reportes")
 			</div>
 
 		</div>

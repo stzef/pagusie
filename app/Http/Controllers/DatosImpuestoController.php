@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Datos_impuesto;
+use App\Models\Datos_impuestos;
 use App\Models\Datos_basicos;
-use App\Models\Impuesto;
+use App\Models\Impuestos;
 use Illuminate\Support\Facades\Validator;
 class DatosImpuestoController extends Controller
 {
@@ -32,10 +32,10 @@ public function __construct(){
     	
     	$validator = Validator::make($data,
     		[
-    		'cimpu'=>'required|exists:Impuesto,cimpu',
+    		'cimpu'=>'required|exists:Impuestos,cimpu',
     		'cdatos'=>'required|exists:Datos_basicos,cdatos',
     		'vbase'=>'required|numeric',
-    		'porcentaje'=>'required|numeric',
+    		'porcentaje_Impuesto'=>'required|numeric',
     		'vimpuesto'=>'required|numeric',
     		],
     		[
@@ -45,7 +45,7 @@ public function __construct(){
 
     		'vbase.numeric'=> 'El VALOR BASE debe ser un valor monetario',
     		'vimpuesto.numeric'=> 'El VALOR DEL IMPUESTO debe ser un valor monetario',
-    		'porcentaje.numeric'=> 'El PORCENTAJE debe ser un valor numérico',
+    		'porcentaje_Impuesto.numeric'=> 'El PORCENTAJE debe ser un valor numérico',
     		]
     		);
     	//var_dump($validator);exit();
@@ -59,7 +59,7 @@ public function __construct(){
     		}
     		return response()->json(array("message"=>$message,"status"=>400),400);
     	}else{
-    		$datos_impuesto = Datos_impuesto::create($data);
+    		$datos_impuesto = Datos_impuestos::create($data);
     	}
     	return response()->json(array("obj" => $datos_impuesto->toArray()));
     }
@@ -81,13 +81,13 @@ public function __construct(){
      * @param  \App\Models\Datos_basicos  $datos_basicos
      * @return \Illuminate\Http\Response
      */
-    public function show(Impuesto $presupuestos, Request $request)
+    public function show(Impuesto $impuestos, Request $request)
     {
     	if(!$request->cdatos){
-    		$impuesto = Datos_impuesto::all();
+    		$impuesto = Datos_impuestos::all();
     	}else{
     		$cdatos=$request->cdatos;
-    		$impuesto = Datos_impuesto::where('cdatos',$cdatos)->get();
+    		$impuesto = Datos_impuestos::where('cdatos',$cdatos)->get();
     	}
     	return response()->json($impuesto->toArray());
     }
@@ -98,7 +98,7 @@ public function __construct(){
      * @param  \App\Models\Datos_basicos  $datos_basicos
      * @return \Illuminate\Http\Response
      */
-    public function edit(Impuesto $presupuestos)
+    public function edit(Impuesto $impuestos)
     {
         //
     }
@@ -110,7 +110,7 @@ public function __construct(){
      * @param  \App\Models\Datos_basicos  $datos_basicos
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Impuesto $presupuestos)
+    public function update(Request $request, Impuesto $impuestos)
     {
         //
     }
@@ -121,7 +121,7 @@ public function __construct(){
      * @param  \App\Models\Datos_basicos  $datos_basicos
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Impuesto $presupuestos)
+    public function destroy(Impuesto $impuestos)
     {
         //
     }

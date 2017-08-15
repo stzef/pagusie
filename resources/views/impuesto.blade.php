@@ -15,7 +15,7 @@
 		</div>	
 		<div class="form-group col-md-2">
 			<label for="porcentaje">Porcentaje</label>
-			<input type="text" class="form-control" id="porcentaje" aria-describedby="porcentaje" placeholder="Ingrese porcentaje" v-model="impuesto.porcentaje" required>
+			<input type="text" class="form-control" id="porcentaje" aria-describedby="porcentaje" placeholder="Ingrese porcentaje" v-model="impuesto.porcentaje_Impuesto" required>
 		</div>
 		<div class="form-group col-md-2">
 			<label for="vimpuesto">Valor Impuesto</label>
@@ -23,24 +23,25 @@
 		</div>
 
 		<button type="submit" class="btn btn-success " style="margin-top:25px ">+</button>
-
 	</div>
 </form>
 <hr>
 <table  class="table" width="100%" cellspacing="0">
 	<thead>
 		<tr>
-			<th>Rubro</th>
 			<th>Nombre</th>
-			<th>Valor</th>
+			<th>Valor Base</th>
+			<th>Porcentaje</th>
+			<th>Valor Impuesto</th>
 		</tr>
 	</thead> 
 	<tbody>
-		<template v-for="rubro in presupuesto.rubrosSeleccionados">
+		<template v-for="impuesto in impuesto.impuestosSeleccionados">
 			<tr>
-				<td>[[rubro.crubro]]</td>
-				<td>[[rubro.nrubro]]</td>
-				<td>[[rubro.valor]]</td>
+				<td>[[impuesto.nimpuesto]]</td>
+				<td>[[impuesto.vbase]]</td>
+				<td>[[impuesto.porcentaje_Impuesto]]</td>
+				<td>[[impuesto.vimpuesto]]</td>
 				
 			</tr>
 		</template>

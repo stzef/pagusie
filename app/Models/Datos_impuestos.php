@@ -35,7 +35,7 @@ class Datos_impuestos extends Model
      */
     public function datosBasico()
     {
-        return $this->belongsTo('App\DatosBasico', 'cdatos', 'cdatos');
+        return $this->belongsTo('App\Models\DatosBasico', 'cdatos', 'cdatos');
     }
 
     /**
@@ -43,6 +43,6 @@ class Datos_impuestos extends Model
      */
     public function impuesto()
     {
-        return $this->belongsTo('App\Impuesto', 'cimpu', 'cimpu');
+        return $this->belongsTo('App\Models\Impuesto', 'cimpu', 'cimpu');
     }
 }

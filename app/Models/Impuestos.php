@@ -31,6 +31,6 @@ class Impuestos extends Model
      */
     public function datosImpuestos()
     {
-        return $this->hasMany('App\DatosImpuesto', 'cimpu', 'cimpu');
+        return $this->hasMany('App\Models\DatosImpuesto', 'cimpu', 'cimpu');
     }
 }

@@ -30,7 +30,7 @@ var app=new Vue({
 		impuestos:[],
 		valueImpuesto: {},
 		datos:{
-			'cdatos':'',
+			'cdatos':5,
 			'cterce':'',
 			'ctidocumento':'',
 			'cestado':'1',
@@ -89,6 +89,21 @@ var app=new Vue({
 				alertify.success("Rubro Agregado")
 			}
 		},
+		addImpuesto () {
+			var vm = this
+			var impuesto = new Object();
+			impuesto.cimpu=vm.valueImpuesto.cimpu
+			impuesto.nimpuesto=vm.valueImpuesto.nimpuesto
+			impuesto.vbase=vm.impuesto.vbase
+			impuesto.porcentaje_Impuesto=vm.impuesto.porcentaje_Impuesto
+			impuesto.vimpuesto=vm.impuesto.vimpuesto
+			if (vm.impuesto.impuestosSeleccionados.some( (object) => object.cimpu == impuesto.cimpu )){
+				alertify.error("No se puede repetir el impuesto")
+			}else{
+				vm.impuesto.impuestosSeleccionados.push(impuesto)
+				alertify.success("Impuesto Agregado")
+			}
+		},
 		setDv(dv){
 			console.info("dv",dv)
 			this.terceros.dv=dv
@@ -105,8 +120,8 @@ var app=new Vue({
 		},
 		showImpuestos ({nimpuesto, porcentajeImpuesto }) {
 			var vm = this
-			vm.presupuesto.cimpu = vm.valueImpuesto.cimpu
-			return `${nimpuesto} — ${porcentajeImpuesto}`
+			vm.impuesto.cimpu = vm.valueImpuesto.cimpu
+			return `${nimpuesto} — ${porcentajeImpuesto}%`
 		},
 		showRubros ({crubro, nrubro }) {
 			var vm = this
@@ -233,7 +248,7 @@ var app=new Vue({
 			vm.rubros =rubros
 			vm.valueRubros = rubros[0]
 		});
-		},
+	},
 	GetImpuestos: function(){
 		var vm = this
 		fetch("impuesto/show",{ //ruta
@@ -243,55 +258,98 @@ var app=new Vue({
 		.then(response => {
 			return response.json()
 		}).then(impuesto => {
-			vm.impuesto =impuesto
+			console.log(impuesto)
+			vm.impuestos =impuesto
 			vm.valueImpuesto = impuesto[0]
 		});
-		},
-		list(table){
-			$('.'+table).DataTable().destroy();
-			$('.'+table).DataTable();
-		},
-		createPresupuesto(){
-			var vm = this
-			vm._token = $('form').find("input").val()
-			var cdatos=vm.datos.cdatos
-			var presupuestoArray =vm.presupuesto.rubrosSeleccionados
-			if (presupuestoArray.length == 0){
-				alertify.error("Seleccione un rubro")
-			}
-			presupuestoArray.forEach(function (item, index, array) {
-				var presupuesto = $.param(item)
-				presupuesto=presupuesto+"&cdatos="+cdatos
-				fetch("/datospresupuesto/create",{
-					credentials: 'include',
-					method : "POST",
-					type: "POST",
-					headers: {
-						'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
-						'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
-						'X-CSRF-TOKEN' : vm._token,
-					},
-					body: presupuesto
-				})
-				.then(response => {
-					console.log(response)
-					return response.json();
-				})
-				.then(response => {
-					console.log(response["message"])
-					if(response.status == 400){
-						alertify.error(response["message"])
-					}else{
-						alertify.success('Creación Exitosa')
-					}
-				})
-				.catch(function(error) {
-					console.warn(error)
-					alertify.error('Error al agregar el presupuesto '+item.nrubro)
-				})
-			});
-
-		},
+	},
+	list(table){
+		$('.'+table).DataTable().destroy();
+		$('.'+table).DataTable();
+	},
+	openreport(name){
+		window.open("documentoequivalente?cdatos="+this.datos.cdatos); 
+	},
+	createPresupuesto(){
+		var vm = this
+		vm._token = $('form').find("input").val()
+		var cdatos=vm.datos.cdatos
+		var presupuestoArray =vm.presupuesto.rubrosSeleccionados
+		if (presupuestoArray.length == 0){
+			alertify.error("Seleccione un rubro")
+		}
+		presupuestoArray.forEach(function (item, index, array) {
+			var presupuesto = $.param(item)
+			presupuesto=presupuesto+"&cdatos="+cdatos
+			fetch("/datospresupuesto/create",{
+				credentials: 'include',
+				method : "POST",
+				type: "POST",
+				headers: {
+					'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+					'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+					'X-CSRF-TOKEN' : vm._token,
+				},
+				body: presupuesto
+			})
+			.then(response => {
+				console.log(response)
+				return response.json();
+			})
+			.then(response => {
+				console.log(response["message"])
+				if(response.status == 400){
+					alertify.error(response["message"])
+				}else{
+					alertify.success('Creación Exitosa')
+				}
+			})
+			.catch(function(error) {
+				console.warn(error)
+				alertify.error('Error al agregar el presupuesto '+item.nrubro)
+			})
+		});
+	},
+		createImpuesto(){
+		var vm = this
+		vm._token = $('form').find("input").val()
+		var cdatos=vm.datos.cdatos
+		var impuestoArray =vm.impuesto.impuestosSeleccionados
+		if (impuestoArray.length == 0){
+			alertify.error("Seleccione un impuesto")
+		}
+		impuestoArray.forEach(function (item, index, array) {
+			var impuesto = $.param(item)
+			impuesto=impuesto+"&cdatos="+cdatos
+			fetch("/datosimpuesto/create",{
+				credentials: 'include',
+				method : "POST",
+				type: "POST",
+				headers: {
+					'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+					'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+					'X-CSRF-TOKEN' : vm._token,
+				},
+				body: impuesto
+			})
+			.then(response => {
+				console.log(response)
+				return response.json();
+			})
+			.then(response => {
+				console.log(response["message"])
+				if(response.status == 400){
+					alertify.error(response["message"])
+				}else{
+					alertify.success('Creación Exitosa')
+				}
+			})
+			.catch(function(error) {
+				console.warn(error)
+				alertify.error('Error al agregar el impuesto '+item.nimpuesto)
+			})
+		});
+	},
 	},// end methods
 	delimiters : ["[[","]]"],
 	mounted (){
