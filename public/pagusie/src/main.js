@@ -267,8 +267,10 @@ var app=new Vue({
 		$('.'+table).DataTable().destroy();
 		$('.'+table).DataTable();
 	},
-	openreport(name){
-		window.open("documentoequivalente?cdatos="+this.datos.cdatos); 
+	openReport(name){
+		console.log(name);
+		alertify.success(name);
+		window.open(name+"?cdatos="+this.datos.cdatos);
 	},
 	createPresupuesto(){
 		var vm = this

@@ -20,7 +20,7 @@ class DocumentoEquivalenteController extends Controller
 		if ( !$datos ) return view('errors/generic',array('title' => 'Error PDF.', 'message' => "El registro $cdatos no existe" ));
 
 		$colegio=Colegio::all()->first();
-		
+
 		$datos->vtotal_letras=NumeroALetras::convertir($datos->vtotal,'pesos').' M/CTE.';
 		$datos->fpago=Helper::formatDate($datos->fpago,0);
 		$datos->ffactu=Helper::formatDate($datos->ffactu,0);
@@ -29,10 +29,11 @@ class DocumentoEquivalenteController extends Controller
 		$datos->fregis=Helper::formatDate($datos->fregis,0);
 		$tercero=$datos->tercero;
 		$data = array("datos" => $datos,"tercero" => $tercero,"colegio"=>$colegio,);
+		//return view('pdf.documento_equivalente', $data);
 		PDF::setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif']);
 		$pdf = PDF::loadView('pdf.documento_equivalente', $data);
 		return $pdf->setPaper('a4')->stream();
 	}
 
-	
+
 }

@@ -51,7 +51,7 @@ Route::get('comprobanteegreso','ComprobanteEgresoController@pdf')->name("report.
 
 
 Route::get('pdfv', function(){
-	return view('pdf.comprobante_egreso');
+	return view('pdf.documento_equivalente');
 });
 
 Auth::routes();

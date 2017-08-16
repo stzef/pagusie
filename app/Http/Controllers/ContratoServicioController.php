@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\Datos_basicos;
 use App\Models\Terceros;
 use App\Models\Colegio;
+use App\Models\Presupuesto;
+use App\Models\Datos_presupuesto;
+
 use PDF;
 use App\Helper\Helper;
 use App\Helper\NumeroALetras;
@@ -26,11 +29,13 @@ class ContratoServicioController extends Controller
 		$datos->fdispo=Helper::formatDate($datos->fdispo,0);
 		$datos->fregis=Helper::formatDate($datos->fregis,0);
 		$tercero=$datos->tercero;
+		$datos_presupuesto=Datos_presupuesto::where('cdatos',$cdatos);
+		//var_dump($datos_presupuesto);exit();
 		$data = array("datos" => $datos,"tercero" => $tercero,"colegio"=>$colegio,"letras"=>$letras,);
 		PDF::setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif']);
 		$pdf = PDF::loadView('pdf.contrato_prestacion_servicios', $data);
 		return $pdf->setPaper('a4')->stream();
 	}
 
-	
+
 }

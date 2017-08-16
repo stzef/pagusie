@@ -6,11 +6,11 @@
 		transform: rotate(-90deg);
 		-webkit-transform: rotate(-90deg); /* Safari/Chrome */
 
-	}	
+	}
 </style>
 @endsection
 @section('header')
-<strong><table style="margin: 0 auto;" WIDTH="500">
+<!--<strong><table style="margin: 0 auto;" WIDTH="500">
 	<tr>
 		<td colspan="3" align="center">{{$colegio->nombre}}</td>
 	</tr>
@@ -21,19 +21,19 @@
 	<tr>
 		<td colspan="2" align="center">{{$colegio->direccion}}</td>
 	</tr>
-</table></strong>
+</table></strong>-->
 @endsection
 @section('body')
 <div class="container">
 	<div class="row">
-		<div class="col-sm-4 col-xs-4 col-md-4 col-lg-4">
-			<strong>COMPROBANTE DE EGRESO Nº </strong>
+		<div class="col-sm-5 col-xs-5 col-md-5 col-lg-5">
+			<strong>COMPROBANTE DE EGRESO Nº &nbsp;&nbsp; 16 </strong>
 		</div>
-		
-		<div class="col-sm-1 col-xs-1 text-center"><strong>16</strong></div>
-		
+
+		<!--<div class="col-sm-1 col-xs-1 text-center"><strong>16</strong></div>-->
+
 		<div class="col-sm-1 col-xs-1 "></div>
-		
+
 		<div class="col-sm-4 col-xs-4"><strong> Fecha: {{$datos->fpago}} </strong></div>
 	</div>
 	<br>
@@ -69,7 +69,7 @@
 		<div class="col-sm-5 col-xs-5 col-md-5 col-lg-5">
 			<table WIDTH="100%" border="2" >
 				<tr>
-					<th colspan="2">DATOS FACTURA</th>	
+					<th colspan="2">DATOS FACTURA</th>
 				</tr>
 				<tr>
 					<td>SUBTOTAL FACTURA </td>
@@ -93,7 +93,7 @@
 				</tr>
 			</table>
 		</div>
-		
+
 		<div class="col-sm-5 col-xs-5 col-md-5 col-lg-5">
 			<table WIDTH="100%" border="2">
 				<tr>
