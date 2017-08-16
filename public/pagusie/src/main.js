@@ -30,7 +30,7 @@ var app=new Vue({
 		impuestos:[],
 		valueImpuesto: {},
 		datos:{
-			'cdatos':5,
+			'cdatos':'',
 			'cterce':'',
 			'ctidocumento':'',
 			'cestado':'1',
@@ -267,10 +267,8 @@ var app=new Vue({
 		$('.'+table).DataTable().destroy();
 		$('.'+table).DataTable();
 	},
-	openReport(name){
-		console.log(name);
-		alertify.success(name);
-		window.open(name+"?cdatos="+this.datos.cdatos);
+	openReport(name,cdatos){
+		window.open(name+"?cdatos="+cdatos);
 	},
 	createPresupuesto(){
 		var vm = this

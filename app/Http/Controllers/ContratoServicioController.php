@@ -4,11 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Datos_basicos;
-use App\Models\Terceros;
 use App\Models\Colegio;
-use App\Models\Presupuesto;
 use App\Models\Datos_presupuesto;
-
 use PDF;
 use App\Helper\Helper;
 use App\Helper\NumeroALetras;
@@ -22,17 +19,16 @@ class ContratoServicioController extends Controller
 		if ( !$datos ) return view('errors/generic',array('title' => 'Error PDF.', 'message' => "El registro $cdatos no existe" ));
 
 		$colegio=Colegio::all()->first();
-		$letras = NumeroALetras::convertir($datos->vsiva,'pesos').' M/CTE.';
+		$datos->vsiva_letras=NumeroALetras::convertir($datos->vsiva,'pesos').' M/CTE.';
 		$datos->ffactu=Helper::formatDate($datos->ffactu,0);
 		$datos->fpago=Helper::formatDate($datos->fpago,0);
 		$datos->festcomp=Helper::formatDate($datos->festcomp,0);
 		$datos->fdispo=Helper::formatDate($datos->fdispo,0);
 		$datos->fregis=Helper::formatDate($datos->fregis,0);
 		$tercero=$datos->tercero;
-		$datos_presupuesto=Datos_presupuesto::where('cdatos',$cdatos);
-		//var_dump($datos_presupuesto);exit();
-		$data = array("datos" => $datos,"tercero" => $tercero,"colegio"=>$colegio,"letras"=>$letras,);
-		PDF::setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif']);
+		$rubros=Datos_presupuesto::where('cdatos',$cdatos)->get();
+		$data = array("datos" => $datos,"tercero" => $tercero,"colegio"=>$colegio,"rubros"=>$rubros,);
+		PDF::setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif','defaultSize'=> '12',]);
 		$pdf = PDF::loadView('pdf.contrato_prestacion_servicios', $data);
 		return $pdf->setPaper('a4')->stream();
 	}

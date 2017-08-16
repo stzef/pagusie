@@ -15,7 +15,7 @@
 		<tr>
 			<td>Documento Equivalente</td>
 			<td>
-				<form @submit.prevent="openReport('documentoequivalente')" accept-charset="utf-8">
+				<form @submit.prevent="openReport('documentoequivalente',[[datos.cdatos]])" accept-charset="utf-8">
 					<button type="submit" class="btn btn-primary">
 						Generar
 					</button>
@@ -25,7 +25,7 @@
 		<tr>
 			<td>Comprobante De Egreso</td>
 			<td>
-				<form @submit.prevent="openReport('comprobanteegreso')" accept-charset="utf-8">
+				<form @submit.prevent="openReport('comprobanteegreso',[[datos.cdatos]])" accept-charset="utf-8">
 					<button type="submit" class="btn btn-primary">
 						Generar
 					</button>
@@ -38,7 +38,7 @@
 		<tr>
 			<td>Contrato Prestacion de Servicos</td>
 			<td>
-				<form @submit.prevent="openReport('contratoservicio')" accept-charset="utf-8">
+				<form @submit.prevent="openReport('contratoservicio',[[datos.cdatos]])" accept-charset="utf-8">
 					<button type="submit" class="btn btn-primary">
 						Generar
 					</button>

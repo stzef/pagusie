@@ -48,59 +48,78 @@
 
 					<ul class="nav navbar-nav navbar-right">
 						@if (Auth::guest())
-							<li><a href="{{ route('login') }}">Ingresar</a></li>
-							<li><a href="{{ route('register') }}">Registrarse</a></li>
+						<li><a href="{{ route('login') }}">Ingresar</a></li>
+						<li><a href="{{ route('register') }}">Registrarse</a></li>
 						@else
-							<li class="dropdown">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-									{{ Auth::user()->name }} <span class="caret"></span>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+								{{ Auth::user()->name }} <span class="caret"></span>
+							</a>
+
+							<ul class="dropdown-menu" role="menu">
+								<li>
+									<a href="{{ route('logout') }}"
+									onclick="event.preventDefault();
+									document.getElementById('logout-form').submit();">
+									Salir
 								</a>
 
-								<ul class="dropdown-menu" role="menu">
-									<li>
-										<a href="{{ route('logout') }}"
-											onclick="event.preventDefault();
-											document.getElementById('logout-form').submit();">
-											Salir
-										</a>
-
-										<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-											{{ csrf_field() }}
-										</form>
-									</li>
-								</ul>
+								<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+									{{ csrf_field() }}
+								</form>
 							</li>
-						@endif
-					</ul>
-				</div>
+						</ul>
+					</li>
+					@endif
+				</ul>
 			</div>
-		</nav>
+		</div>
+	</nav>
 
-		@yield('content')
+	@yield('content')
 
-	</div>
+</div>
 
 
-	@yield('scripts')
+@yield('scripts')
 
-	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-	<script src="{{ URL::asset('bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
-	<script src="{{ asset('pagusie/dist/build.js') }}"></script>
-	<script src="{{ asset('bower_components/alertifyjs/dist/js/alertify.js') }}"></script>
-	<script src="{{ URL::asset('bower_components/datatables.net/js/jquery.dataTables.js') }}" ></script>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="{{ URL::asset('bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('pagusie/dist/build.js') }}"></script>
+<script src="{{ asset('bower_components/alertifyjs/dist/js/alertify.js') }}"></script>
+<script src="{{ URL::asset('bower_components/datatables.net/js/jquery.dataTables.js') }}" ></script>
 
-	<script>
-		$( function() {
-			var tabs = $( "#tabs" ).tabs();
+<script>
+	$( function() {
+		var tabs = $( "#tabs" ).tabs();
 
-			tabs.find( ".ui-tabs-nav" ).sortable({
-				axis: "x",
-				stop: function() {
-					tabs.tabs( "refresh" );
-				}
-			});
+		tabs.find( ".ui-tabs-nav" ).sortable({
+			axis: "x",
+			stop: function() {
+				tabs.tabs( "refresh" );
+			}
 		});
-	</script>
+	});
+</script>
+<script type="text/javascript">
+	var symbol_currency = "$"
+	function CurrencyFormat(){
+		//numberFormat = Intl.NumberFormat({style:"currency",currency:"COP",currencyDisplay:"symbol"})
+		this.numberFormat = Intl.NumberFormat("es-419")
+	}
+	CurrencyFormat.prototype.format = function(number){
+		if(this.numberFormat.format(number) == "NaN") return symbol_currency+" 0"
+			return symbol_currency+" " + this.numberFormat.format(number)
+	}
+	CurrencyFormat.prototype.clear = function(number){
+		return number.replace(",","").replace(/[^\d\.\,\s]+/g,"").trim()
+	}
+	CurrencyFormat.prototype.sToN = function(s){
+		var n = parseFloat(s.replace(/ /g,"").replace(/,/g,"").replace(/[^\d\.\,\s]+/g,"").trim())//.replace(/\./g,"")
+		return n
+	}
+	var currencyFormat = new CurrencyFormat()
+</script>
 </body>
 </html>

@@ -25,41 +25,58 @@
 		<br>
 		<div class="row">
 			<div class="col-sm-12 col-xs-12 col-md-12 col-lg-12">
-				<table WIDTH="400" border="2">
+				<table WIDTH="80%" border="2">
 					<tr>
 						<td WIDTH="110"><strong>FECHA:</strong></td>
-						<td  ><strong>{{$datos->fregis}}</strong></td>
+						<td colspan="2"><strong>{{$datos->fregis}}</strong></td>
 					</tr>
 					<tr>
 						<td><strong>CIUDAD:</strong></td>
-						<td><strong>{{ $tercero->ciudad->nciudad }}</strong></td>
+						<td colspan="2"><strong>{{ $tercero->ciudad->nciudad }}</strong></td>
 					</tr>
 					<tr>
 						<td><strong>CONTRATISTA:</strong></td>
-						<td  ><strong>{{strtoupper($tercero->nombre)}}</strong></td>
+						<td colspan="2" ><strong>{{strtoupper($tercero->nombre)}}</strong></td>
 					</tr>
 					<tr>
 						<td><strong>C.C Nº:</strong></td>
-						<td  ><strong>{{number_format($tercero->nit)}}</strong></td>
+						<td colspan="2" ><strong>{{number_format($tercero->nit)}}</strong></td>
 					</tr>
 					<tr>
 						<td><strong>PLAZO:</strong></td>
-						<td  ><strong>{{$datos->plazo}}</strong></td>
+						<td colspan="2"><strong>{{$datos->plazo}}</strong></td>
 					</tr>
 					<tr>
 						<td ROWSPAN="2"><strong>VALOR CONTRATADO:</strong></td>
-						<td  ><strong>{{number_format($datos->vsiva,2)}}</strong></td>
+						<td colspan="2"><strong>{{number_format($datos->vsiva,2)}}</strong></td>
 					</tr>
 					<tr>
-						<td  ><strong>{{$letras}}</strong></td>
+						<td colspan="2"><strong>{{$datos->vsiva_letras}}</strong></td>
 					</tr>
 					<tr>
-						<td ROWSPAN="2"><strong>IMPUTACIÓN PRESUPUESTAL:</strong></td>
-						<td  ><strong>RUBRO</strong></td>
+						<td ROWSPAN="{{count($rubros)}}">
+							<strong>IMPUTACIÓN PRESUPUESTAL:</strong>
+						</td>
+						@foreach($rubros as $key=>$rubro)
+						@if($key==0)
+						<td align="center">
+							<strong>{{$rubro->crubro}}</strong>
+						</td>
+						<td align="center"><strong>{{$rubro->presupuesto->nrubro}}</strong>
+						</td>
 					</tr>
-					<tr>
-						<td  ><strong>RUBRO</strong></td>
+					@else
+					<tr align="center">
+						<td >
+							<strong>{{$rubro->crubro}}</strong>
+						</td>
+						<td >
+							<strong>{{$rubro->presupuesto->nrubro}}</strong>
+						</td>
 					</tr>
+					@endif
+					@endforeach
+					
 				</table>
 			</div>
 		</div>
@@ -70,35 +87,45 @@
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-sm-12 col-xs-12 col-md-12 col-lg-12">
-				<u><strong>PRIMERA: OBLIGACIONES</strong></u>
-			</div>
-		</div>
-		<div class="row">
 
 			<div class="col-sm-12 col-xs-12 col-md-12 col-lg-12">
 
-				<table border="2" width="101%" >
-					<tr>
-						<td >1.  Se compromete a prestar servicios consistentes en :<br>
-
-							<div class="text-center"> {{ $datos->concepto }}
-							</div>
-
-						</td>
-					</tr>
+				<table border="2" width="103%" >
 					<tr>
 						<td >
-
-							2. Presentar informe de actividades. 3. Las demás que sean necesarias para el cumplimiento del objeto contractual. 4. Cumplir con el pago de aportes al sistema de seguridad social y parafiscal, cuando a ello hubiere lugar.
-
+							<p style="font-size: 09px" >
+								<u><strong>PRIMERA: OBLIGACIONES</strong></u>
+							</p>
+							<p style="font-size: 09px" >
+								1.  Se compromete a prestar servicios consistentes en :
+							</p>
+							<p style="font-size: 09px"  class="text-center">
+								{{ $datos->concepto }}
+							</p>
+							<p style="font-size: 09px" >
+								2. Presentar informe de actividades. 3. Las demás que sean necesarias para el cumplimiento del objeto contractual. 4. Cumplir con el pago de aportes al sistema de seguridad social y parafiscal, cuando a ello hubiere lugar.
+							</p>
 						</td>
 					</tr>
+				
 					<tr>
-						<td >
-							<font size="11px">
-								<strong>SEGUNDA: INHABILIDADES E INCOMPATIBILIDADES: EL CONTRATISTA </strong>manifiesta no estar incurso en ninguna causal de inhabilidad e incompatibilidad prevista en la Constitución y/o en la Ley, ni en prohibiciones o restricción alguna, que le impida suscribir el presente contrato. <strong>TERCERA: MULTAS Y CLAUSULA PENAL:</strong> En caso de incumplimiento parcial de las obligaciones, por parte del CONTRATISTA, esta faculta a la Entidad para que se le impongan multas sucesivas equivalentes a 1% del valor total del contrato hasta un monto total del 10% del valor total de la misma, dependiendo de la gravedad del incumplimiento, si éste es total,<strong> EL CONTRATISTA</strong> pagará a la Institución Educativa San Isidro a título de pena la suma equivalente al 20% del valor del contrato atendiendo lo dispuesto en el artículo 17 de la ley 1150 de 2007. <strong>CUARTA: LIQUIDACIÓN: </strong>Terminada la ejecución del contrato de Prestación de Servicios, se procederá a su liquidación en los términos y plazos previstos en el artículo 11 de la Ley 1150 de 2007. <strong>QUINTA: SUPERVISIÓN Y VIGILANCIA:</strong> El control y vigilancia de la ejecución del objeto contratado la realizará el Rector de la Institución Educativa o quien este delegue mediante resolución. <strong>SEXTA: PERFECCIONAMIENTO Y REQUISITOS DE EJECUCIÓN: </strong>EL presente contrato, se perfecciona con el acuerdo de voluntades que se da con la firma del presente escrito que lo contiene.
-							</font>
+						<td>
+							<p style="font-size: 09px" >
+								<u><strong>SEGUNDA: INHABILIDADES E INCOMPATIBILIDADES: EL CONTRATISTA </strong></u>manifiesta no estar incurso en ninguna causal de inhabilidad e incompatibilidad&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; prevista en la Constitución y/o en la Ley, ni en prohibiciones o restricción alguna, que le impida suscribir el presente contrato.
+							</p>
+							<p style="font-size: 09px" >
+								<u><strong>TERCERA: MULTAS Y CLAUSULA PENAL:</strong> </u>
+								En caso de incumplimiento parcial de las obligaciones, por parte del CONTRATISTA, esta faculta a la Entidad para &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;que se le impongan multas sucesivas equivalentes a 1% del valor total del contrato hasta un monto total del 10% del valor total de la misma, dependiendo de la &nbsp;&nbsp;&nbsp;&nbsp; gravedad del incumplimiento, si éste es total,<u><strong> EL CONTRATISTA</strong></u> pagará a la Institución Educativa San Isidro a título de pena la suma equivalente al 20% del valor &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; del contrato atendiendo lo dispuesto en el artículo 17 de la ley 1150 de 2007.
+							</p>
+							<p style="font-size: 09px" >
+								<u><strong>CUARTA: LIQUIDACIÓN: </strong></u>Terminada la ejecución del contrato de Prestación de Servicios, se procederá a su liquidación en los términos y plazos previstos en el &nbsp;&nbsp;artículo 11 de la Ley 1150 de 2007. 
+							</p>
+							<p style="font-size: 09px" >
+								<u><strong>QUINTA: SUPERVISIÓN Y VIGILANCIA:</strong></u> El control y vigilancia de la ejecución del objeto contratado la realizará el Rector de la Institución Educativa o quien este delegue mediante resolución.
+							</p>
+							<p style="font-size: 09px" >
+								<u><strong>SEXTA: PERFECCIONAMIENTO Y REQUISITOS DE EJECUCIÓN: </strong></u>EL presente contrato, se perfecciona con el acuerdo de voluntades que se da con la firma del presente escrito que lo contiene.
+							</p>
 						</td>
 					</tr>
 				</table>

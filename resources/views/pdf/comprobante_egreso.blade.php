@@ -66,8 +66,8 @@
 	</div>
 	<br>
 	<div class="row">
-		<div class="col-sm-5 col-xs-5 col-md-5 col-lg-5">
-			<table WIDTH="100%" border="2" >
+		<div style="width:50%;display:inline-block;">
+			<table style=" border:1px solid black;">
 				<tr>
 					<th colspan="2">DATOS FACTURA</th>
 				</tr>
@@ -94,8 +94,8 @@
 			</table>
 		</div>
 
-		<div class="col-sm-5 col-xs-5 col-md-5 col-lg-5">
-			<table WIDTH="100%" border="2">
+		<div style="width:50%;display:inline-block;">
+			<table style=" border:1px solid black;">
 				<tr>
 					<td>Honorarios: <!-- sacar de db-->
 					</td>
