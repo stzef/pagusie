@@ -10,16 +10,19 @@
 			</template>
 		</div>
 		<div class="form-group col-md-2">
-			<label for="vbase">Valor Base</label>
-			<input type="text" class="form-control" id="vbase" aria-describedby="vbase" placeholder="Ingrese el valor" v-model="impuesto.vbase" required>
+			<label for="valorBase">Valor Base</label>
+			<input @blur.prevent="operacionAritmetica(['valorBase','porcentaje'],'%','valorImpuesto')" type="text" class="form-control input-currency" id="valorBase" aria-describedby="valorBase" placeholder="Ingrese el valor"  required>
 		</div>	
 		<div class="form-group col-md-2">
 			<label for="porcentaje">Porcentaje</label>
-			<input type="text" class="form-control" id="porcentaje" aria-describedby="porcentaje" placeholder="Ingrese porcentaje" v-model="impuesto.porcentaje_Impuesto" required>
+			<div class="input-group">
+				<input @blur.prevent="operacionAritmetica(['valorBase','porcentaje'],'%','valorImpuesto')" type="text" class="form-control text-right" id="porcentaje" aria-describedby="porcentaje" placeholder="Ingrese porcentaje" v-model="impuesto.porcentaje_Impuesto" required>
+				<span class="input-group-addon" id="basic-addon2">%</span>
+			</div>
 		</div>
 		<div class="form-group col-md-2">
-			<label for="vimpuesto">Valor Impuesto</label>
-			<input type="text" class="form-control" id="vimpuesto" aria-describedby="vimpuesto" placeholder="Ingrese el valor" v-model="impuesto.vimpuesto" required>
+			<label for="valorImpuesto">Valor Impuesto</label>
+			<input type="text" class="form-control input-currency" id="valorImpuesto" aria-describedby="valorImpuesto" placeholder="Ingrese el valor"  required>
 		</div>
 
 		<button type="submit" class="btn btn-success " style="margin-top:25px ">+</button>
@@ -47,6 +50,10 @@
 		</template>
 
 	</tbody>
+	<<footer>
+		<th colspan="3">Total</th> 
+		<th ></th>
+	</footer>
 </table>
 <form @submit.prevent="createImpuesto" accept-charset="utf-8">
 	<div class="form-group text-center">

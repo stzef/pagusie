@@ -4,6 +4,7 @@ import moment from 'moment'
 import Multiselect from 'vue-multiselect';
 
 import calcularDigitoVerificacion from './../../calcularDigitoVerificacion'
+import currencyFormat from './../../currencyFormat'
 import $ from 'jquery';
 import 'datatables.net'
 //window.$ = $;
@@ -75,6 +76,7 @@ var app=new Vue({
 		},
 	},
 	methods:{
+		currencyFormat,
 		calcularDigitoVerificacion,
 		addRubro () {
 			var vm = this
@@ -94,9 +96,9 @@ var app=new Vue({
 			var impuesto = new Object();
 			impuesto.cimpu=vm.valueImpuesto.cimpu
 			impuesto.nimpuesto=vm.valueImpuesto.nimpuesto
-			impuesto.vbase=vm.impuesto.vbase
+			impuesto.vbase=document.querySelector("#valorBase").value
 			impuesto.porcentaje_Impuesto=vm.impuesto.porcentaje_Impuesto
-			impuesto.vimpuesto=vm.impuesto.vimpuesto
+			impuesto.vimpuesto=document.querySelector("#valorImpuesto").value
 			if (vm.impuesto.impuestosSeleccionados.some( (object) => object.cimpu == impuesto.cimpu )){
 				alertify.error("No se puede repetir el impuesto")
 			}else{
@@ -121,6 +123,8 @@ var app=new Vue({
 		showImpuestos ({nimpuesto, porcentajeImpuesto }) {
 			var vm = this
 			vm.impuesto.cimpu = vm.valueImpuesto.cimpu
+			vm.impuesto.porcentaje_Impuesto=vm.valueImpuesto.porcentajeImpuesto
+			vm.operacionAritmetica(['valorBase','porcentaje'],'%','valorImpuesto')
 			return `${nimpuesto} — ${porcentajeImpuesto}%`
 		},
 		showRubros ({crubro, nrubro }) {
@@ -141,13 +145,13 @@ var app=new Vue({
 		GetCiudades: function(){
 			var vm = this
 			var cdepar= vm.valueDepartamento.cdepar
-		fetch("api/ciudades?cdepar="+cdepar,{ //ruta
-			credentials: 'include',
-			type : "GET",
-		})
-		.then(response => {
-			return response.json()
-		}).then(ciudades => {
+			fetch("api/ciudades?cdepar="+cdepar,{ //ruta
+				credentials: 'include',
+				type : "GET",
+			})
+			.then(response => {
+				return response.json()
+			}).then(ciudades => {
 
 			vm.ciudades =ciudades
 			console.log(vm.valueDepartamento.cdepar==29)
@@ -156,7 +160,7 @@ var app=new Vue({
 			}else{
 				vm.valueCiudad = vm.ciudades[0]
 			}
-		});
+			});
 		},// end ciudades function
 		// start getTercerero function
 
@@ -203,6 +207,10 @@ var app=new Vue({
 		CreateDatos:function(){
 			this._token = $('form').find("input").val()
 			this.SetFormatDate()
+			//var copydatos=Object.assign({},this.datos)
+			this.datos.vsiva=currencyFormat.sToN(document.querySelector("#valorSinIva").value)
+			this.datos.viva=currencyFormat.sToN(document.querySelector("#valorIva").value)
+			this.datos.vtotal=currencyFormat.sToN(document.querySelector("#valorTotal").value)
 			var dato = $.param(this.datos)
 			console.log(dato)
 			fetch("/datos/create",{
@@ -227,8 +235,7 @@ var app=new Vue({
 				}else{
 					alertify.success('Creación Exitosa')
 					this.datos.cdatos=response.obj.id
-					alertify.success(this.datos.cdatos)
-
+					//alertify.success(this.datos.cdatos)
 				}
 			})
 			.catch(function(error) {
@@ -310,7 +317,7 @@ var app=new Vue({
 			})
 		});
 	},
-		createImpuesto(){
+	createImpuesto(){
 		var vm = this
 		vm._token = $('form').find("input").val()
 		var cdatos=vm.datos.cdatos
@@ -349,6 +356,24 @@ var app=new Vue({
 				alertify.error('Error al agregar el impuesto '+item.nimpuesto)
 			})
 		});
+	},
+	operacionAritmetica(campos,operacion,final){
+		var total=0
+		campos.forEach(function (item, index, array) {
+			if(operacion=='+'){
+				total=total+currencyFormat.sToN(document.querySelector("#"+item).value)
+			}
+			if(operacion=='%'){
+				if(index==0){
+					total=currencyFormat.sToN(document.querySelector("#"+item).value)
+				}else{
+					var porcet=currencyFormat.sToN(document.querySelector("#"+item).value)/100
+					total=total*porcet
+					total=Math.round(total)
+				}
+			}
+		});
+		document.querySelector("#"+final).value=currencyFormat.format(total)
 	},
 	},// end methods
 	delimiters : ["[[","]]"],

@@ -71,16 +71,16 @@
 	</div>
 	<div class="row">
 		<div class="form-group col-md-3">
-			<label for="valorSinIva">Valor sin IVA</label>
-			<input type="text" class="form-control" id="valorSinIva" aria-describedby="valorSinIva" placeholder="Ingrese el valor sin IVA" v-model="datos.vsiva" required>
+			<label for="valorSinIva">Vr. Antes IVA</label>
+			<input @change.prevent="operacionAritmetica(['valorSinIva','valorIva'],'+','valorTotal')" type="text" class="form-control input-currency" id="valorSinIva" aria-describedby="valorSinIva" placeholder="Ingrese el valor sin IVA"  required>
 		</div>
 		<div class="form-group col-md-3">
-			<label for="valorIva">Valor con IVA</label>
-			<input type="text" class="form-control" id="valorIva" aria-describedby="valorIva" placeholder="Ingrese el valor con IVA" v-model="datos.viva" required>
+			<label for="valorIva">Vr. IVA</label>
+			<input @change.prevent="operacionAritmetica(['valorSinIva','valorIva'],'+','valorTotal')" type="text" class="form-control input-currency" id="valorIva" aria-describedby="valorIva" placeholder="Ingrese el valor con IVA"  required>
 		</div>
 		<div class="form-group col-md-3">
-			<label for="valorIva">Valor total</label>
-			<input type="text" class="form-control" id="valorTotal" aria-describedby="valorTotal" placeholder="Ingrese el valor total" v-model="datos.vtotal" required>
+			<label for=" valorTotal">Vr. Total</label>
+			<input type="text" class="form-control input-currency" id="valorTotal" aria-describedby="valorTotal" placeholder="Ingrese el valor total"  required>
 		</div>
 	</div>
 	<div class="form-group text-center">
