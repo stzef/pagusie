@@ -36,24 +36,30 @@
 			<th>Valor Base</th>
 			<th>Porcentaje</th>
 			<th>Valor Impuesto</th>
+			<th>Eliminar</th>
 		</tr>
 	</thead> 
 	<tbody>
-		<template v-for="impuesto in impuesto.impuestosSeleccionados">
+		<template v-for="(impuesto,index) in impuesto.impuestosSeleccionados">
 			<tr>
 				<td>[[impuesto.nimpuesto]]</td>
 				<td>[[impuesto.vbase]]</td>
-				<td>[[impuesto.porcentaje_Impuesto]]</td>
+				<td>[[impuesto.porcentaje_Impuesto]]%</td>
 				<td>[[impuesto.vimpuesto]]</td>
-				
+				<td><button @click.prevent="removeImpuesto(index)" class="btn btn-danger " >-</button></td>
 			</tr>
 		</template>
 
 	</tbody>
-	<<footer>
-		<th colspan="3">Total</th> 
-		<th ></th>
+	
+		
+	<footer>
+		<th colspan="3" v-if="impuesto.impuestosSeleccionados.length!=0">Total</th> 
+		<th v-if="impuesto.impuestosSeleccionados.length!=0">
+			[[impuesto.sumaImpuestos]]
+		</th>
 	</footer>
+	
 </table>
 <form @submit.prevent="createImpuesto" accept-charset="utf-8">
 	<div class="form-group text-center">

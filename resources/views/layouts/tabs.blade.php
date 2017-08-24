@@ -5,12 +5,12 @@
 		<div id="tabs" class="row">
 
 			<ul>
-				<li class="col-md-1 col-lg-1"><a href="#tabs-1">Datos</a></li>
-				<li class="col-md-1 col-lg-1"><a href="#tabs-2" @click = "list('table-presupuestos-seleccionados')">Presupuesto </a></li>
-				<li class="col-md-1 col-lg-1"><a href="#tabs-3">Impuestos </a></li>
-				<li class="col-md-1 col-lg-1"><a href="#tabs-4">Bancos </a></li>
-				<li class="col-md-1 col-lg-1"><a href="#tabs-5">Contratos </a></li>
-				<li class="col-md-1 col-lg-1"><a href="#tabs-6" @click = "list('table-reportes')">Reporte </a></li>
+				<li class="col-md-1 col-lg-1 tab-width"><a href="#tabs-1">Datos</a></li>
+				<li class="col-md-1 col-lg-1 tab-width"><a href="#tabs-2" @click = "list('table-presupuestos-seleccionados')">Presupuesto </a></li>
+				<li class="col-md-1 col-lg-1 tab-width"><a href="#tabs-3">Impuestos </a></li>
+				<li class="col-md-1 col-lg-1 tab-width"><a href="#tabs-4">Bancos </a></li>
+				<li class="col-md-1 col-lg-1 tab-width"><a href="#tabs-5">Contratos </a></li>
+				<li class="col-md-1 col-lg-1 tab-width"><a href="#tabs-6" @click = "list('table-reportes')">Reportes</a></li>
 			</ul>
 
 			<div id="tabs-1">

@@ -84,9 +84,14 @@ class TercerosController extends Controller
      * @param  \App\Models\Terceros  $terceros
      * @return \Illuminate\Http\Response
      */
-    public function show(Terceros $terceros)
+    public function show(Terceros $terceros, Request $request)
     {
-        $terceros=Terceros::all();
+        if(!$request->cterce){
+            $terceros=Terceros::all();
+        }else{
+            $cterce=$request->cterce;
+            $impuestos = Terceros::where('cterce',$cterce)->get();
+        }
         return response()->json($terceros->toArray());
         //
     }

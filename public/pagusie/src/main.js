@@ -31,7 +31,8 @@ var app=new Vue({
 		impuestos:[],
 		valueImpuesto: {},
 		datos:{
-			'cdatos':'',
+			'terceroSelected':'',
+			'cdatos':9,
 			'cterce':'',
 			'ctidocumento':'',
 			'cestado':'1',
@@ -66,6 +67,7 @@ var app=new Vue({
 			crubro:'',
 			valor:'',
 			rubrosSeleccionados: [],
+			sumaRubros:'',
 		},
 		impuesto:{
 			cimpu:'',
@@ -73,6 +75,7 @@ var app=new Vue({
 			porcentaje_Impuesto:'',
 			vimpuesto:'',
 			impuestosSeleccionados: [],
+			sumaImpuestos:'',
 		},
 	},
 	methods:{
@@ -83,13 +86,20 @@ var app=new Vue({
 			var presupuesto = new Object();
 			presupuesto.crubro=vm.valueRubros.crubro
 			presupuesto.nrubro=vm.valueRubros.nrubro
-			presupuesto.valor=vm.presupuesto.valor
+			presupuesto.valor=document.querySelector("#vrubro").value
 			if (vm.presupuesto.rubrosSeleccionados.some( (object) => object.crubro == presupuesto.crubro )){
 				alertify.error("No se puede repetir el rubro")
 			}else{
 				vm.presupuesto.rubrosSeleccionados.push(presupuesto)
 				alertify.success("Rubro Agregado")
+				vm.sumarValorLista(this.presupuesto.rubrosSeleccionados,"valor","presupuesto.sumaRubros")
 			}
+		},
+		removeRubro(index){
+			var vm = this
+			vm.presupuesto.rubrosSeleccionados.splice(index,1);
+			alertify.success("Rubro Removido")
+			vm.sumarValorLista(this.presupuesto.rubrosSeleccionados,"valor","presupuesto.sumaRubros")
 		},
 		addImpuesto () {
 			var vm = this
@@ -104,7 +114,15 @@ var app=new Vue({
 			}else{
 				vm.impuesto.impuestosSeleccionados.push(impuesto)
 				alertify.success("Impuesto Agregado")
+				//console.log(vm.impuesto.impuestosSeleccionados)
+				vm.sumarValorLista(this.impuesto.impuestosSeleccionados,"vimpuesto","impuesto.sumaImpuestos")
 			}
+		},
+		removeImpuesto(index){
+			var vm = this
+			vm.impuesto.impuestosSeleccionados.splice(index,1);
+			alertify.success("Impuesto Removido")
+			vm.sumarValorLista(this.impuesto.impuestosSeleccionados,"vimpuesto","impuesto.sumaImpuestos")
 		},
 		setDv(dv){
 			console.info("dv",dv)
@@ -112,34 +130,42 @@ var app=new Vue({
 		},
 		showDepartamentos ({ndepartamento}) {
 			var vm = this
-			vm.terceros.cdepar= vm.valueDepartamento.cdepar
+			if(vm.valueDepartamento!=null){
+				vm.terceros.cdepar= vm.valueDepartamento.cdepar
+			}
 			return `${ndepartamento}`
 		},
 		showCiudades ({nciudad}) {
 			var vm = this
-			vm.terceros.cciud= vm.valueCiudad.cciud
+			if(vm.valueCiudad!=null){
+				vm.terceros.cciud= vm.valueCiudad.cciud
+			}
 			return `${nciudad}`
 		},
 		showImpuestos ({nimpuesto, porcentajeImpuesto }) {
 			var vm = this
-			vm.impuesto.cimpu = vm.valueImpuesto.cimpu
-			vm.impuesto.porcentaje_Impuesto=vm.valueImpuesto.porcentajeImpuesto
+			//vm.impuesto.cimpu = vm.valueImpuesto.cimpu
+			//vm.impuesto.porcentaje_Impuesto=vm.valueImpuesto.porcentajeImpuesto
 			vm.operacionAritmetica(['valorBase','porcentaje'],'%','valorImpuesto')
 			return `${nimpuesto} — ${porcentajeImpuesto}%`
 		},
 		showRubros ({crubro, nrubro }) {
 			var vm = this
-			vm.presupuesto.crubro = vm.valueRubros.crubro
+			//vm.presupuesto.crubro = vm.valueRubros.crubro
 			return `${crubro} — ${nrubro}`
 		},
 		showTerceros ({nit, nombre }) {
 			var vm = this
-			vm.datos.cterce= vm.valueTercero.cterce
+			if(vm.valueTercero!=null){
+				vm.datos.cterce= vm.valueTercero.cterce
+			}
 			return `${nit} — ${nombre}`
 		},
 		showTidocumento ({ntidocumento }) {
 			var vm = this
-			vm.datos.ctidocumento= vm.valueTdocu.ctidocumento
+			if(vm.valueTdocu!=null){
+				vm.datos.ctidocumento= vm.valueTdocu.ctidocumento
+			}
 			return `${ntidocumento}`
 		},
 		GetCiudades: function(){
@@ -153,17 +179,40 @@ var app=new Vue({
 				return response.json()
 			}).then(ciudades => {
 
-			vm.ciudades =ciudades
-			console.log(vm.valueDepartamento.cdepar==29)
-			if (vm.valueDepartamento.cdepar==29) {
-				vm.valueCiudad = vm.ciudades[26]
-			}else{
-				vm.valueCiudad = vm.ciudades[0]
-			}
+				vm.ciudades =ciudades
+				console.log(vm.valueDepartamento.cdepar==29)
+				if (vm.valueDepartamento.cdepar==29) {
+					vm.valueCiudad = vm.ciudades[26]
+				}else{
+					vm.valueCiudad = vm.ciudades[0]
+				}
 			});
 		},// end ciudades function
 		// start getTercerero function
-
+		getTercerero(cterce){
+			var vm = this
+			if(cterce==""){
+				 fetch("terceros/show",{ //ruta
+				 	credentials: 'include',
+				 	type : "GET",
+				 }).then(response => {
+				 	return response.json()
+				 }).then(terceros => {
+				 	console.log(terceros)
+				 	vm.tercero = terceros
+				 	vm.valueTercero = terceros[0]
+				 });
+			}else{
+				fetch("terceros/show?cterce="+cterce,{ //ruta
+				 	credentials: 'include',
+				 	type : "GET",
+				 }).then(response => {
+				 	return response.json()
+				 }).then(terceros => {
+				 	console.log(terceros)
+				 	return terceros
+			}
+	},
 		//end getTercerero function
 		CreateTercero:function(){
 			this._token = $('form').find("input").val()
@@ -183,7 +232,6 @@ var app=new Vue({
 				//console.info(response)
 				return response.json();
 			})
-
 			.then(response => {
 				console.log(response["message"])
 				if(response.status == 400){
@@ -207,11 +255,14 @@ var app=new Vue({
 		CreateDatos:function(){
 			this._token = $('form').find("input").val()
 			this.SetFormatDate()
-			//var copydatos=Object.assign({},this.datos)
-			this.datos.vsiva=currencyFormat.sToN(document.querySelector("#valorSinIva").value)
-			this.datos.viva=currencyFormat.sToN(document.querySelector("#valorIva").value)
-			this.datos.vtotal=currencyFormat.sToN(document.querySelector("#valorTotal").value)
-			var dato = $.param(this.datos)
+			this.datos.vsiva=document.querySelector("#valorSinIva").value
+			this.datos.viva=document.querySelector("#valorIva").value
+			this.datos.vtotal=document.querySelector("#valorTotal").value
+			var copydatos=Object.assign({},this.datos)
+			copydatos.vsiva=currencyFormat.sToN(copydatos.vsiva)
+			copydatos.viva=currencyFormat.sToN(copydatos.viva)
+			copydatos.vtotal=currencyFormat.sToN(copydatos.vtotal)
+			var dato = $.param(this.copydatos)
 			console.log(dato)
 			fetch("/datos/create",{
 				credentials: 'include',
@@ -235,6 +286,8 @@ var app=new Vue({
 				}else{
 					alertify.success('Creación Exitosa')
 					this.datos.cdatos=response.obj.id
+					
+					this.terceroSelected=this.getTercerero(this.datos.cterceSelected=response.obj.cterce);
 					//alertify.success(this.datos.cdatos)
 				}
 			})
@@ -245,19 +298,19 @@ var app=new Vue({
 		},
 		GetRubros: function(){
 			var vm = this
-		fetch("presupuesto/show",{ //ruta
-			credentials: 'include',
-			type : "GET",
-		})
-		.then(response => {
-			return response.json()
-		}).then(rubros => {
-			vm.rubros =rubros
-			vm.valueRubros = rubros[0]
-		});
-	},
-	GetImpuestos: function(){
-		var vm = this
+			fetch("presupuesto/show",{ //ruta
+				credentials: 'include',
+				type : "GET",
+			})
+			.then(response => {
+				return response.json()
+			}).then(rubros => {
+				vm.rubros =rubros
+				vm.valueRubros = rubros[0]
+			});
+		},
+		GetImpuestos: function(){
+			var vm = this
 		fetch("impuesto/show",{ //ruta
 			credentials: 'include',
 			type : "GET",
@@ -269,6 +322,7 @@ var app=new Vue({
 			vm.impuestos =impuesto
 			vm.valueImpuesto = impuesto[0]
 		});
+
 	},
 	list(table){
 		$('.'+table).DataTable().destroy();
@@ -286,7 +340,9 @@ var app=new Vue({
 			alertify.error("Seleccione un rubro")
 		}
 		presupuestoArray.forEach(function (item, index, array) {
-			var presupuesto = $.param(item)
+			var itemCopy = Object.assign({},item);
+			itemCopy.valor=currencyFormat.sToN(itemCopy.valor)
+			var presupuesto = $.param(itemCopy)
 			presupuesto=presupuesto+"&cdatos="+cdatos
 			fetch("/datospresupuesto/create",{
 				credentials: 'include',
@@ -326,7 +382,10 @@ var app=new Vue({
 			alertify.error("Seleccione un impuesto")
 		}
 		impuestoArray.forEach(function (item, index, array) {
-			var impuesto = $.param(item)
+			var itemCopy = Object.assign({},item);
+			itemCopy.vbase=currencyFormat.sToN(itemCopy.vbase)
+			itemCopy.vimpuesto=currencyFormat.sToN(itemCopy.vimpuesto)
+			var impuesto = $.param(itemCopy)
 			impuesto=impuesto+"&cdatos="+cdatos
 			fetch("/datosimpuesto/create",{
 				credentials: 'include',
@@ -375,6 +434,13 @@ var app=new Vue({
 		});
 		document.querySelector("#"+final).value=currencyFormat.format(total)
 	},
+	sumarValorLista(campos,campo,final){
+		var total=0	
+		campos.forEach(function (item, index, array) {
+			eval("total=total+currencyFormat.sToN(item."+campo+")");
+		});
+		eval("this."+final+"=currencyFormat.format(total)")
+	},
 	},// end methods
 	delimiters : ["[[","]]"],
 	mounted (){
@@ -387,6 +453,7 @@ var app=new Vue({
 		vm.datos.fregis=vm.date
 		vm.GetRubros()
 		vm.GetImpuestos()
+		vm.GetImpuestos("")
 	    fetch("api/departamentos/",{ //ruta
 	    	credentials: 'include',
 	    	type : "GET",
@@ -400,16 +467,7 @@ var app=new Vue({
 	    	this.GetCiudades()
 
 	    });
-	    fetch("terceros/show",{ //ruta
-	    	credentials: 'include',
-	    	type : "GET",
-	    }).then(response => {
-	    	return response.json()
-	    }).then(terceros => {
-	    	console.log(terceros)
-	    	vm.tercero = terceros
-	    	vm.valueTercero = terceros[0]
-	    });
+
 
 	      fetch("api/tipo_documento",{ //ruta
 	      	credentials: 'include',

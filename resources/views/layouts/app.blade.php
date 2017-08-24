@@ -22,6 +22,13 @@
 
 	<link rel="stylesheet" href="{{ URL::asset('bower_components/bootstrap/dist/css/bootstrap.css') }}" >
 	<link rel="stylesheet" href="{{ URL::asset('bower_components/datatables.net-dt/css/jquery.dataTables.css') }}" >
+<style>
+	.tab-width{ 
+    width: 16%;
+    text-align:center;
+}
+
+</style>
 </head>
 <body>
 	<div id="app-vue">
@@ -94,63 +101,63 @@
 	$( function() {
 		var tabs = $( "#tabs" ).tabs();
 
-		tabs.find( ".ui-tabs-nav" ).sortable({
+		/*tabs.find( ".ui-tabs-nav" ).sortable({
 			axis: "x",
 			stop: function() {
 				tabs.tabs( "refresh" );
 			}
-		});
+		});*/
 	});
 </script>
 <script>
 	var symbol_currency = "$"
-function CurrencyFormat(){
-	//numberFormat = Intl.NumberFormat({style:"currency",currency:"COP",currencyDisplay:"symbol"})
-	this.numberFormat = Intl.NumberFormat("es-419")
-}
-CurrencyFormat.prototype.format = function(number){
-	if(this.numberFormat.format(number) == "NaN") return symbol_currency+" 0"
-		return symbol_currency+" " + this.numberFormat.format(number)
-}
-CurrencyFormat.prototype.clear = function(number){
-	return number.replace(",","").replace(/[^\d\.\,\s]+/g,"").trim()
-}
-CurrencyFormat.prototype.sToN = function(s){
-	var n = parseFloat(s.replace(/ /g,"").replace(/,/g,"").replace(/[^\d\.\,\s]+/g,"").trim())//.replace(/\./g,"")
-	return n
-}
+	function CurrencyFormat(){
+		//numberFormat = Intl.NumberFormat({style:"currency",currency:"COP",currencyDisplay:"symbol"})
+		this.numberFormat = Intl.NumberFormat("es-419")
+	}
+	CurrencyFormat.prototype.format = function(number){
+		if(this.numberFormat.format(number) == "NaN") return symbol_currency+" 0"
+			return symbol_currency+" " + this.numberFormat.format(number)
+	}
+	CurrencyFormat.prototype.clear = function(number){
+		return number.replace(",","").replace(/[^\d\.\,\s]+/g,"").trim()
+	}
+	CurrencyFormat.prototype.sToN = function(s){
+		var n = parseFloat(s.replace(/ /g,"").replace(/,/g,"").replace(/[^\d\.\,\s]+/g,"").trim())//.replace(/\./g,"")
+		return n
+	}
 
-var currencyFormat = new CurrencyFormat()
+	var currencyFormat = new CurrencyFormat()
 
 
 
-	jQuery.fn.extend({
-		inputCurrency : function(){
-			var input = this,
-			regexp = /[^\d\.\,\s]+ (?!0\.00)[1-9]\d{0,2}(,\d{3})*(\.\d\d)?$/
-			input.css({"text-align":"right"})
+		jQuery.fn.extend({
+			inputCurrency : function(){
+				var input = this,
+				regexp = /[^\d\.\,\s]+ (?!0\.00)[1-9]\d{0,2}(,\d{3})*(\.\d\d)?$/
+				input.css({"text-align":"right"})
 
-		//Selecciona todo lo que no sea un nuemro, una coma, un punto o un espacio
-		var regexp_clear = /([^0-9|\$|\,|\.|\s])/g
-		input.focus(function(){$(this).select()})
-		input.change(function(){
-			input = $(this)
-			input.val(input.val().replace(regexp_clear,""))
-			if (!regexp.test(input.val())){
-				var valueInput = input.val()
-				input.val(currencyFormat.format(valueInput))
+			//Selecciona todo lo que no sea un nuemro, una coma, un punto o un espacio
+			var regexp_clear = /([^0-9|\$|\,|\.|\s])/g
+			input.focus(function(){$(this).select()})
+			input.change(function(){
+				input = $(this)
+				input.val(input.val().replace(regexp_clear,""))
+				if (!regexp.test(input.val())){
+					var valueInput = input.val()
+					input.val(currencyFormat.format(valueInput))
+				}
+			})
+
+			if(input.val() == "") {
+				input.val( symbol_currency+" 0")
+			}else{
+				input.trigger("change")
 			}
+
+			},
 		})
-
-		if(input.val() == "") {
-			input.val( symbol_currency+" 0")
-		}else{
-			input.trigger("change")
-		}
-
-		},
-	})
-	$(".input-currency").inputCurrency();
+		$(".input-currency").inputCurrency();
 
 </script>
 

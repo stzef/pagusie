@@ -13,7 +13,7 @@
         }
         @page { margin: 130px 50px; }
         #header { position: fixed; left: 0px; top: -120px;  right: 0px; height: 10;  text-align: center; }
-        #footer { position: fixed; left: 0px; bottom: -130px; right: 0px; height: 70px;  }
+        #footer { position: fixed; left: 0px; bottom: -110px; right: 0px; height: 70px;  }
         #footer .page:after { content: counter(page, upper-roman); }
     </style>
     <link rel="stylesheet" href="layout/css/bootstrap-without-icons.min.css" >
@@ -44,15 +44,12 @@
     </header>
     <footer id="footer">
         <div class="container">
-            <p style="font-family: "Monotype Corsiva", Times, serif;">
-               <div class="text-center">
-                   <em>
-                       UNA INSTITUCION EDUCATIVA COMPROMETIDA CON EXCELENCIA Y CALIDAD POR EL
-                       DESARROLLO  DE  MELGAR.<br>
-                   </em>
-               </div>
-               Cra.25 No.6-43 Sede principal - TEL: 2452305-2450966 Melgar Tol, E-mail: ricardomorales@yahoo.es
+            <p>
+              <center><em>UNA INSTITUCION EDUCATIVA COMPROMETIDA CON EXCELENCIA Y CALIDAD POR EL DESARROLLO  DE  MELGAR.<em></center> Cra.25 No.6-43 Sede principal - TEL: 2452305-2450966 Melgar Tol, E-mail: ricardomorales@yahoo.es
            </p>
+          <hr style="height: 2px; width: 11%; background-color: black; margin-bottom: 1px; margin-top: 1px;" align="right">
+             PagusIE v1
+            </hr>
        </div>
        @yield('footer')
    </footer>

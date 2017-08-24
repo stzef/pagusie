@@ -3,14 +3,14 @@
 
 @section('styles')
 <style>
-
+/*
 	hr {
 		height: 3px;
 		width: 50%;
 		background-color: black;
 		margin-bottom: 5px;
 	}
-
+/*
 </style>
 
 
@@ -106,7 +106,7 @@
 			<td>____________________</td>
 		</tr>-->
 		<tr>
-			<td align="center" height="20%" VALIGN="BOTTOM" ><hr>FIRMA DEL VENDEDOR</hr> </td>
+			<td align="center" height="20%" VALIGN="BOTTOM" ><hr style="height: 3px; width: 50%; background-color: black; margin-bottom: 5px;">FIRMA DEL VENDEDOR</hr> </td>
 		</tr>
 	</table>
 </div>
