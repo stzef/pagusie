@@ -1,14 +1,12 @@
-
 <div class="row">
 	<div class="col-md-7 col-xs-7">
-		<h4> Tercero:</h4>  
+		<h4 v-if="terceroSelected.nombre"> Tercero: [[terceroSelected.nombre]]</h4>
 	</div>
 	<div class="col-md-4 col-xs-4">
-		<h4>Valor Facturado:</h4>
-		[[datos.vtotal]]
+		<h4 v-if="terceroSelected.vtotal">Valor Facturado: [[terceroSelected.vtotal]]</h4>
 	</div>
 </div>
-	<hr>
+	<hr v-if="terceroSelected.nombre">
 	<form @submit.prevent="addRubro" accept-charset="utf-8">
 		<div class="row">
 
@@ -16,12 +14,12 @@
 				<label for="tercero">Rubro</label>
 				<template>
 					<div>
-						<multiselect 
-						v-model="valueRubros" 
-						:options="rubros" 
-						placeholder="Select one" 
-						label="crubro" 
-						track-by="crubro" 
+						<multiselect
+						v-model="valueRubros"
+						:options="rubros"
+						placeholder="Select one"
+						label="crubro"
+						track-by="crubro"
 						:custom-label="showRubros"
 						></multiselect>
 
@@ -47,7 +45,7 @@
 				<th>Valor</th>
 				<th>Eliminar</th>
 			</tr>
-		</thead> 
+		</thead>
 		<tbody>
 			<template v-for="(rubro,index) in presupuesto.rubrosSeleccionados">
 				<tr>
@@ -83,7 +81,7 @@
 			<th>Valor Presupuestado</th>
 			<th>Valor Ejecutado</th>
 		</tr>
-	</thead> 
+	</thead>
 	<tbody>
 		<template v-for="rubro in rubros">
 			<tr>

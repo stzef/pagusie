@@ -90,7 +90,7 @@ class TercerosController extends Controller
             $terceros=Terceros::all();
         }else{
             $cterce=$request->cterce;
-            $impuestos = Terceros::where('cterce',$cterce)->get();
+            $terceros = Terceros::where('cterce',$cterce)->get();
         }
         return response()->json($terceros->toArray());
         //
