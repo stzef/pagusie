@@ -19,7 +19,7 @@
 	<div class="text-center"><strong>{{ $tercero->nombre }}<br>NIT: {{ $tercero->nit }}</strong></div><br>
 	<div class="row">
 		<div class="col-sm-6 col-xs-6 col-md-6 col-lg-6">
-			<strong>CONTRATO DE PRESTACION DE SERVICIO Nº &nbsp;&nbsp; 16 </strong></div>
+			<strong>CONTRATO DE PRESTACION DE SERVICIO Nº &nbsp;&nbsp; {{$reporte->id}} </strong></div>
 			<!--<div class="col-sm-1 col-xs-1 cuadrado text-center"><strong>16</strong></div>-->
 		</div>
 		<br>

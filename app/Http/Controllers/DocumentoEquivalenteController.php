@@ -9,7 +9,7 @@ use App\Models\Colegio;
 use PDF;
 use App\Helper\Helper;
 use App\Helper\NumeroALetras;
-
+use App\Models\Reports\Reporte_documento_equivalente;
 
 class DocumentoEquivalenteController extends Controller
 {
@@ -28,7 +28,12 @@ class DocumentoEquivalenteController extends Controller
 		$datos->fdispo=Helper::formatDate($datos->fdispo,0);
 		$datos->fregis=Helper::formatDate($datos->fregis,0);
 		$tercero=$datos->tercero;
-		$data = array("datos" => $datos,"tercero" => $tercero,"colegio"=>$colegio,);
+		if (!Reporte_documento_equivalente::where("cdatos",$cdatos)->first()){
+			$reporteDE=Reporte_documento_equivalente::create(["cdatos"=>$datos->cdatos]);
+		}else{
+			$reporteDE=Reporte_documento_equivalente::where("cdatos",$cdatos)->first();
+		}
+		$data = array("datos" => $datos,"tercero" => $tercero,"colegio"=>$colegio,"reporte"=>$reporteDE);
 		//return view('pdf.documento_equivalente', $data);
 		PDF::setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif']);
 		$pdf = PDF::loadView('pdf.documento_equivalente', $data);

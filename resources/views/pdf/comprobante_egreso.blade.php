@@ -33,7 +33,7 @@
 <div class="container">
 	<div class="row">
 		<div class="col-sm-5 col-xs-5 col-md-5 col-lg-5">
-			<strong>COMPROBANTE DE EGRESO Nº &nbsp;&nbsp; 16 </strong>
+			<strong>COMPROBANTE DE EGRESO Nº &nbsp;&nbsp; {{$reporte->id}} </strong>
 		</div>
 
 		<!--<div class="col-sm-1 col-xs-1 text-center"><strong>16</strong></div>-->
@@ -90,11 +90,11 @@
 			</tr>
 			<tr>
 				<td>TOTAL DEDUCCIONES</td>
-				<td align="center"><!--{{number_format($datos->viva,2)}} HACE FALTA EN LA DB DEDUCCIONES SUMA DE LAS RETENCIONES--></td>
+				<td align="center">{{number_format($datos->vtdeduc,2)}} <!--HACE FALTA EN LA DB DEDUCCIONES SUMA DE LAS RETENCIONES--></td>
 			</tr>
 			<tr>
 				<td>NETO A PAGAR</td>
-				<td align="center"><!--{{number_format($datos->viva,2)}} HACE FALTA EN LA DB SUMA VTOTAL A PAGAR + VTOTAL FACTURA--></td>
+				<td align="center">{{number_format($datos->vneto,2)}}<!-- HACE FALTA EN LA DB SUMA VTOTAL A PAGAR + VTOTAL FACTURA--></td>
 			</tr>
 		</table>
 	</div>
@@ -126,7 +126,8 @@
 				<td align="center">
 					{{number_format(($impuesto->porcentajeImpuesto/100)*$datos->vtotal,2)}}
 				</td>
-				<td rowspan="{{count($impuestos)-2}}" align="center">total deducciones FALTA
+				<td rowspan="{{count($impuestos)-2}}" align="center">
+					{{number_format($datos->vtdeduc,2)}}
 				</td>
 			</tr>
 			@else
@@ -230,9 +231,9 @@
 		</table>
 	</div>
 	<div style="width:100%;height: 15px;margin-top: 145px;">
-	<table>
+	<table width="100%">
 	<tr>
-		<td>
+		<td align="center">
 		Se anexa: Certificado de Disponibilidad, Registro Presupuestal, Estudio Previo, Satisfaccion y la Orden
 		</td>
 	</tr>

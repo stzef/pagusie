@@ -42,7 +42,7 @@
 
 	<div class="row">
 		<div class="col-sm-5 col-xs-5 col-md-5 col-lg-5">
-			<strong>DOCUMENTO EQUIVALENTE N° &nbsp;&nbsp; 16</strong></div>
+			<strong>DOCUMENTO EQUIVALENTE N° &nbsp;&nbsp; {{$reporte->id}}</strong></div>
 			<!--<div class="col-sm-1 col-xs-1 cuadrado text-center"><strong>16</strong></div>-->
 			<div class="col-sm-1 col-xs-1"></div>
 			<div class="col-sm-4 col-xs-4"><strong> Fecha: {{$datos->ffactu}} </strong></div>

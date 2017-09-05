@@ -9,6 +9,7 @@ use App\Models\Datos_presupuesto;
 use PDF;
 use App\Helper\Helper;
 use App\Helper\NumeroALetras;
+use App\Models\Reports\Reporte_contrato_prestacion_servicio;
 
 class ContratoServicioController extends Controller
 {
@@ -27,7 +28,12 @@ class ContratoServicioController extends Controller
 		$datos->fregis=Helper::formatDate($datos->fregis,0);
 		$tercero=$datos->tercero;
 		$rubros=Datos_presupuesto::where('cdatos',$cdatos)->get();
-		$data = array("datos" => $datos,"tercero" => $tercero,"colegio"=>$colegio,"rubros"=>$rubros,);
+		if (!Reporte_contrato_prestacion_servicio::where("cdatos",$cdatos)->first()){
+			$reporteCS=Reporte_contrato_prestacion_servicio::create(["cdatos"=>$datos->cdatos]);
+		}else{
+			$reporteCS=Reporte_contrato_prestacion_servicio::where("cdatos",$cdatos)->first();
+		}
+		$data = array("datos" => $datos,"tercero" => $tercero,"colegio"=>$colegio,"rubros"=>$rubros,"reporte"=>$reporteCS);
 		PDF::setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif','defaultSize'=> '12',]);
 		$pdf = PDF::loadView('pdf.contrato_prestacion_servicios', $data);
 		return $pdf->setPaper('a4')->stream();

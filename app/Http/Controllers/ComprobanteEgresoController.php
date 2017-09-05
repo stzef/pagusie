@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Reports\Reporte_comprobante_egreso;
 use App\Models\Datos_basicos;
 use App\Models\Terceros;
 use App\Models\Colegio;
 use App\Models\Impuestos;
 use App\Models\Datos_presupuesto;
+use App\Models\Datos_impuestos;
 use PDF;
 use App\Helper\Helper;
 use App\Helper\NumeroALetras;
@@ -33,8 +35,22 @@ class ComprobanteEgresoController extends Controller
 		$datos->fdispo=Helper::formatDate($datos->fdispo,0);
 		$datos->fregis=Helper::formatDate($datos->fregis,0);
 		$tercero=$datos->tercero;
-		$data = array("datos" => $datos,"tercero" => $tercero,"colegio"=>$colegio,"impuestos"=>$impuestos,"rubros"=>$rubros,);
+		$datos_impuestos=Datos_impuestos::where('cdatos',$cdatos)->get();
+		$vtdedu=0;
+		foreach ($datos_impuestos as $key => $dimpuesto) {
+			$vtdedu=$vtdedu+$dimpuesto->vimpuesto;
+		}
+		$datos->vtdeduc=$vtdedu;
+		$datos->vneto=$datos->vtotal-$vtdedu;
+		if (!Reporte_comprobante_egreso::where("cdatos",$cdatos)->first()){
+			$reporteCE=Reporte_comprobante_egreso::create(["cdatos"=>$datos->cdatos,"vtdeduc"=>$datos->vtdeduc,"vneto"=>$datos->vneto]);
+		}else{
+			$reporteCE=Reporte_comprobante_egreso::where("cdatos",$cdatos)->first();
+		}
+
+		$data = array("datos" => $datos,"tercero" => $tercero,"colegio"=>$colegio,"impuestos"=>$impuestos,"rubros"=>$rubros,"reporte"=>$reporteCE);
 		//return view('pdf.comprobante_egreso', $data);
+		
 		PDF::setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif']);
 		$pdf = PDF::loadView('pdf.comprobante_egreso', $data);
 		return $pdf->setPaper('a4')->stream();

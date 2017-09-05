@@ -45,4 +45,19 @@ class Datos_impuestos extends Model
     {
         return $this->belongsTo('App\Models\Impuesto', 'cimpu', 'cimpu');
     }
+     /**
+     * 
+     *
+     * @param  int  $value
+     * @return string
+     */
+     public function getTotalDecuccionAttribute($cdatos)
+     {
+        $impuestos=Datos_impuestos::where('cdatos',$cdatos)->get();
+        $totaldeduccion=0;
+        foreach ($impuesto as $key => $impuesto) {
+            $totaldeduccion=$totaldeduccion+$impuesto->vimpuesto;
+        }
+        return $totaldeduccion;
+    }
 }

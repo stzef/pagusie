@@ -30,8 +30,8 @@ var app=new Vue({
 		valueRubros: {},
 		impuestos:[],
 		valueImpuesto: {},
+		terceroSelected:{},
 		datos:{
-			'terceroSelected':'',
 			'cdatos':9,
 			'cterce':'',
 			'ctidocumento':'',
@@ -188,10 +188,10 @@ var app=new Vue({
 				}
 			});
 		},// end ciudades function
-		// start getTercerero function
-		getTercerero(cterce){
+		// start getTercero function
+		GetTercero(cterce,vtotal){
 			var vm = this
-			if(cterce==""){
+			if(cterce==undefined){
 				 fetch("terceros/show",{ //ruta
 				 	credentials: 'include',
 				 	type : "GET",
@@ -209,11 +209,12 @@ var app=new Vue({
 				 }).then(response => {
 				 	return response.json()
 				 }).then(terceros => {
-				 	console.log(terceros)
-				 	return terceros
-			}
-	},
-		//end getTercerero function
+				 	console.log("metodo",terceros)
+				 	vm.terceroSelected=terceros[0]
+				 	vm.terceroSelected.vtotal=currencyFormat.format(vtotal)
+			});
+	}},
+		//end getTercero function
 		CreateTercero:function(){
 			this._token = $('form').find("input").val()
 			var tercero = $.param(this.terceros)
@@ -262,7 +263,8 @@ var app=new Vue({
 			copydatos.vsiva=currencyFormat.sToN(copydatos.vsiva)
 			copydatos.viva=currencyFormat.sToN(copydatos.viva)
 			copydatos.vtotal=currencyFormat.sToN(copydatos.vtotal)
-			var dato = $.param(this.copydatos)
+			console.log("copydatos")
+			var dato = $.param(copydatos)
 			console.log(dato)
 			fetch("/datos/create",{
 				credentials: 'include',
@@ -286,8 +288,11 @@ var app=new Vue({
 				}else{
 					alertify.success('Creación Exitosa')
 					this.datos.cdatos=response.obj.id
-					
-					this.terceroSelected=this.getTercerero(this.datos.cterceSelected=response.obj.cterce);
+					console.log(response.obj.cterce)
+					//var selected=Object.assign({},this.GetTercero(response.obj.cterce))
+					this.GetTercero(response.obj.cterce, response.obj.vtotal)
+
+					//this.terceroSelected=selected
 					//alertify.success(this.datos.cdatos)
 				}
 			})
@@ -435,7 +440,7 @@ var app=new Vue({
 		document.querySelector("#"+final).value=currencyFormat.format(total)
 	},
 	sumarValorLista(campos,campo,final){
-		var total=0	
+		var total=0
 		campos.forEach(function (item, index, array) {
 			eval("total=total+currencyFormat.sToN(item."+campo+")");
 		});
@@ -453,7 +458,8 @@ var app=new Vue({
 		vm.datos.fregis=vm.date
 		vm.GetRubros()
 		vm.GetImpuestos()
-		vm.GetImpuestos("")
+		vm.GetTercero()
+		//vm.GetTercero(1,300)
 	    fetch("api/departamentos/",{ //ruta
 	    	credentials: 'include',
 	    	type : "GET",
