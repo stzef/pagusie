@@ -146,6 +146,8 @@ var app=new Vue({
 			var vm = this
 			//vm.impuesto.cimpu = vm.valueImpuesto.cimpu
 			//vm.impuesto.porcentaje_Impuesto=vm.valueImpuesto.porcentajeImpuesto
+			
+			document.querySelector("#porcentaje").value=vm.valueImpuesto.porcentajeImpuesto
 			vm.operacionAritmetica(['valorBase','porcentaje'],'%','valorImpuesto')
 			return `${nimpuesto} — ${porcentajeImpuesto}%`
 		},

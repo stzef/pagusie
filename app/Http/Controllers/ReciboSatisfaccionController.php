@@ -22,11 +22,11 @@ class ReciboSatisfaccionController extends Controller
 	$tercero=$datos->tercero;
 	$datos->fpago=Helper::formatDate($datos->fpago,1);
 
-	/*if (!Reporte_recibo_satisfaccion::where("cdatos",$cdatos)->first()){
-			$reporteRS=Reporte_recibo_satisfaccion::create("cdatos"=>$datos->cdatos);
+	if (!Reporte_recibo_satisfaccion::where("cdatos",$cdatos)->first()){
+			$reporteRS=Reporte_recibo_satisfaccion::create(["cdatos"=>$datos->cdatos]);
 	}else{
 			$reporteRS=Reporte_recibo_satisfaccion::where("cdatos",$cdatos)->first();
-	}*/
+	}
 
 	//$data = array("datos" => $datos,"tercero" => $tercero,"colegio"=>$colegio,"reporte"=>$reporteRS);
 	$data = array("datos" => $datos,"tercero" => $tercero,"colegio"=>$colegio);

@@ -31,9 +31,16 @@
 					</button>
 				</form>
 			</td>
-
-
-
+		</tr>
+		<tr>
+			<td>Recibo De Satisfacción</td>
+			<td>
+				<form @submit.prevent="openReport('recibosatisfaccion',[[datos.cdatos]])" accept-charset="utf-8">
+					<button type="submit" class="btn btn-primary">
+						Generar
+					</button>
+				</form>
+			</td>
 		</tr>
 		<tr>
 			<td>Contrato Prestacion de Servicos</td>
