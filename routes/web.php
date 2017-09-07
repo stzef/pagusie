@@ -48,6 +48,7 @@ Route::get('documentoequivalente','DocumentoEquivalenteController@pdf')->name("r
 //Route::get('pdf/{cdatos}','DocumentoEquivalenteController@pdf');
 Route::get('contratoservicio','ContratoServicioController@pdf')->name("report.contratoservicio.generate");
 Route::get('comprobanteegreso','ComprobanteEgresoController@pdf')->name("report.comprobanteegreso.generate");
+Route::get('recibosatisfaccion','ReciboSatisfaccionController@pdf')->name("report.comprobanteegreso.generate");
 
 
 Route::get('pdfv', function(){
