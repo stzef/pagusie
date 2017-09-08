@@ -60,7 +60,7 @@
 	</div>
 </div>
 <br><br><br><br>
-<div class="row">
+<div class="row" style="margin-top: 140px">
 	<div class="col-ms-12 col-xs-12 text-center">
 		<strong>RICARDO ELIAS MORALES RODRIGUEZ<br>RECTOR</strong>
 	</div>
