@@ -3,14 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Reports\Reporte_disponibilidad_presupuestal;
+use App\Models\Reports\Reporte_registro_presupuestal;
 use App\Models\Datos_basicos;
 use App\Models\Colegio;
+use App\Models\Terceros;
 use App\Models\Datos_presupuesto;
 use PDF;
 use App\Helper\Helper;
-use App\Helper\NumeroALetras;
-class DisponibilidadPresupuestalController extends Controller
+
+
+class RegistroPresupuestalController extends Controller
 {
     public function pdf(Request $request ){
 		$cdatos = $request->input('cdatos');
@@ -21,18 +23,18 @@ class DisponibilidadPresupuestalController extends Controller
 		$colegio=Colegio::all()->first();
 		$datos->fdispo=Helper::formatDate($datos->fdispo,0);
 		$datos->fregis=Helper::formatDate($datos->fregis,0);
-
-		if (!Reporte_disponibilidad_presupuestal::where("cdatos",$cdatos)->first()){
-			$reporteDP=Reporte_disponibilidad_presupuestal::create(["cdatos"=>$datos->cdatos]);
+		$tercero=$datos->tercero;
+		if (!Reporte_registro_presupuestal::where("cdatos",$cdatos)->first()){
+			$reporteRP=Reporte_registro_presupuestal::create(["cdatos"=>$datos->cdatos]);
 		}else{
-			$reporteDP=Reporte_disponibilidad_presupuestal::where("cdatos",$cdatos)->first();
+			$reporteRP=Reporte_registro_presupuestal::where("cdatos",$cdatos)->first();
 		}
 
-		$data = array("datos" => $datos,"colegio"=>$colegio,"rubros"=>$rubros,"reporte"=>$reporteDP);
+		$data = array("datos" => $datos,"colegio"=>$colegio,"rubros"=>$rubros,"reporte"=>$reporteRP,"tercero"=>$tercero);
 		//return view('pdf.comprobante_egreso', $data);
 
 		PDF::setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif']);
-		$pdf = PDF::loadView('pdf.disponibilidad_presupuestal', $data);
+		$pdf = PDF::loadView('pdf.registro_presupuestal', $data);
 		return $pdf->setPaper('a4')->stream();
 	}
 }

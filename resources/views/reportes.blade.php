@@ -52,5 +52,25 @@
 				</form>
 			</td>
 		</tr>
+		<tr>
+			<td>Disponibilidad Presupuestal</td>
+			<td>
+				<form @submit.prevent="openReport('disponibilidadpresupuestal',[[datos.cdatos]])" accept-charset="utf-8">
+					<button type="submit" class="btn btn-primary">
+						Generar
+					</button>
+				</form>
+			</td>
+		</tr>
+		<tr>
+			<td>Registro Presupuestal</td>
+			<td>
+				<form @submit.prevent="openReport('registropresupuestal',[[datos.cdatos]])" accept-charset="utf-8">
+					<button type="submit" class="btn btn-primary">
+						Generar
+					</button>
+				</form>
+			</td>
+		</tr>
 	</tbody>
 </table>

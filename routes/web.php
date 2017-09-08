@@ -50,6 +50,7 @@ Route::get('contratoservicio','ContratoServicioController@pdf')->name("report.co
 Route::get('comprobanteegreso','ComprobanteEgresoController@pdf')->name("report.comprobanteegreso.generate");
 Route::get('recibosatisfaccion','ReciboSatisfaccionController@pdf')->name("report.recibosatisfaccion.generate");
 Route::get('disponibilidadpresupuestal','DisponibilidadPresupuestalController@pdf')->name("report.disponibilidadpresupuestal.generate");
+Route::get('registropresupuestal','RegistroPresupuestalController@pdf')->name("report.registropresupuestal.generate");
 
 
 Route::get('pdfv', function(){
