@@ -8,7 +8,7 @@
 <br><br><br><br><br><br><br>
 <div class="row">
 	<div class="col-xs-12 ">
-		Recibió satisfacción el servicio o el bien prestado o sumisrado por:
+		Recibió a satisfacción el servicio o el bien prestado o sumisrado por:
 	</div>
 </div>
 <br>
