@@ -16,7 +16,7 @@ var app=new Vue({
 		Multiselect,
 	},
 	data : {
-		date: moment().locale('es').format('YYYY-MM-DD'),
+		date: moment().locale('es').format('YYYY-MM-DDThh:mm:00.000Z'),
 		tidocumento:[],
 		valueTdocu: {},
 		departamentos:[],
@@ -44,7 +44,7 @@ var app=new Vue({
 			'nfactu':'',
 			'concepto':'',
 			'justificacion':'',
-			'plazo':'',
+			'plazo':'4 días',
 			'festcomp':'',
 			'fdispo':'',
 			'fregis':'',
@@ -107,7 +107,7 @@ var app=new Vue({
 			impuesto.cimpu=vm.valueImpuesto.cimpu
 			impuesto.nimpuesto=vm.valueImpuesto.nimpuesto
 			impuesto.vbase=document.querySelector("#valorBase").value
-			impuesto.porcentaje_Impuesto=vm.impuesto.porcentaje_Impuesto
+			impuesto.porcentaje_Impuesto=vm.valueImpuesto.porcentajeImpuesto
 			impuesto.vimpuesto=document.querySelector("#valorImpuesto").value
 			if (vm.impuesto.impuestosSeleccionados.some( (object) => object.cimpu == impuesto.cimpu )){
 				alertify.error("No se puede repetir el impuesto")
@@ -147,7 +147,9 @@ var app=new Vue({
 			//vm.impuesto.cimpu = vm.valueImpuesto.cimpu
 			//vm.impuesto.porcentaje_Impuesto=vm.valueImpuesto.porcentajeImpuesto
 			
-			document.querySelector("#porcentaje").value=vm.valueImpuesto.porcentajeImpuesto
+			//document.querySelector("#porcentaje").value=vm.valueImpuesto.porcentajeImpuesto
+			vm.impuesto.porcentaje_Impuesto=vm.valueImpuesto.porcentajeImpuesto
+
 			vm.operacionAritmetica(['valorBase','porcentaje'],'%','valorImpuesto')
 			return `${nimpuesto} — ${porcentajeImpuesto}%`
 		},
@@ -247,6 +249,7 @@ var app=new Vue({
 				console.warn(error)
 				alertify.error('Error al crear el tercero')
 			})
+			this.GetTercero()
 		},
 		SetFormatDate:function(){
 			this.datos.fpago=moment(this.datos.fpago, 'YYYY-MM-DD').format('YYYY-MM-DD')
@@ -325,7 +328,6 @@ var app=new Vue({
 		.then(response => {
 			return response.json()
 		}).then(impuesto => {
-			console.log(impuesto)
 			vm.impuestos =impuesto
 			vm.valueImpuesto = impuesto[0]
 		});
@@ -458,6 +460,7 @@ var app=new Vue({
 		vm.datos.festcomp=vm.date
 		vm.datos.fdispo=vm.date
 		vm.datos.fregis=vm.date
+		vm.datos.vigencia=moment().locale('es').format('YYYY'),
 		vm.GetRubros()
 		vm.GetImpuestos()
 		vm.GetTercero()

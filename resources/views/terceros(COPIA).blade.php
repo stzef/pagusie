@@ -1,4 +1,18 @@
-<form @submit.prevent="CreateTercero" accept-charset="utf-8" >
+@extends('layouts.app')
+
+@section('content')
+<div class="container">
+	<div class="row">
+
+		<div class="col-md-12">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					Terceros
+				</div>
+			</div>
+		</div>
+	</div>
+	<form @submit.prevent="CreateTercero" accept-charset="utf-8" >
 		<input type="hidden" name="_token" id="token"  value="{{csrf_token()}}"></input>
 		<div class="row">
 			<div class="form-group col-md-4 col-lg-4">
@@ -66,4 +80,6 @@
 				</button></center>
 			</div>
 		</div></center>
-</form>
+	</form>
+</div>
+@endsection

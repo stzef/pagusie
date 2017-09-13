@@ -13,7 +13,7 @@
 	</div>
 </div>
 <br><br>
-Fecha: &nbsp;<strong> {{ $datos->regis }}</strong>
+Fecha: &nbsp;<strong> {{ $datos->fregis }}</strong>
 <br><br>
 Señor(a):<br>
 <strong>JAIME AUGUSTO SALGADO DAZA</strong> <br>
@@ -29,7 +29,7 @@ Sirvase dar registro(s) presupuestal(es) con cargo al (los) rubro(s):
 			<strong>RUBROS</strong>
 		</td>
 		<td width="20%" class="text-center">
-			<strong>VALOR</strong>
+			<strong>VALOR DEL REGISTRO</strong>
 		</td>
 	</tr>
 	@foreach($rubros as $rubro)
@@ -57,7 +57,7 @@ A nombre de: &nbsp; {{strtoupper($tercero->nombre)}}
 		</td>
 	</tr>
 </table>
-<br><br><br>
+<br><br>
 <div class="text-center">
 	<strong>
 			RICARDO ELIAS MORALES RODRIGUEZ<br>
@@ -76,10 +76,35 @@ Fecha: &nbsp;<strong> {{ $datos->fregis }}</strong>
 </div>
 <br>
 Existe disponibilidad presupuestal en el (los) Rubro(s)<br><br>
-
+<table border="2" width="100%">
+	<tr>
+		<td width="15%" class="text-center">
+			<strong>CODIGO</strong>
+		</td>
+		<td width="60%" class="text-center">
+			<strong>RUBROS</strong>
+		</td>
+		<td width="20%" class="text-center">
+			<strong>VALOR DEL REGISTRO</strong>
+		</td>
+	</tr>
+	@foreach($rubros as $rubro)
+	<tr>
+		<td width="15%" class="text-center">
+			{{ $rubro->crubro }}
+		</td>
+		<td width="60%" class="text-center">
+			{{ $rubro->presupuesto->nrubro }}
+		</td>
+		<td width="20%" class="text-center">
+			{{number_format($rubro->valor,2) }}
+		</td>
+	</tr>
+	@endforeach
+</table>
 <br>
 Con cargo al presupuesto de la vigencia &nbsp; <strong>{{$datos->vigencia}}</strong>
-<br><br><br><br>
+<br><br><br>
 <div class="text-center">
 	<strong>
 	JAIME AUGUSTO SALGADO DAZA<br>

@@ -44,8 +44,9 @@ class TercerosController extends Controller
         'nit.integer' => 'El NIT debe ser numérico',
         'nit.unique' => 'Ya existe un tercero con este NIT',
         'telefono.integer' => 'El TELÉFONO debe ser numérico',
-        'direccion.required' => 'required',
-        'email.required' => 'required',
+        'telefono.required' => 'El TELÉFONO es obligatorio',
+        'direccion.required' => 'La DIRECCIÓN es obligatoria',
+        'email.required' => 'El EMAIL es obligatoria',
         ]
         );
 

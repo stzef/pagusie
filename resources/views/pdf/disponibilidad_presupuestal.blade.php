@@ -71,7 +71,7 @@ Existe disponibilidad presupuestal en el (los) Rubro(s)<br><br>
 			<strong>RUBROS</strong>
 		</td>
 		<td width="20%" class="text-center">
-			<strong>VALOR</strong>
+			<strong>VALOR DISPONIBILIDAD</strong>
 		</td>
 	</tr>
 	@foreach($rubros as $rubro)
