@@ -13,7 +13,7 @@
         }
         @page { margin: 130px 50px; }
         #header { position: fixed; left: 0px; top: -120px;  right: 0px; height: 10;  text-align: center; }
-        #footer { position: fixed; left: 0px; bottom: -110px; right: 0px; height: 70px;  }
+        #footer { position: fixed; left: 0px; bottom: -90px; right: 0px; height: 70px;  }
         #footer .page:after { content: counter(page, upper-roman); }
     </style>
     <link rel="stylesheet" href="layout/css/bootstrap-without-icons.min.css" >
@@ -47,8 +47,10 @@
             <p>
               <center><em>UNA INSTITUCION EDUCATIVA COMPROMETIDA CON EXCELENCIA Y CALIDAD POR EL DESARROLLO  DE  MELGAR.<em></center> Cra.25 No.6-43 Sede principal - TEL: 2452305-2450966 Melgar Tol, E-mail: ricardomorales@yahoo.es
            </p>
-          <hr style="height: 2px; width: 11%; background-color: black; margin-bottom: 1px; margin-top: 1px;" align="right">
-             PagusIE v1
+          <hr style="height: 2px; width: 100%; background-color: black; margin-bottom: 1px; margin-top: 1px;" align="right">
+          <font size=1>
+              Impreso por PagusIE v1. Diseñado por SistematizarEF Ltda. Tel 8330505-8353786 - Cel 315-2587590 314-3945809 - Girardot - www.sistematizar.co Fecha: {{date('Y-m-d H:i:s')}}
+          </font>
             </hr>
        </div>
        @yield('footer')

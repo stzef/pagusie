@@ -40,7 +40,7 @@
 	</div>
 </form>
 <hr>
-<table  class="table" width="100%" cellspacing="0">
+<table v-if="impuesto.impuestosSeleccionados.length!=0" class="table-striped table-bordered text-center" width="100%" cellspacing="0">
 	<thead>
 		<tr>
 			<th>Nombre</th>
@@ -66,9 +66,9 @@
 
 	<footer>
 		<th colspan="3" v-if="impuesto.impuestosSeleccionados.length!=0">Total</th>
-		<th v-if="impuesto.impuestosSeleccionados.length!=0">
-			[[impuesto.sumaImpuestos]]
-		</th>
+		<td v-if="impuesto.impuestosSeleccionados.length!=0">
+			<strong>[[impuesto.sumaImpuestos]]</strong>
+		</td>
 	</footer>
 
 </table>

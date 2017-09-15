@@ -26,4 +26,15 @@ Route::group(['prefix' => 'departamentos'], function(){
 Route::group(['prefix' => 'ciudades'], function(){
 	Route::get('/', "APIController@ciudades")->name("api.ciudades.index");
 });
-
+Route::group(['prefix' => 'terceros'], function(){
+	Route::get('/', "APIController@terceros")->name("api.terceros.index");
+});
+Route::group(['prefix' => 'impuestos'], function(){
+	Route::get('/', "APIController@impuestos")->name("api.impuestos.index");
+});
+Route::group(['prefix' => 'presupuestos'], function(){
+	Route::get('/', "APIController@presupuestos")->name("api.presupuestos.index");
+});
+Route::group(['prefix' => 'comprobanteegreso'], function(){
+	Route::get('/', "APIController@comprobanteegreso")->name("api.comprobanteegreso.index");
+});

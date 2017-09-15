@@ -37,7 +37,7 @@
 		</div>
 	</form>
 	<hr>
-	<table  class="table" width="100%" cellspacing="0">
+	<table v-if="presupuesto.rubrosSeleccionados.length!=0" class="table-striped table-bordered text-center" width="100%" cellspacing="0">
 		<thead>
 			<tr>
 				<th>Rubro</th>
@@ -51,16 +51,17 @@
 				<tr>
 					<td>[[rubro.crubro]]</td>
 					<td>[[rubro.nrubro]]</td>
-					<td>[[rubro.valor]]</td>
-					<td><button @click.prevent="removeRubro(index)" class="btn btn-danger " >-</button></td>
+					<td >[[rubro.valor]]</td>
+					<td ><button @click.prevent="removeRubro(index)" class="btn btn-danger " >-</button></td>
 				</tr>
 			</template>
 		</tbody>
 		<footer>
 			<th colspan="2" v-if="presupuesto.rubrosSeleccionados.length!=0">Total</th>
-			<th v-if="presupuesto.rubrosSeleccionados.length!=0">
-				[[presupuesto.sumaRubros]]
-			</th>
+			<td v-if="presupuesto.rubrosSeleccionados.length!=0">
+				<strong> [[presupuesto.sumaRubros]]</strong>
+			</td>
+			
 		</footer>
 	</table>
 	<form @submit.prevent="createPresupuesto" accept-charset="utf-8">

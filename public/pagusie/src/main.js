@@ -61,7 +61,10 @@ var app=new Vue({
 			'nombre':'',
 			'telefono':'',
 			'direccion':'',
-			'email':''
+			'email':'',
+			'cnombre':'',
+			'ctelefono':'',
+			'cemail':''
 		},
 		presupuesto:{
 			crubro:'',
@@ -196,7 +199,7 @@ var app=new Vue({
 		GetTercero(cterce,vtotal){
 			var vm = this
 			if(cterce==undefined){
-				 fetch("terceros/show",{ //ruta
+				 fetch("api/terceros",{ //ruta
 				 	credentials: 'include',
 				 	type : "GET",
 				 }).then(response => {
@@ -206,18 +209,18 @@ var app=new Vue({
 				 	vm.tercero = terceros
 				 	vm.valueTercero = terceros[0]
 				 });
-			}else{
-				fetch("terceros/show?cterce="+cterce,{ //ruta
-				 	credentials: 'include',
-				 	type : "GET",
-				 }).then(response => {
-				 	return response.json()
-				 }).then(terceros => {
-				 	console.log("metodo",terceros)
-				 	vm.terceroSelected=terceros[0]
-				 	vm.terceroSelected.vtotal=currencyFormat.format(vtotal)
-			});
-	}},
+				}else{
+				fetch("api/terceros?cterce="+cterce,{ //ruta
+					credentials: 'include',
+					type : "GET",
+				}).then(response => {
+					return response.json()
+				}).then(terceros => {
+					console.log("metodo",terceros)
+					vm.terceroSelected=terceros[0]
+					vm.terceroSelected.vtotal=currencyFormat.format(vtotal)
+				});
+			}},
 		//end getTercero function
 		CreateTercero:function(){
 			this._token = $('form').find("input").val()
@@ -308,7 +311,7 @@ var app=new Vue({
 		},
 		GetRubros: function(){
 			var vm = this
-			fetch("presupuesto/show",{ //ruta
+			fetch("api/presupuestos",{ //ruta
 				credentials: 'include',
 				type : "GET",
 			})
@@ -321,7 +324,7 @@ var app=new Vue({
 		},
 		GetImpuestos: function(){
 			var vm = this
-		fetch("impuesto/show",{ //ruta
+		fetch("api/impuestos",{ //ruta
 			credentials: 'include',
 			type : "GET",
 		})
@@ -449,6 +452,21 @@ var app=new Vue({
 			eval("total=total+currencyFormat.sToN(item."+campo+")");
 		});
 		eval("this."+final+"=currencyFormat.format(total)")
+	},
+	existsComprobanteEgreso(){
+		var cegre=this.datos.cegre
+		fetch("api/comprobanteegreso/?cegre="+cegre,{ //ruta
+			credentials: 'include',
+			type : "GET",
+		})
+		.then(response => {
+			return response.json()
+		}).then(comprobanteegreso => {
+			console.log(comprobanteegreso)
+			if(comprobanteegreso){
+				alertify.error("Codigo comprobante egreso ya esta registrado")
+			}
+	});
 	},
 	},// end methods
 	delimiters : ["[[","]]"],

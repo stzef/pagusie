@@ -9,7 +9,7 @@ use App\Models\Impuestos;
 class ImpuestoController extends Controller
 {
 	public function __construct(){
-		$this->middleware('auth');
+		$this->middleware('auth',);
 	}
     /**
      * Display a listing of the resource.
@@ -47,7 +47,7 @@ class ImpuestoController extends Controller
      * @param  \App\Models\Datos_basicos  $datos_basicos
      * @return \Illuminate\Http\Response
      */
-    public function show(Impuestos $impuestos, Request $request)
+    /*public function show(Impuestos $impuestos, Request $request)
     {
     	if(!$request->cimpu){
     		$impuestos = Impuestos::all();
@@ -56,7 +56,7 @@ class ImpuestoController extends Controller
     		$impuestos = Impuestos::where('cimpu',$cimpu)->get();
     	}
     	return response()->json($impuestos->toArray());
-    }
+    }*/
 
     /**
      * Show the form for editing the specified resource.

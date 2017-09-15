@@ -34,7 +34,6 @@ Route::group(['prefix'=>'datosimpuesto'], function(){
 	Route::post('/create','DatosImpuestoController@create')->name('datosimpuesto.create');
 });
 Route::group(['prefix'=>'terceros'], function(){
-	Route::get('/', 'TercerosController@index')->name('terceros.index');
 	Route::get('/show', 'TercerosController@show')->name('terceros.show');
 	Route::post('/create','TercerosController@create')->name('terceros.create');
 });

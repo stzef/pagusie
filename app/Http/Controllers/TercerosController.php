@@ -7,6 +7,7 @@ use App\Models\Departamentos;
 use App\Models\Ciudades;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+
 class TercerosController extends Controller
 {
     /**
@@ -85,8 +86,9 @@ class TercerosController extends Controller
      * @param  \App\Models\Terceros  $terceros
      * @return \Illuminate\Http\Response
      */
-    public function show(Terceros $terceros, Request $request)
+   /* public function show(Terceros $terceros, Request $request)
     {
+        
         if(!$request->cterce){
             $terceros=Terceros::all();
         }else{
@@ -94,8 +96,7 @@ class TercerosController extends Controller
             $terceros = Terceros::where('cterce',$cterce)->get();
         }
         return response()->json($terceros->toArray());
-        //
-    }
+    }*/
 
     /**
      * Show the form for editing the specified resource.

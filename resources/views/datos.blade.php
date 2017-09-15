@@ -6,7 +6,7 @@
 		</div>
 		<div class="form-group col-md-3">
 			<label for="cegreso">Codigo comprobante egreso</label>
-			<input type="text" class="form-control" id="cegreso" aria-describedby="cegreso" placeholder="Ingrese codigo de egreso" v-model="datos.cegre" required>
+			<input @blur.prevent="existsComprobanteEgreso()" type="text" class="form-control" id="cegreso" aria-describedby="cegreso" placeholder="Ingrese codigo de egreso" v-model="datos.cegre" required>
 		</div>
 		<div class="form-group col-md-3">
 			<label for="fechaPago">Fecha de pago</label>
@@ -95,7 +95,7 @@
 </form>
 <!--Start modal-->
 <div id="myModal" class="modal fade" role="dialog">
-		  <div class="modal-dialog" style="width: 1200px">
+		  <div class="modal-dialog" style="width: 600px">
 
 		    <!-- Modal content-->
 		    <div class="modal-content">
@@ -107,7 +107,7 @@
 		        @include('terceros')
 		      </div>
 		      <div class="modal-footer">
-		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		      <!--  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
 		      </div>
 		    </div>
 
