@@ -13,8 +13,10 @@ use App\Models\Datos_basicos;
 use Illuminate\Support\Facades\Auth;
 class APIController extends Controller
 {
-
-
+/*
+public function __construct(){
+    $this->middleware('auth');
+}*/
 	public function tipo_documento(){
 		$tidocumentos = Tipo_documento::all();
 		return response()->json($tidocumentos->toArray());
@@ -50,7 +52,6 @@ class APIController extends Controller
 	}
 
 	public function terceros(Request $request){
-		
 		if(!$request->cterce){
 			$terceros=Terceros::all();
 		}else{

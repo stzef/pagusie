@@ -36,9 +36,16 @@ class ComprobanteEgresoController extends Controller
 		$datos->fregis=Helper::formatDate($datos->fregis,0);
 		$tercero=$datos->tercero;
 		$datos_impuestos=Datos_impuestos::where('cdatos',$cdatos)->get();
+		
 		$vtdedu=0;
-		foreach ($datos_impuestos as $key => $dimpuesto) {
-			$vtdedu=$vtdedu+$dimpuesto->vimpuesto;
+		foreach ($impuestos as $key => $impuesto) {
+			foreach ($datos_impuestos as $key2 => $dimpuesto) {
+				if($impuesto->cimpu==$dimpuesto->cimpu){
+					$vtdedu=$vtdedu+$dimpuesto->vimpuesto;
+					$impuestos[$key]->porcentajeImpuesto=$dimpuesto->porcentaje_Impuesto;
+					$impuestos[$key]->valor=($impuesto->porcentajeImpuesto/100)*$datos->vtotal;
+				}
+			}
 		}
 		$datos->vtdeduc=$vtdedu;
 		$datos->vneto=$datos->vtotal-$vtdedu;
@@ -48,11 +55,12 @@ class ComprobanteEgresoController extends Controller
 			$reporteCE=Reporte_comprobante_egreso::where("cdatos",$cdatos)->first();
 		}
 
-		$data = array("datos" => $datos,"tercero" => $tercero,"colegio"=>$colegio,"impuestos"=>$impuestos,"rubros"=>$rubros,"reporte"=>$reporteCE);
+		$data = array("datos" => $datos,"tercero" => $tercero,"colegio"=>$colegio,"impuestos"=>$impuestos,"rubros"=>$rubros,"Datosimpuesto"=>$datos_impuestos,"reporte"=>$reporteCE);
 		//return view('pdf.comprobante_egreso', $data);
 		
 		PDF::setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif']);
 		$pdf = PDF::loadView('pdf.comprobante_egreso', $data);
-		return $pdf->setPaper('a4')->stream();
+		$namefile='Comprobante De Egreso Nº '.$reporteCE->id.'.pdf';
+		return $pdf->setPaper('a4')->stream($namefile);
 	}
 }

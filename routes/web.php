@@ -20,6 +20,8 @@ Route::get('/', 'HomeController@index')->name("index");
 
 Route::group(['prefix'=>'datos'], function(){
 	Route::post('/create','DatosBasicosController@create')->name('datos.create');
+	Route::post('/update','DatosBasicosController@update')->name('datos.update');
+
 });
 Route::group(['prefix'=>'presupuesto'], function(){
 	Route::get('/show','PresupuestoController@show')->name('presupuesto.show');

@@ -1,5 +1,8 @@
 @extends('layouts.pdf')
 
+@section('title')
+	<title>Documento Equivalente {{$reporte->id}}</title>
+@endsection
 
 @section('styles')
 <style>

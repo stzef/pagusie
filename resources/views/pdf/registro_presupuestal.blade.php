@@ -38,7 +38,7 @@ Sirvase dar registro(s) presupuestal(es) con cargo al (los) rubro(s):
 			{{ $rubro->crubro }}
 		</td>
 		<td width="60%" class="text-center">
-			{{ $rubro->presupuesto->nrubro }}
+			{{strtoupper($rubro->presupuesto->nrubro)}}
 		</td>
 		<td width="20%" class="text-center">
 			{{number_format($rubro->valor,2) }}
@@ -46,7 +46,7 @@ Sirvase dar registro(s) presupuestal(es) con cargo al (los) rubro(s):
 	</tr>
 	@endforeach
 </table>
-A nombre de: &nbsp; {{strtoupper($tercero->nombre)}}
+A nombre de: &nbsp; <strong> {{strtoupper($tercero->nombre)}}</strong>
 <table border="2" width="100%">
 	<tr>
 		<td width="10%">
@@ -57,6 +57,7 @@ A nombre de: &nbsp; {{strtoupper($tercero->nombre)}}
 		</td>
 	</tr>
 </table>
+Del presupuesto de la vigencia: &nbsp; <strong>{{ $datos->vigencia }}</strong>
 <br><br>
 <div class="text-center">
 	<strong>
@@ -64,8 +65,8 @@ A nombre de: &nbsp; {{strtoupper($tercero->nombre)}}
 			RECTOR
 	</strong>
 </div>
-<br>
-<div class="hrdoble"></div><br><br>
+
+<div class="hrdoble"></div><br>
 Fecha: &nbsp;<strong> {{ $datos->fregis }}</strong>
 <br><br>
 <div class="text-center">
@@ -94,7 +95,7 @@ Existe disponibilidad presupuestal en el (los) Rubro(s)<br><br>
 			{{ $rubro->crubro }}
 		</td>
 		<td width="60%" class="text-center">
-			{{ $rubro->presupuesto->nrubro }}
+			{{strtoupper($rubro->presupuesto->nrubro)}}
 		</td>
 		<td width="20%" class="text-center">
 			{{number_format($rubro->valor,2) }}
@@ -102,9 +103,9 @@ Existe disponibilidad presupuestal en el (los) Rubro(s)<br><br>
 	</tr>
 	@endforeach
 </table>
-<br>
+
 Con cargo al presupuesto de la vigencia &nbsp; <strong>{{$datos->vigencia}}</strong>
-<br><br><br>
+<br><br>
 <div class="text-center">
 	<strong>
 	JAIME AUGUSTO SALGADO DAZA<br>

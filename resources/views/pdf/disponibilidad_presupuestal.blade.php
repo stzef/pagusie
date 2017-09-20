@@ -36,7 +36,7 @@ Sirvase dar disponobilidad presupuestal por el (los) rubro(s):
 			{{ $rubro->crubro }}
 		</td>
 		<td width="60%" class="text-center">
-			{{ $rubro->presupuesto->nrubro }}
+			{{strtoupper( $rubro->presupuesto->nrubro )}}
 		</td>
 	</tr>
 	@endforeach
@@ -51,7 +51,7 @@ Del presupuesto de la vigencia: &nbsp; <strong>{{ $datos->vigencia }}</strong>
 	</strong>
 </div>
 <br>
-<div class="hrdoble"></div><br><br>
+<div class="hrdoble"></div><br>
 Fecha: &nbsp;<strong> {{ $datos->fdispo }}</strong>
 <br><br>
 <div class="text-center">
@@ -80,7 +80,7 @@ Existe disponibilidad presupuestal en el (los) Rubro(s)<br><br>
 			{{ $rubro->crubro }}
 		</td>
 		<td width="60%" class="text-center">
-			{{ $rubro->presupuesto->nrubro }}
+			{{strtoupper($rubro->presupuesto->nrubro )}}
 		</td>
 		<td width="20%" class="text-center">
 			{{number_format($rubro->valor,2) }}
@@ -90,7 +90,7 @@ Existe disponibilidad presupuestal en el (los) Rubro(s)<br><br>
 </table>
 <br>
 Con cargo al presupuesto de la vigencia &nbsp; <strong>{{$datos->vigencia}}</strong>
-<br><br><br><br>
+<br><br><br>
 <div class="text-center">
 	<strong>
 	JAIME AUGUSTO SALGADO DAZA<br>

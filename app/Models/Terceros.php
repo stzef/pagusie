@@ -5,14 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * @property integer $cterce
- * @property integer $cciud
- * @property integer $nit
+ * @property int $cterce
+ * @property int $cciud
+ * @property int $nit
+ * @property int $dv
  * @property string $nombre
- * @property string $telefono
+ * @property int $telefono
  * @property string $direccion
  * @property string $email
- * @property Ciudades $ciudad
+ * @property string $cnombre
+ * @property string $ctelefono
+ * @property string $cemail
+ * @property string $created_at
+ * @property string $updated_at
+ * @property Ciudade $ciudade
  * @property DatosBasico[] $datosBasicos
  */
 class Terceros extends Model
@@ -20,7 +26,7 @@ class Terceros extends Model
     /**
      * @var array
      */
-    protected $fillable = ['cciud', 'nit','dv', 'nombre', 'telefono', 'direccion', 'email'];
+    protected $fillable = ['cciud', 'nit', 'dv', 'nombre', 'telefono', 'direccion', 'email', 'cnombre', 'ctelefono', 'cemail', 'created_at', 'updated_at'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

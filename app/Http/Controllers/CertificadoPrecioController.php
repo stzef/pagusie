@@ -33,6 +33,7 @@ class CertificadoPrecioController extends Controller
 
 		PDF::setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif']);
 		$pdf = PDF::loadView('pdf.certificado_precios_mercado', $data);
-		return $pdf->setPaper('a4')->stream();
+		$namefile='Certificado De Precios Nº '.$reporteCP->id.'.pdf';
+		return $pdf->setPaper('a4')->stream($namefile);
 	}
 }

@@ -36,9 +36,9 @@ class TercerosController extends Controller
         'cciud'=>'required|exists:ciudades,cciud',
         'nit'=>'required|integer|unique:terceros',
         'nombre'=>'required',
-        'telefono'=>'required|integer',
+        'telefono'=>'nullable|integer',
         'direccion'=>'required',
-        'email'=>'required',
+        'ctelefono'=>'nullable|integer',
         ],
         [
         'nit.required' => 'El NIT es obligatorio',
@@ -48,9 +48,11 @@ class TercerosController extends Controller
         'telefono.required' => 'El TELÉFONO es obligatorio',
         'direccion.required' => 'La DIRECCIÓN es obligatoria',
         'email.required' => 'El EMAIL es obligatoria',
+        'email.email' => 'El EMAIL no cumple con la estructura',
+        'ctelefono.integer' => 'El TELÉFONO del contacto debe ser numérico',
+        'cemail.email' => 'El EMAIL del contacto no cumple con la estructura',
         ]
         );
-
        if ($validator->fails()){
         $messages = $validator->messages();
         $message="";

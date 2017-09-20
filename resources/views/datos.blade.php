@@ -4,10 +4,10 @@
 			<label for="vigencia" class="form-label">Vigencia</label>
 			<input type="text" class="form-control" id="vigencia" aria-describedby="vigencia" placeholder="Ingrese el año de vigencia" v-model="datos.vigencia" required>
 		</div>
-		<div class="form-group col-md-3">
+<!--		<div class="form-group col-md-3">
 			<label for="cegreso">Codigo comprobante egreso</label>
 			<input @blur.prevent="existsComprobanteEgreso()" type="text" class="form-control" id="cegreso" aria-describedby="cegreso" placeholder="Ingrese codigo de egreso" v-model="datos.cegre" required>
-		</div>
+		</div>-->
 		<div class="form-group col-md-3">
 			<label for="fechaPago">Fecha de pago</label>
 			<datepicker calendar-button calendar-button-icon="fa fa-calendar" disabled-picker bootstrap-styling language="es" id="fechaPago" v-model="datos.fpago" format="yyyy-MM-dd" required></datepicker>

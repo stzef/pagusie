@@ -111,7 +111,7 @@
 					{{$impuesto->porcentajeImpuesto}}%
 				</td>
 				<td align="center">
-					{{number_format(($impuesto->porcentajeImpuesto/100)*$datos->vtotal,2)}}
+					{{number_format($impuesto->valor,2)}}
 				</td>
 				<td rowspan="2">TOTAL DEDUCCIONES</td>
 			</tr>
@@ -124,7 +124,7 @@
 					{{$impuesto->porcentajeImpuesto}}%
 				</td>
 				<td align="center">
-					{{number_format(($impuesto->porcentajeImpuesto/100)*$datos->vtotal,2)}}
+					{{number_format($impuesto->valor,2)}}
 				</td>
 				<td rowspan="{{count($impuestos)-2}}" align="center">
 					{{number_format($datos->vtdeduc,2)}}
@@ -139,7 +139,7 @@
 					{{$impuesto->porcentajeImpuesto}}%
 				</td>
 				<td align="center">
-					{{number_format(($impuesto->porcentajeImpuesto/100)*$datos->vtotal,2)}}
+					{{number_format($impuesto->valor,2)}}
 				</td>
 			</tr>
 			@endif

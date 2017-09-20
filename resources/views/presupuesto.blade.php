@@ -1,9 +1,9 @@
 <div class="row">
 	<div class="col-md-7 col-xs-7">
-		<h4 v-if="terceroSelected.nombre"> Tercero: [[terceroSelected.nombre]]</h4>
+		<h4 v-if="terceroSelected.nombre">[[terceroSelected.nombre]]</h4>
 	</div>
 	<div class="col-md-4 col-xs-4">
-		<h4 v-if="terceroSelected.vtotal">Valor Facturado: [[terceroSelected.vtotal]]</h4>
+		<h4 v-if="terceroSelected.vtotal">Valor: [[terceroSelected.vtotal]]</h4>
 	</div>
 </div>
 	<hr v-if="terceroSelected.nombre">
@@ -42,7 +42,7 @@
 			<tr>
 				<th>Rubro</th>
 				<th>Nombre</th>
-				<th>Valor</th>
+				<th align="right">Valor</th>
 				<th>Eliminar</th>
 			</tr>
 		</thead>
@@ -51,14 +51,14 @@
 				<tr>
 					<td>[[rubro.crubro]]</td>
 					<td>[[rubro.nrubro]]</td>
-					<td >[[rubro.valor]]</td>
+					<td align="right">[[rubro.valor]]</td>
 					<td ><button @click.prevent="removeRubro(index)" class="btn btn-danger " >-</button></td>
 				</tr>
 			</template>
 		</tbody>
 		<footer>
-			<th colspan="2" v-if="presupuesto.rubrosSeleccionados.length!=0">Total</th>
-			<td v-if="presupuesto.rubrosSeleccionados.length!=0">
+			<td colspan="2" v-if="presupuesto.rubrosSeleccionados.length!=0" align="center"><strong>Total</strong></td>
+			<td v-if="presupuesto.rubrosSeleccionados.length!=0" align="right">
 				<strong> [[presupuesto.sumaRubros]]</strong>
 			</td>
 			

@@ -5,7 +5,7 @@
 		<strong>EL RECTOR DE LA INSTITUCIÓN<br> HACE CONSTAR QUE:</strong>
 	</div>
 </div>
-<br><br><br><br><br><br><br>
+<br><br><br>
 <div class="row">
 	<div class="col-xs-12 ">
 		Recibió a satisfacción el servicio o el bien prestado o sumisrado por:
@@ -59,7 +59,7 @@
 		FECHA: &nbsp;&nbsp;<strong>{{ $datos->fpago }}</strong>
 	</div>
 </div>
-<br><br><br><br>
+<br><br>
 <div class="row" style="margin-top: 140px">
 	<div class="col-ms-12 col-xs-12 text-center">
 		<strong>RICARDO ELIAS MORALES RODRIGUEZ<br>RECTOR</strong>

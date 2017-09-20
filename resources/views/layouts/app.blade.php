@@ -22,11 +22,11 @@
 
 	<link rel="stylesheet" href="{{ URL::asset('bower_components/bootstrap/dist/css/bootstrap.css') }}" >
 	<link rel="stylesheet" href="{{ URL::asset('bower_components/datatables.net-dt/css/jquery.dataTables.css') }}" >
-<style>
+	<style>
 	.tab-width{ 
-    width: 16%;
-    text-align:center;
-}
+		width: 16%;
+		text-align:center;
+	}
 
 </style>
 </head>
@@ -52,7 +52,33 @@
 					<ul class="nav navbar-nav">
 						&nbsp;
 					</ul>
-
+					<ul class="nav navbar-nav navbar-center">
+						@if (Auth::user())
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+								Cuentas <span class="caret"></span>
+							</a>
+							<ul class="dropdown-menu" role="menu">
+								<li>
+									<a href="{{route('index')}}" >Nuevo</a>
+								</li>
+								<li>
+									<a href="" >Editar</a>
+								</li>
+							</ul>		
+						</li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+								Configuración <span class="caret"></span>
+							</a>
+							<ul class="dropdown-menu" role="menu">
+								<li>
+									<a href="" >Parametros</a>
+								</li>
+							</ul>		
+						</li>
+						@endif
+					</ul>
 					<ul class="nav navbar-nav navbar-right">
 						@if (Auth::guest())
 						<li><a href="{{ route('login') }}">Ingresar</a></li>
@@ -131,11 +157,11 @@
 
 
 
-		jQuery.fn.extend({
-			inputCurrency : function(){
-				var input = this,
-				regexp = /[^\d\.\,\s]+ (?!0\.00)[1-9]\d{0,2}(,\d{3})*(\.\d\d)?$/
-				input.css({"text-align":"right"})
+	jQuery.fn.extend({
+		inputCurrency : function(){
+			var input = this,
+			regexp = /[^\d\.\,\s]+ (?!0\.00)[1-9]\d{0,2}(,\d{3})*(\.\d\d)?$/
+			input.css({"text-align":"right"})
 
 			//Selecciona todo lo que no sea un nuemro, una coma, un punto o un espacio
 			var regexp_clear = /([^0-9|\$|\,|\.|\s])/g
@@ -155,9 +181,9 @@
 				input.trigger("change")
 			}
 
-			},
-		})
-		$(".input-currency").inputCurrency();
+		},
+	})
+	$(".input-currency").inputCurrency();
 
 </script>
 

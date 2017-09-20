@@ -1,9 +1,9 @@
 <div class="row">
 	<div class="col-md-7 col-xs-7">
-		<h4 v-if="terceroSelected.nombre"> Tercero: [[terceroSelected.nombre]]</h4>
+		<h4 v-if="terceroSelected.nombre">  [[terceroSelected.nombre]]</h4>
 	</div>
 	<div class="col-md-4 col-xs-4">
-		<h4 v-if="terceroSelected.vtotal">Valor Facturado: [[terceroSelected.vtotal]]</h4>
+		<h4 v-if="terceroSelected.vtotal">Valor: [[terceroSelected.vtotal]]</h4>
 	</div>
 </div>
 <hr v-if="terceroSelected.nombre">
@@ -21,7 +21,7 @@
 		</div>
 		<div class="form-group col-md-2">
 			<label for="valorBase">Valor Base</label>
-			<input @blur.prevent="operacionAritmetica(['valorBase','porcentaje'],'%','valorImpuesto')" type="text" class="form-control input-currency" id="valorBase" aria-describedby="valorBase" placeholder="Ingrese el valor"  required>
+			<input @blur.prevent="operacionAritmetica(['valorBase','porcentaje'],'%','valorImpuesto')" type="text" class="form-control input-currency" id="valorBase" aria-describedby="valorBase" placeholder="Ingrese el valor" required >
 		</div>
 		<div class="form-group col-md-2">
 			<label for="porcentaje">Porcentaje</label>
@@ -42,7 +42,7 @@
 <hr>
 <table v-if="impuesto.impuestosSeleccionados.length!=0" class="table-striped table-bordered text-center" width="100%" cellspacing="0">
 	<thead>
-		<tr>
+		<tr style="background-color: #f2f2f2;">
 			<th>Nombre</th>
 			<th>Valor Base</th>
 			<th>Porcentaje</th>
@@ -54,22 +54,26 @@
 		<template v-for="(impuesto,index) in impuesto.impuestosSeleccionados">
 			<tr>
 				<td>[[impuesto.nimpuesto]]</td>
-				<td>[[impuesto.vbase]]</td>
+				<td align="right">[[impuesto.vbase]]</td>
 				<td>[[impuesto.porcentaje_Impuesto]]%</td>
-				<td>[[impuesto.vimpuesto]]</td>
+				<td align="right">[[impuesto.vimpuesto]]</td>
 				<td><button @click.prevent="removeImpuesto(index)" class="btn btn-danger " >-</button></td>
 			</tr>
 		</template>
+		<tr style="background-color: #f2f2f2;">
+			<td colspan="3" v-if="impuesto.impuestosSeleccionados.length!=0" align="center" ><strong>Total Descuento</strong></td>
+			<td v-if="impuesto.impuestosSeleccionados.length!=0" align="right">
+				<strong>[[impuesto.sumaImpuestos]]</strong>
+			</td>
+		</tr>
+		<tr style="background-color: #f2f2f2;">
+			<td colspan="3" v-if="impuesto.impuestosSeleccionados.length!=0" align="center" ><strong>Valor A Pagar</strong></td>
+			<td v-if="impuesto.impuestosSeleccionados.length!=0" align="right">
+				<strong>[[impuesto.netopagar]]</strong>
+			</td>
+		</tr>
 
 	</tbody>
-
-
-	<footer>
-		<th colspan="3" v-if="impuesto.impuestosSeleccionados.length!=0">Total</th>
-		<td v-if="impuesto.impuestosSeleccionados.length!=0">
-			<strong>[[impuesto.sumaImpuestos]]</strong>
-		</td>
-	</footer>
 
 </table>
 <form @submit.prevent="createImpuesto" accept-charset="utf-8">

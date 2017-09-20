@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer $ctidocumento
  * @property integer $cterce
  * @property integer $vigencia
- * @property integer $cegre
  * @property string $fpago
  * @property string $ffactu
  * @property string $nfactu
@@ -38,7 +37,7 @@ class Datos_basicos extends Model
     /**
      * @var array
      */
-    protected $fillable = ['cestado', 'ctidocumento', 'cterce', 'vigencia', 'cegre', 'fpago', 'ffactu', 'nfactu', 'concepto', 'justificacion', 'plazo', 'festcomp', 'fdispo', 'fregis', 'vsiva', 'viva', 'vtotal'];
+    protected $fillable = ['cestado', 'ctidocumento', 'cterce', 'vigencia', 'fpago', 'ffactu', 'nfactu', 'concepto', 'justificacion', 'plazo', 'festcomp', 'fdispo', 'fregis', 'vsiva', 'viva', 'vtotal'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -69,7 +68,7 @@ class Datos_basicos extends Model
      */
     public function contratoArticuloDetalles()
     {
-        return $this->hasMany('App\ContratoArticuloDetalle', 'cdatos', 'cdatos');
+        return $this->hasMany('App\Models\ContratoArticuloDetalle', 'cdatos', 'cdatos');
     }
 
     /**
@@ -77,7 +76,7 @@ class Datos_basicos extends Model
      */
     public function datosCuentas()
     {
-        return $this->hasMany('App\DatosCuenta', 'cdatos', 'cdatos');
+        return $this->hasMany('App\Models\DatosCuenta', 'cdatos', 'cdatos');
     }
 
     /**
@@ -85,7 +84,7 @@ class Datos_basicos extends Model
      */
     public function datosImpuestos()
     {
-        return $this->hasMany('App\DatosImpuesto', 'cdatos', 'cdatos');
+        return $this->hasMany('App\Models\DatosImpuesto', 'cdatos', 'cdatos');
     }
 
     /**
@@ -93,6 +92,6 @@ class Datos_basicos extends Model
      */
     public function datosPresupuestos()
     {
-        return $this->hasMany('App\DatosPresupuesto', 'cdatos', 'cdatos');
+        return $this->hasMany('App\Models\DatosPresupuesto', 'cdatos', 'cdatos');
     }
 }

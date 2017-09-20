@@ -32,12 +32,11 @@ var app=new Vue({
 		valueImpuesto: {},
 		terceroSelected:{},
 		datos:{
-			'cdatos':9,
+			'cdatos':'4',
 			'cterce':'',
 			'ctidocumento':'',
 			'cestado':'1',
 			'vigencia':'',
-			'cegre':'',
 			'fpago':'',
 			'cterce':'',
 			'ffactu':'',
@@ -79,6 +78,7 @@ var app=new Vue({
 			vimpuesto:'',
 			impuestosSeleccionados: [],
 			sumaImpuestos:'',
+			netopagar:'',
 		},
 	},
 	methods:{
@@ -216,7 +216,6 @@ var app=new Vue({
 				}).then(response => {
 					return response.json()
 				}).then(terceros => {
-					console.log("metodo",terceros)
 					vm.terceroSelected=terceros[0]
 					vm.terceroSelected.vtotal=currencyFormat.format(vtotal)
 				});
@@ -274,40 +273,75 @@ var app=new Vue({
 			console.log("copydatos")
 			var dato = $.param(copydatos)
 			console.log(dato)
-			fetch("/datos/create",{
-				credentials: 'include',
-				method : "POST",
-				type: "POST",
-				headers: {
-					'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
-					'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
-					'X-CSRF-TOKEN' : this._token,
-				},
-				body: dato,
-			})
-			.then(response => {
-				console.info(response)
-				return response.json();
-			})
-			.then(response => {
-				console.log(response["message"])
-				if(response.status == 400){
-					alertify.error(response["message"])
-				}else{
-					alertify.success('Creación Exitosa')
-					this.datos.cdatos=response.obj.id
-					console.log(response.obj.cterce)
+			if(this.datos.cdatos==''){
+				fetch("/datos/create",{
+					credentials: 'include',
+					method : "POST",
+					type: "POST",
+					headers: {
+						'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+						'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+						'X-CSRF-TOKEN' : this._token,
+					},
+					body: dato,
+				})
+				.then(response => {
+					console.info(response)
+					return response.json();
+				})
+				.then(response => {
+					console.log(response["message"])
+					if(response.status == 400){
+						alertify.error(response["message"])
+					}else{
+						alertify.success('Creación Exitosa')
+						this.datos.cdatos=response.obj.id
+						console.log(response.obj.cterce)
 					//var selected=Object.assign({},this.GetTercero(response.obj.cterce))
 					this.GetTercero(response.obj.cterce, response.obj.vtotal)
-
+					document.querySelector("#valorBase").value=this.datos.vsiva
+					document.querySelector("#vrubro").value=this.datos.vtotal
 					//this.terceroSelected=selected
 					//alertify.success(this.datos.cdatos)
 				}
 			})
-			.catch(function(error) {
-				console.warn(error)
-				alertify.error('Error al crear los datos basicos')
-			})
+				.catch(function(error) {
+					console.warn(error)
+					alertify.error('Error al crear los datos basicos')
+				})
+			}else{
+				fetch("/datos/update",{
+					credentials: 'include',
+					method : "POST",
+					type: "POST",
+					headers: {
+						'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+						'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+						'X-CSRF-TOKEN' : this._token,
+					},
+					body: dato,
+				})
+				.then(response => {
+					console.info(response)
+					return response.json();
+				})
+				.then(response => {
+					console.log(response["message"])
+					if(response.status == 400){
+						alertify.error(response["message"])
+					}else{
+						alertify.success('Datos Guardados Nuevamente')
+						console.log("terceros",this.valueTercero.cterce)
+						this.GetTercero(this.valueTercero.cterce, currencyFormat.sToN(this.datos.vtotal))
+						document.querySelector("#valorBase").value=this.datos.vsiva
+						document.querySelector("#vrubro").value=this.datos.vtotal
+					}
+				})
+				.catch(function(error) {
+					console.warn(error)
+					alertify.error('Error al guardar los datos basicos nuevamente')
+				})
+			}
 		},
 		GetRubros: function(){
 			var vm = this
@@ -393,40 +427,44 @@ var app=new Vue({
 		if (impuestoArray.length == 0){
 			alertify.error("Seleccione un impuesto")
 		}
-		impuestoArray.forEach(function (item, index, array) {
-			var itemCopy = Object.assign({},item);
-			itemCopy.vbase=currencyFormat.sToN(itemCopy.vbase)
-			itemCopy.vimpuesto=currencyFormat.sToN(itemCopy.vimpuesto)
-			var impuesto = $.param(itemCopy)
-			impuesto=impuesto+"&cdatos="+cdatos
-			fetch("/datosimpuesto/create",{
-				credentials: 'include',
-				method : "POST",
-				type: "POST",
-				headers: {
-					'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
-					'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
-					'X-CSRF-TOKEN' : vm._token,
-				},
-				body: impuesto
-			})
-			.then(response => {
-				console.log(response)
-				return response.json();
-			})
-			.then(response => {
-				console.log(response["message"])
-				if(response.status == 400){
-					alertify.error(response["message"])
-				}else{
-					alertify.success('Creación Exitosa')
-				}
-			})
-			.catch(function(error) {
-				console.warn(error)
-				alertify.error('Error al agregar el impuesto '+item.nimpuesto)
-			})
-		});
+		if(currencyFormat.sToN(this.impuesto.sumaImpuestos)>=currencyFormat.sToN(this.datos.vtotal)){
+			alertify.error("Los impuestos no pueden sobrepasar al valor total")
+		}else{
+			impuestoArray.forEach(function (item, index, array) {
+				var itemCopy = Object.assign({},item);
+				itemCopy.vbase=currencyFormat.sToN(itemCopy.vbase)
+				itemCopy.vimpuesto=currencyFormat.sToN(itemCopy.vimpuesto)
+				var impuesto = $.param(itemCopy)
+				impuesto=impuesto+"&cdatos="+cdatos
+				fetch("/datosimpuesto/create",{
+					credentials: 'include',
+					method : "POST",
+					type: "POST",
+					headers: {
+						'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+						'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+						'X-CSRF-TOKEN' : vm._token,
+					},
+					body: impuesto
+				})
+				.then(response => {
+					console.log(response)
+					return response.json();
+				})
+				.then(response => {
+					console.log(response["message"])
+					if(response.status == 400){
+						alertify.error(response["message"])
+					}else{
+						alertify.success('Creación Exitosa')
+					}
+				})
+				.catch(function(error) {
+					console.warn(error)
+					alertify.error('Error al agregar el impuesto '+item.nimpuesto)
+				})
+			});
+		}
 	},
 	operacionAritmetica(campos,operacion,final){
 		var total=0
@@ -452,6 +490,12 @@ var app=new Vue({
 			eval("total=total+currencyFormat.sToN(item."+campo+")");
 		});
 		eval("this."+final+"=currencyFormat.format(total)")
+		if(final="impuesto.sumaImpuestos"){
+			if(currencyFormat.sToN(this.impuesto.sumaImpuestos)>=currencyFormat.sToN(this.datos.vtotal)){
+				alertify.error("Los impuestos no pueden sobrepasar al valor total")
+			}
+			this.impuesto.netopagar=currencyFormat.format(currencyFormat.sToN(this.datos.vtotal)-currencyFormat.sToN(this.impuesto.sumaImpuestos))
+		}
 	},
 	existsComprobanteEgreso(){
 		var cegre=this.datos.cegre
@@ -466,7 +510,7 @@ var app=new Vue({
 			if(comprobanteegreso){
 				alertify.error("Codigo comprobante egreso ya esta registrado")
 			}
-	});
+		});
 	},
 	},// end methods
 	delimiters : ["[[","]]"],
@@ -508,6 +552,16 @@ var app=new Vue({
 	      	vm.tidocumento = tidocumentos
 	      	vm.valueTdocu=tidocumentos[0]
 	      });
-
+	      //aca
+	      var inputs = $(':input').keypress(function(e){ 
+	      	if (e.which == 13) {
+	      		e.preventDefault();
+	      		var nextInput = inputs.get(inputs.index(this) + 1);
+	      		if (nextInput) {
+	      			nextInput.focus();
+	      		}
+	      	}
+	      });
+	      //aca
 	  }
 	})

@@ -21,8 +21,8 @@
 			</div>
 			<div class="form-group col-md-6 col-lg-6">
 				<label for="telefono" class="form-label">Teléfono</label>
-				<Span class ="text-danger"> * </span>
-				<input type="text" class="form-control" id="telefono" aria-describedby="telefono" placeholder="Ingrese teléfono" v-model="terceros.telefono" required>
+				
+				<input type="text" class="form-control" id="telefono" aria-describedby="telefono" placeholder="Ingrese teléfono" v-model="terceros.telefono" >
 			</div>
 		</div>
 		<div class="row">
@@ -65,8 +65,7 @@
 
 			<div class="form-group col-md-6 col-lg-6">
 				<label for="email" class="form-label">Email</label>
-				<Span class ="text-danger"> * </span>
-				<input type="email" class="form-control" id="email" aria-describedby="email" placeholder="Ingrese Email" v-model="terceros.email" required>
+				<input type="email" class="form-control" id="email" aria-describedby="email" placeholder="Ingrese Email" v-model="terceros.email">
 			</div>
 
 		</div>

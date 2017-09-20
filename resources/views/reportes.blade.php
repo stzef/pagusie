@@ -1,6 +1,6 @@
 <div class="row">
 	<div class="col-md-12 col-lg-12 text-center">
-	<h1>RESPORTES</h1>
+	<h1>REPORTES</h1>
 	</div>
 </div>
 <hr>

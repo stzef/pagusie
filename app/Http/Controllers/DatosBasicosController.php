@@ -13,6 +13,38 @@ class DatosBasicosController extends Controller
  public function __construct(){
     $this->middleware('auth');
 }
+
+public function validar($data){
+ $validator=Validator::make($data,
+    [
+        'cterce'=>'required|exists:terceros,cterce',
+        'ctidocumento'=>'required|exists:tipo_documento,ctidocumento',
+        'cestado'=>'required|exists:estados,cestado',
+        'vigencia'=>'required|integer',
+        'fpago'=>'required|date_format:Y-m-d',
+        'ffactu'=>'required|date_format:Y-m-d',
+        'nfactu'=>'required|integer',
+        'concepto'=>'required',
+        'plazo'=>'required',
+        'justificacion'=>'required',
+        'festcomp'=>'required|date_format:Y-m-d',
+        'fdispo'=>'required|date_format:Y-m-d',
+        'vsiva'=>'required|numeric',
+        'viva'=>'required|numeric',
+        'vtotal'=>'required|numeric',
+    ],
+    [
+        'vigencia.integer'=> 'La VIGENCIA debe ser numérica',
+        'cegre.integer'=>'El CÓDIGO COMPROBANTE EGRESO deber ser numérico',
+        'cegre.unique'=>'Ya existe un registro con este CÓDIGO COMPROBANTE EGRESO',
+        'nfactu.unique'=>'Ya existe un registro con este NÚMERO DE FACTURA',
+        'vsiva.numeric'=> 'El VALOR SIN IVA debe ser un valor monetario',
+        'viva.numeric'=> 'El VALOR CON IVA debe ser un valor monetario',
+        'vtotal.numeric'=> 'El VALOR TOTAL debe ser un valor monetario',
+    ]
+);
+ return $validator;
+}
     /**
      * Display a listing of the resource.
      *
@@ -30,35 +62,7 @@ class DatosBasicosController extends Controller
      */
     public function create(Request $request){
        $data = $request->all();
-       $validator = Validator::make($data,
-        [
-        'cterce'=>'required|exists:terceros,cterce',
-        'ctidocumento'=>'required|exists:tipo_documento,ctidocumento',
-        'cestado'=>'required|exists:estados,cestado',
-        'vigencia'=>'required|integer',
-        'cegre'=>'required|integer|unique:Datos_basicos',
-        'fpago'=>'required|date_format:Y-m-d',
-        'ffactu'=>'required|date_format:Y-m-d',
-        'nfactu'=>'required|integer|unique:Datos_basicos',
-        'concepto'=>'required',
-        'plazo'=>'required',
-        'justificacion'=>'required',
-        'festcomp'=>'required|date_format:Y-m-d',
-        'fdispo'=>'required|date_format:Y-m-d',
-        'vsiva'=>'required|numeric',
-        'viva'=>'required|numeric',
-        'vtotal'=>'required|numeric',
-        ],
-        [
-        'vigencia.integer'=> 'La VIGENCIA debe ser numérica',
-        'cegre.integer'=>'El CÓDIGO COMPROBANTE EGRESO deber ser numérico',
-        'cegre.unique'=>'Ya existe un registro con este CÓDIGO COMPROBANTE EGRESO',
-        'nfactu.unique'=>'Ya existe un registro con este NÚMERO DE FACTURA',
-        'vsiva.numeric'=> 'El VALOR SIN IVA debe ser un valor monetario',
-        'viva.numeric'=> 'El VALOR CON IVA debe ser un valor monetario',
-        'vtotal.numeric'=> 'El VALOR TOTAL debe ser un valor monetario',
-        ]
-        );
+       $validator = $this->validar($data);
        if ($validator->fails()){
         $messages = $validator->messages();
         $message="";
@@ -114,7 +118,22 @@ class DatosBasicosController extends Controller
      */
     public function update(Request $request, Datos_basicos $datos_basicos)
     {
-        //
+        $data = $request->all();
+        $validator = $this->validar($data);
+        if ($validator->fails()){
+            $messages = $validator->messages();
+            $message="";
+            foreach ($messages->all() as $key) {
+                $message.=" ".$key;
+            }
+            return response()->json(array("message"=>$message,"status"=>400),400);
+        }else{
+           //var_dump($data->["cdatos"]);exit();
+            $copydata=$data;
+            unset($copydata['cdatos']);
+            $datos = Datos_basicos::where('cdatos',$data['cdatos'])->update($copydata);
+        }
+        return response()->json(array("obj" => $datos));
     }
 
     /**

@@ -37,7 +37,8 @@ class DocumentoEquivalenteController extends Controller
 		//return view('pdf.documento_equivalente', $data);
 		PDF::setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif']);
 		$pdf = PDF::loadView('pdf.documento_equivalente', $data);
-		return $pdf->setPaper('a4')->stream();
+		$namefile='Documento Equivalente Nº '.$reporteDE->id.'.pdf';
+		return $pdf->setPaper('legal')->stream($namefile);
 	}
 
 
