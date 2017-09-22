@@ -42,12 +42,12 @@
 <hr>
 <table v-if="impuesto.impuestosSeleccionados.length!=0" class="table-striped table-bordered text-center" width="100%" cellspacing="0">
 	<thead>
-		<tr style="background-color: #f2f2f2;">
-			<th>Nombre</th>
-			<th>Valor Base</th>
-			<th>Porcentaje</th>
-			<th>Valor Impuesto</th>
-			<th>Eliminar</th>
+		<tr style="background-color: #f2f2f2;" align="center">
+			<td><strong>Nombre</strong></td>
+			<td><strong>Valor Base</strong></td>
+			<td><strong>Porcentaje</strong></td>
+			<td><strong>Valor Impuesto</strong></td>
+			<td><strong>Eliminar</strong></td>
 		</tr>
 	</thead>
 	<tbody>

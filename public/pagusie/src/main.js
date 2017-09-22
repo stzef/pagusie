@@ -385,6 +385,11 @@ var app=new Vue({
 		if (presupuestoArray.length == 0){
 			alertify.error("Seleccione un rubro")
 		}
+		/*else{
+			if (presupuestoArray.length < vm.CountDatosPresupuesto(cdatos)){
+				***** PREGUNTARLE A CARLOS
+			}
+		}*/
 		presupuestoArray.forEach(function (item, index, array) {
 			var itemCopy = Object.assign({},item);
 			itemCopy.valor=currencyFormat.sToN(itemCopy.valor)
@@ -512,10 +517,60 @@ var app=new Vue({
 			}
 		});
 	},
+	GetDatosPresupuesto(cdatos){
+		var vm = this
+		if(cdatos==undefined){
+			fetch("datospresupuesto/show",{ //ruta
+				credentials: 'include',
+				type : "GET",
+			}).then(response => {
+				return response.json()
+			}).then(dpresu => {
+				console.log(dpresu)
+				return dpresu
+			});
+		}else{
+		console.log("hp",cdatos)
+				fetch("datospresupuesto/show?cdatos="+cdatos,{ //ruta
+					credentials: 'include',
+					type : "GET",
+				}).then(response => {
+					return response.json()
+				}).then(dpresu => {
+					console.log(dpresu)
+					return dpresu
+				});
+			}
+		},
+	CountDatosPresupuesto(cdatos){
+		var vm = this
+		if(cdatos==undefined){
+			fetch("datospresupuesto/count",{ //ruta
+				credentials: 'include',
+				type : "GET",
+			}).then(response => {
+				return response.json()
+			}).then(dpresu => {
+				console.log(dpresu)
+				return dpresu
+			});
+		}else{
+		console.log("hp",cdatos)
+				fetch("datospresupuesto/count?cdatos="+cdatos,{ //ruta
+					credentials: 'include',
+					type : "GET",
+				}).then(response => {
+					return response.json()
+				}).then(dpresu => {
+					console.log(dpresu)
+					return dpresu
+				});
+			}
+		}
 	},// end methods
 	delimiters : ["[[","]]"],
 	mounted (){
-		//$("#table").DataTable();
+		$("#table").DataTable();
 		var vm = this
 		vm.datos.fpago=vm.date
 		vm.datos.ffactu=vm.date

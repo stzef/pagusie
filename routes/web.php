@@ -28,6 +28,8 @@ Route::group(['prefix'=>'presupuesto'], function(){
 });
 Route::group(['prefix'=>'datospresupuesto'], function(){
 	Route::post('/create','DatosPresupuestoController@create')->name('datospresupuesto.create');
+	Route::get('/show','DatosPresupuestoController@show')->name('datospresupuesto.show');
+	Route::get('/count','DatosPresupuestoController@count')->name('datospresupuesto.count');
 });
 Route::group(['prefix'=>'impuesto'], function(){
 	Route::get('/show','ImpuestoController@show')->name('impuesto.show');

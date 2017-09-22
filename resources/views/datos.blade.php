@@ -12,105 +12,146 @@
 			<label for="fechaPago">Fecha de pago</label>
 			<datepicker calendar-button calendar-button-icon="fa fa-calendar" disabled-picker bootstrap-styling language="es" id="fechaPago" v-model="datos.fpago" format="yyyy-MM-dd" required></datepicker>
 		</div>
-		<div class="form-group col-md-3">
-				<label for="tercero">Tercero</label>
-					<button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal"  style="margin-top: -14px;">+</button>
-				<template>
+		<div class="form-group col-md-6">
+			<label for="tercero">Tercero</label>
+			<div class=form-inline>
+				<input type="text" class="form-control" id="nittercero" aria-describedby="nittercero" placeholder="Ingrese el número del nit" v-model="tercero.nit" required style="width: 50%">
+				<button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#searchtercero" @click = "list('table-terceros')"><div class="fa fa-search" aria-hidden="true"></div></button>
+				<button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#addtercero" >+</button>
+			</div>
+				<!--<template>
 						<multiselect v-model="valueTercero" :options="tercero" placeholder="Select one" label="nit" track-by="nit" :custom-label="showTerceros" ></multiselect>
-				</template>
-		</div>
-		<div class="form-group col-md-1">
-		</div>
-	</div>
-	
-	<div class="row">
-		<div class="form-group col-md-3">
-			<label for="tidocumento">Tipo de documento</label>
-			<!--<select-documento :id="tidocumento" :tidocumento="tidocumento" :datos="datos"></select-documento>-->
-			<template>
-				<div>
-					<multiselect v-model="valueTdocu" :options="tidocumento" placeholder="Select one" label="ntidocumento" track-by="ntidocumento" :custom-label="showTidocumento"></multiselect>
+					</template>-->
 				</div>
-			</template>
-		</div>
+			</div>
 
-		<div class="form-group col-md-3">
-			<label for="fechaFactura">Fecha factura</label>
-			<datepicker calendar-button calendar-button-icon="fa fa-calendar" disabled-picker bootstrap-styling language="es" id="fechaFactura" v-model="datos.ffactu" format="yyyy-MM-dd" required></datepicker>
-		</div>
+			<div class="row">
+				<div class="form-group col-md-3">
+					<label for="tidocumento">Tipo de documento</label>
+					<!--<select-documento :id="tidocumento" :tidocumento="tidocumento" :datos="datos"></select-documento>-->
+					<template>
+						<div>
+							<multiselect v-model="valueTdocu" :options="tidocumento" placeholder="Select one" label="ntidocumento" track-by="ntidocumento" :custom-label="showTidocumento"></multiselect>
+						</div>
+					</template>
+				</div>
 
-		<div class="form-group col-md-3">
-			<label for="numfactura">Número de factura</label>
-			<input type="text" class="form-control" id="numfactura" aria-describedby="numfactura" placeholder="Ingrese el número de factura" v-model="datos.nfactu" required>
-		</div>
-	</div>
-	<div class="form-group">
-		<label for="concepto">Concepto</label>
-		<textarea class="form-control" id="concepto" rows="3" v-model="datos.concepto" required></textarea>
-	</div>
-	<div class="form-group">
-		<label for="Justificacion">Justificación</label>
-		<textarea class="form-control" id="Justificacion" rows="3" v-model="datos.justificacion" required></textarea>
-	</div>
-	<div class="row">
-		<div class="form-group col-md-3">
-			<label for="plazo">Plazo de realización</label>
-			<input type="text" class="form-control" id="plazo" aria-describedby="plazo" placeholder="Ingrese el plazo de realización" v-model="datos.plazo" required>
-		</div>
-		<div class="form-group col-md-3">
-			<label for="fechaCompras">Fecha estudio comité de compras</label>
-			<datepicker calendar-button calendar-button-icon="fa fa-calendar" disabled-picker bootstrap-styling language="es" id="fechaCompras" v-model="datos.festcomp" format="yyyy-MM-dd" required></datepicker>
-		</div>
-		<div class="form-group col-md-3">
-			<label for="fechaDisponibilidad">Fecha disponibilidad</label>
-			<datepicker calendar-button calendar-button-icon="fa fa-calendar" disabled-picker bootstrap-styling language="es" id="fechaDisponibilidad" v-model="datos.fdispo" format="yyyy-MM-dd" required></datepicker>
-		</div>
-		<div class="form-group col-md-3">
-			<label for="fechaRegistro">Fecha registro</label>
-			<datepicker calendar-button calendar-button-icon="fa fa-calendar" disabled-picker bootstrap-styling language="es" id="fechaRegistro" v-model="datos.fregis" format="yyyy-MM-dd" required></datepicker>
+				<div class="form-group col-md-3">
+					<label for="fechaFactura">Fecha factura</label>
+					<datepicker calendar-button calendar-button-icon="fa fa-calendar" disabled-picker bootstrap-styling language="es" id="fechaFactura" v-model="datos.ffactu" format="yyyy-MM-dd" required></datepicker>
+				</div>
 
-		</div>
-	</div>
-	<div class="row">
-		<div class="form-group col-md-3">
-			<label for="valorSinIva">Vr. Antes IVA</label>
-			<input @change.prevent="operacionAritmetica(['valorSinIva','valorIva'],'+','valorTotal')" type="text" class="form-control input-currency" id="valorSinIva" aria-describedby="valorSinIva" placeholder="Ingrese el valor sin IVA"  required>
-		</div>
-		<div class="form-group col-md-3">
-			<label for="valorIva">Vr. IVA</label>
-			<input @change.prevent="operacionAritmetica(['valorSinIva','valorIva'],'+','valorTotal')" type="text" class="form-control input-currency" id="valorIva" aria-describedby="valorIva" placeholder="Ingrese el valor con IVA"  required>
-		</div>
-		<div class="form-group col-md-3">
-			<label for=" valorTotal">Vr. Total</label>
-			<input type="text" class="form-control input-currency" id="valorTotal" aria-describedby="valorTotal" placeholder="Ingrese el valor total"  required>
-		</div>
-	</div>
-	<div class="form-group text-center">
-		<div class="col-md-4 col-md-offset-4">
-			<button type="submit" class="btn btn-primary">
-				Guardar
-			</button>
-		</div>
-	</div>
-</form>
-<!--Start modal-->
-<div id="myModal" class="modal fade" role="dialog">
-		  <div class="modal-dialog" style="width: 600px">
+				<div class="form-group col-md-3">
+					<label for="numfactura">Número de factura</label>
+					<input type="text" class="form-control" id="numfactura" aria-describedby="numfactura" placeholder="Ingrese el número de factura" v-model="datos.nfactu" required>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="concepto">Concepto</label>
+				<textarea class="form-control" id="concepto" rows="3" v-model="datos.concepto" required></textarea>
+			</div>
+			<div class="form-group">
+				<label for="Justificacion">Justificación</label>
+				<textarea class="form-control" id="Justificacion" rows="3" v-model="datos.justificacion" required></textarea>
+			</div>
+			<div class="row">
+				<div class="form-group col-md-3">
+					<label for="plazo">Plazo de realización</label>
+					<input type="text" class="form-control" id="plazo" aria-describedby="plazo" placeholder="Ingrese el plazo de realización" v-model="datos.plazo" required>
+				</div>
+				<div class="form-group col-md-3">
+					<label for="fechaCompras">Fecha estudio comité de compras</label>
+					<datepicker calendar-button calendar-button-icon="fa fa-calendar" disabled-picker bootstrap-styling language="es" id="fechaCompras" v-model="datos.festcomp" format="yyyy-MM-dd" required></datepicker>
+				</div>
+				<div class="form-group col-md-3">
+					<label for="fechaDisponibilidad">Fecha disponibilidad</label>
+					<datepicker calendar-button calendar-button-icon="fa fa-calendar" disabled-picker bootstrap-styling language="es" id="fechaDisponibilidad" v-model="datos.fdispo" format="yyyy-MM-dd" required></datepicker>
+				</div>
+				<div class="form-group col-md-3">
+					<label for="fechaRegistro">Fecha registro</label>
+					<datepicker calendar-button calendar-button-icon="fa fa-calendar" disabled-picker bootstrap-styling language="es" id="fechaRegistro" v-model="datos.fregis" format="yyyy-MM-dd" required></datepicker>
 
-		    <!-- Modal content-->
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <button type="button" class="close" data-dismiss="modal">&times;</button>
-		        <h4 class="modal-title">Terceros</h4>
-		      </div>
-		      <div class="modal-body">
-		        @include('terceros')
-		      </div>
-		      <div class="modal-footer">
-		      <!--  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
-		      </div>
-		    </div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="form-group col-md-3">
+					<label for="valorSinIva">Vr. Antes IVA</label>
+					<input @change.prevent="operacionAritmetica(['valorSinIva','valorIva'],'+','valorTotal')" type="text" class="form-control input-currency" id="valorSinIva" aria-describedby="valorSinIva" placeholder="Ingrese el valor sin IVA"  required>
+				</div>
+				<div class="form-group col-md-3">
+					<label for="valorIva">Vr. IVA</label>
+					<input @change.prevent="operacionAritmetica(['valorSinIva','valorIva'],'+','valorTotal')" type="text" class="form-control input-currency" id="valorIva" aria-describedby="valorIva" placeholder="Ingrese el valor con IVA"  required>
+				</div>
+				<div class="form-group col-md-3">
+					<label for=" valorTotal">Vr. Total</label>
+					<input type="text" class="form-control input-currency" id="valorTotal" aria-describedby="valorTotal" placeholder="Ingrese el valor total"  required>
+				</div>
+			</div>
+			<div class="form-group text-center">
+				<div class="col-md-4 col-md-offset-4">
+					<button type="submit" class="btn btn-primary">
+						Guardar
+					</button>
+				</div>
+			</div>
+		</form>
+		<!--Start modal-->
+		<div id="addtercero" class="modal fade" role="dialog">
+			<div class="modal-dialog" style="width: 600px">
 
-		  </div>
-	</div>
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Terceros</h4>
+					</div>
+					<div class="modal-body">
+						@include('terceros')
+					</div>
+					<div class="modal-footer">
+						<!--  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
+					</div>
+				</div>
+
+			</div>
+		</div>
+		<div id="searchtercero" class="modal fade" role="dialog">
+			<div class="modal-dialog" style="width: 800px">
+
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Buscar Terceros</h4>
+					</div>
+					<div class="modal-body">
+						<table  class="display table-terceros" width="100%" cellspacing="0">
+							<thead>
+								<tr>
+									<th>Nit</th>
+									<th>Nombre</th>
+									<th>Teléfono</th>
+									<th>E-Mail</th>
+								</tr>
+							</thead>
+							<tbody>
+								<template v-for="terceros in tercero">
+									<tr>
+										<td>[[terceros.nit]]-[[terceros.dv]]</td>
+										<td>[[terceros.nombre]]</td>
+										<td>[[terceros.telefono]]</td>
+										<td>[[terceros.email]]</td>
+									</tr>
+								</template>
+
+							</tbody>
+						</table>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+
+			</div>
+		</div>
 <!--end modal-->

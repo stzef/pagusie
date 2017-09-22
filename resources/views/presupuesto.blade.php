@@ -39,11 +39,11 @@
 	<hr>
 	<table v-if="presupuesto.rubrosSeleccionados.length!=0" class="table-striped table-bordered text-center" width="100%" cellspacing="0">
 		<thead>
-			<tr>
-				<th>Rubro</th>
-				<th>Nombre</th>
-				<th align="right">Valor</th>
-				<th>Eliminar</th>
+			<tr style="background-color: #f2f2f2;" align="center">
+				<td><strong>Rubro</strong></td>
+				<td><strong>Nombre</strong></td>
+				<td><strong>Valor</strong></td>
+				<td><strong>Eliminar</strong></td>
 			</tr>
 		</thead>
 		<tbody>
@@ -55,14 +55,14 @@
 					<td ><button @click.prevent="removeRubro(index)" class="btn btn-danger " >-</button></td>
 				</tr>
 			</template>
-		</tbody>
-		<footer>
+		<tr style="background-color: #f2f2f2;">
 			<td colspan="2" v-if="presupuesto.rubrosSeleccionados.length!=0" align="center"><strong>Total</strong></td>
 			<td v-if="presupuesto.rubrosSeleccionados.length!=0" align="right">
 				<strong> [[presupuesto.sumaRubros]]</strong>
 			</td>
 			
-		</footer>
+		</tr>
+		</tbody>
 	</table>
 	<form @submit.prevent="createPresupuesto" accept-charset="utf-8">
 		<div class="form-group text-center">
@@ -73,8 +73,8 @@
 			</div>
 		</div>
 	</form>
-<!--
-<table  class="display table-presupuestos" width="100%" cellspacing="0">
+
+<!--<table  class="display table-presupuestos" width="100%" cellspacing="0">
 	<thead>
 		<tr>
 			<th>Rubro</th>
