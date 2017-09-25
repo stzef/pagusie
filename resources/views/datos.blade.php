@@ -15,9 +15,11 @@
 		<div class="form-group col-md-6">
 			<label for="tercero">Tercero</label>
 			<div class=form-inline>
-				<input type="text" class="form-control" id="nittercero" aria-describedby="nittercero" placeholder="Ingrese el número del nit" v-model="tercero.nit" required style="width: 50%">
+				<input @blur.prevent="searchTercero()" type="text" class="form-control" id="nittercero" aria-describedby="nittercero" placeholder="Ingrese el número del nit" v-model="terceros.nit" required style="width: 25%">
 				<button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#searchtercero" @click = "list('table-terceros')"><div class="fa fa-search" aria-hidden="true"></div></button>
 				<button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#addtercero" >+</button>
+				<input  type="text" class="form-control" id="nombretercero" aria-describedby="nombretercero" v-model="terceros.nombre" required style="width: 50%" disabled >
+
 			</div>
 				<!--<template>
 						<multiselect v-model="valueTercero" :options="tercero" placeholder="Select one" label="nit" track-by="nit" :custom-label="showTerceros" ></multiselect>
@@ -132,15 +134,18 @@
 									<th>Nombre</th>
 									<th>Teléfono</th>
 									<th>E-Mail</th>
+									<th>Acción</th>
 								</tr>
 							</thead>
 							<tbody>
-								<template v-for="terceros in tercero">
+								<template v-for="(terceros,index) in this.tercero">
 									<tr>
 										<td>[[terceros.nit]]-[[terceros.dv]]</td>
 										<td>[[terceros.nombre]]</td>
 										<td>[[terceros.telefono]]</td>
 										<td>[[terceros.email]]</td>
+										<td ><button @click.prevent="selectTercero(index)" class="btn btn-info " data-dismiss="modal">Seleccionar</button></td>
+
 									</tr>
 								</template>
 
@@ -148,7 +153,7 @@
 						</table>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-error" data-dismiss="modal">Salir</button>
 					</div>
 				</div>
 

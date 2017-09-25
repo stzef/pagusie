@@ -149,7 +149,7 @@ var app=new Vue({
 			var vm = this
 			//vm.impuesto.cimpu = vm.valueImpuesto.cimpu
 			//vm.impuesto.porcentaje_Impuesto=vm.valueImpuesto.porcentajeImpuesto
-			
+
 			//document.querySelector("#porcentaje").value=vm.valueImpuesto.porcentajeImpuesto
 			vm.impuesto.porcentaje_Impuesto=vm.valueImpuesto.porcentajeImpuesto
 
@@ -566,7 +566,26 @@ var app=new Vue({
 					return dpresu
 				});
 			}
-		}
+		},
+		selectTercero(index){
+
+			//this.tercero.find(callback[, 'Rodrigo'])
+			this.terceros.nit=this.tercero[index].nit
+			this.terceros.nombre=this.tercero[index].nombre
+		},
+		searchTercero(){
+			var nit=this.terceros.nit
+			var nombre=""
+			this.tercero.find(function(value, index) {
+				if(value.nit==nit){
+					nombre=value.nombre
+					console.log(value.nombre)
+				}
+			}
+				)
+			this.terceros.nombre=nombre
+		},
+
 	},// end methods
 	delimiters : ["[[","]]"],
 	mounted (){
@@ -608,7 +627,7 @@ var app=new Vue({
 	      	vm.valueTdocu=tidocumentos[0]
 	      });
 	      //aca
-	      var inputs = $(':input').keypress(function(e){ 
+	      var inputs = $(':input').keypress(function(e){
 	      	if (e.which == 13) {
 	      		e.preventDefault();
 	      		var nextInput = inputs.get(inputs.index(this) + 1);

@@ -2,13 +2,13 @@
 		<input type="hidden" name="_token" id="token"  value="{{csrf_token()}}"></input>
 		<div class="row">
 			<div class="form-group col-md-12 col-lg-12 col-md-offset-2">
-				<label for="nit" class="form-label">NIT o cedula</label> 
+				<label for="nit" class="form-label">NIT o cedula</label>
 				<Span class ="text-danger"> * </span>
 				<div class="form-inline">
 					<input type="text" class="form-control" id="nit" aria-describedby="nit" placeholder="Ingrese el número de identificación" v-model="terceros.nit" size="33" @blur="setDv(calcularDigitoVerificacion($event.target.value))" required>
 					<div class="input-group mb-1 mr-sm-1 mb-sm-0">
 						<div class="input-group-addon">-DV</div>
-						<input v-model="terceros.dv" name="dv" class="form-control" id="dv" size="1" maxlength="1" disabled="true" type="text">
+						<input v-model="terceros.dv" name="dv" class="form-control" id="dv" size="1" maxlength="1" disabled="true" type="text" required>
 					</div>
 				</div>
 			</div>
@@ -21,7 +21,7 @@
 			</div>
 			<div class="form-group col-md-6 col-lg-6">
 				<label for="telefono" class="form-label">Teléfono</label>
-				
+
 				<input type="text" class="form-control" id="telefono" aria-describedby="telefono" placeholder="Ingrese teléfono" v-model="terceros.telefono" >
 			</div>
 		</div>
@@ -93,7 +93,7 @@
 					</button>
 				 	<button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar
 				 	</button>
-			
+
 			</div>
 		</div>
 </form>
