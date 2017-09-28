@@ -41,6 +41,15 @@ Route::group(['prefix'=>'terceros'], function(){
 	Route::get('/show', 'TercerosController@show')->name('terceros.show');
 	Route::post('/create','TercerosController@create')->name('terceros.create');
 });
+Route::group(['prefix'=>'cheques'], function(){
+	Route::post('/create','ChequesController@create')->name('cheques.create');
+});
+Route::group(['prefix'=>'datoscuentas'], function(){
+	Route::post('/create','DatoscuentasController@create')->name('datoscuentas.create');
+});
+Route::group(['prefix'=>'banco'], function(){
+	Route::post('/create','BancoController@create')->name('datoscuentas.create');
+});
 
 /*Route::get('pdf', function(){
 	$pdf = PDF::loadView('pdf.documento_equivalente');

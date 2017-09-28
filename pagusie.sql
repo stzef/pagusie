@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 16-09-2017 a las 00:45:32
+-- Tiempo de generación: 29-09-2017 a las 00:52:35
 -- Versión del servidor: 10.1.24-MariaDB
 -- Versión de PHP: 7.1.6
 
@@ -30,8 +30,8 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `articulos` (
   `carti` int(11) NOT NULL,
+  `idunidad` int(11) NOT NULL,
   `narticulo` varchar(255) NOT NULL,
-  `unidades_idunidad` int(11) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -77,12 +77,12 @@ INSERT INTO `cargo` (`ccargo`, `ncargo`, `created_at`, `updated_at`) VALUES
 --
 
 CREATE TABLE `cheques` (
-  `ccheque` int(11) NOT NULL,
-  `estado` varchar(45) NOT NULL,
+  `idcheque` int(11) NOT NULL,
+  `idcuentas_bancos` int(11) NOT NULL,
+  `cestado` int(11) NOT NULL,
+  `numcheque` int(11) NOT NULL,
   `concepto` varchar(255) NOT NULL,
   `valor` double(10,2) NOT NULL,
-  `cestado` int(11) NOT NULL,
-  `cuentas_bancos_idcuentas_bancos` int(11) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -1302,7 +1302,7 @@ CREATE TABLE `datos_basicos` (
   `ctidocumento` int(11) NOT NULL COMMENT 'ejemplo factura',
   `cestado` int(11) NOT NULL,
   `vigencia` int(11) NOT NULL COMMENT 'año presupuestal',
-  `cegre` int(11) NOT NULL COMMENT 'codigo comprobante egreso',
+  `convocatoria` varchar(9) DEFAULT NULL,
   `fpago` date NOT NULL,
   `ffactu` date NOT NULL COMMENT 'fecha factura',
   `nfactu` varchar(20) NOT NULL COMMENT 'numero de factura',
@@ -1323,22 +1323,29 @@ CREATE TABLE `datos_basicos` (
 -- Volcado de datos para la tabla `datos_basicos`
 --
 
-INSERT INTO `datos_basicos` (`cdatos`, `cterce`, `ctidocumento`, `cestado`, `vigencia`, `cegre`, `fpago`, `ffactu`, `nfactu`, `concepto`, `justificacion`, `plazo`, `festcomp`, `fdispo`, `fregis`, `vsiva`, `viva`, `vtotal`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 1, 2017, 1, '2017-07-13', '2017-07-04', '4', '4', '4', '4', '2017-07-04', '2017-07-04', '2017-07-13', 4.00, 4.00, 4.00, '2017-07-18 13:33:15', '2017-07-18 13:33:15'),
-(4, 1, 1, 1, 2017, 2, '2017-07-18', '2017-07-04', '122', '1212', '1221', '5 dias', '2017-07-18', '2017-07-18', '2017-07-18', 1000.00, 1000.00, 1000.00, '2017-07-18 13:54:37', '2017-07-18 13:54:37'),
-(5, 22, 1, 1, 2017, 14, '2017-07-21', '2017-07-19', '232', 'prueba', 'prueba', '4 dias', '2017-07-21', '2017-07-22', '2017-07-19', 20000.00, 20000.00, 2000000.00, '2017-07-21 13:12:11', '2017-07-21 13:12:11'),
-(6, 4, 1, 1, 2017, 2545, '2017-08-11', '2017-08-11', '254', 'prueba con los rubros', 'prueba guardar rubros', '4 dias', '2017-08-11', '2017-08-11', '2017-08-11', 2500.00, 2500.00, 2500.00, '2017-08-11 22:32:06', '2017-08-11 22:32:06'),
-(7, 2, 1, 1, 2017, 25454, '2017-08-11', '2017-08-11', '214', '455', '4545', '44', '2017-08-11', '2017-08-11', '2017-08-11', 2500.00, 2500.00, 2500.00, '2017-08-11 22:35:40', '2017-08-11 22:35:40'),
-(8, 1, 1, 1, 2017, 556, '2017-08-11', '2017-08-11', '5555', '555', '555', '555', '2017-08-11', '2017-08-11', '2017-08-11', 555.00, 55.00, 555.00, '2017-08-11 22:42:44', '2017-08-11 22:42:44'),
-(9, 1, 1, 1, 2017, 411, '2017-08-11', '2017-08-11', '4554', '45154', '4512', '4 dias', '2017-08-11', '2017-08-11', '2017-08-11', 22000.00, 22000.00, 22000.00, '2017-08-11 22:45:18', '2017-08-11 22:45:18'),
-(12, 1, 1, 1, 2017, 254547, '2017-08-14', '2017-08-14', '2147', 'pruba con impuestos', 'prueba con impuestos', '6 dias', '2017-08-14', '2017-08-14', '2017-08-14', 20000.00, 20000.00, 20000.00, '2017-08-14 20:20:32', '2017-08-14 20:20:32'),
-(13, 23, 1, 1, 2017, 20175, '2017-08-16', '2017-08-16', '20174', 'Servicio de internet', 'Servicio de internet', '5 dias', '2017-08-14', '2017-08-15', '2017-08-11', 25000.00, 25000.00, 25000.00, '2017-08-16 21:26:02', '2017-08-16 21:26:02'),
-(14, 1, 1, 1, 2017, 654, '2017-08-18', '2017-08-18', '564', 'prueba currency format', 'pruena currency format', '9 dias', '2017-08-18', '2017-08-18', '2017-08-18', 25000.00, 25000.00, 25000.00, '2017-08-18 19:42:17', '2017-08-18 19:42:17'),
-(15, 1, 1, 1, 2017, 321321, '2017-08-18', '2017-08-18', '212311', 'suma ok', 'suma ok', '9 dias', '2017-08-18', '2017-08-18', '2017-08-18', 25000.00, 75000.00, 100000.00, '2017-08-18 20:29:03', '2017-08-18 20:29:03'),
-(16, 23, 1, 1, 2017, 54114, '2017-09-07', '2017-09-07', '654564', 'prueba tercero en vista', 'prueba tercero en vista', '6 dias', '2017-09-07', '2017-09-07', '2017-09-07', 25000.00, 30000.00, 55000.00, '2017-09-07 22:20:47', '2017-09-07 22:20:47'),
-(17, 1, 1, 1, 2017, 5645445, '2017-09-12', '2017-09-12', '98745641', 'compra de abono', 'compra de abono', '4 días', '2017-09-12', '2017-09-12', '2017-09-12', 15000.00, 25000.00, 40000.00, '2017-09-12 22:47:22', '2017-09-12 22:47:22'),
-(18, 1, 1, 1, 2017, 14521452, '2017-09-12', '2017-09-11', '142554144', 'Fotos del plantel', 'Fotos del plantel', '4 días', '2017-09-08', '2017-09-08', '2017-09-08', 25000.00, 50000.00, 75000.00, '2017-09-13 22:07:54', '2017-09-13 22:07:54'),
-(19, 31, 1, 1, 2017, 254587, '2017-09-12', '2017-09-12', '64745', 'Fotos del plantel', 'Fotos del plantel', '6 días', '2017-09-08', '2017-09-11', '2017-09-11', 25000.00, 50000.00, 75000.00, '2017-09-13 22:28:54', '2017-09-13 22:28:54');
+INSERT INTO `datos_basicos` (`cdatos`, `cterce`, `ctidocumento`, `cestado`, `vigencia`, `convocatoria`, `fpago`, `ffactu`, `nfactu`, `concepto`, `justificacion`, `plazo`, `festcomp`, `fdispo`, `fregis`, `vsiva`, `viva`, `vtotal`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, 1, 2017, NULL, '2017-07-13', '2017-07-04', '4', '4', '4', '4', '2017-07-04', '2017-07-04', '2017-07-13', 4.00, 4.00, 4.00, '2017-07-18 13:33:15', '2017-07-18 13:33:15'),
+(4, 1, 1, 1, 2017, NULL, '2017-09-19', '2017-09-19', '564', '5656', '654', '4 días', '2017-09-19', '2017-09-19', '2017-09-19', 2500.00, 2500.00, 5000.00, '2017-07-18 13:54:37', '2017-09-19 22:52:34'),
+(5, 22, 1, 1, 2017, NULL, '2017-07-21', '2017-07-19', '232', 'prueba', 'prueba', '4 dias', '2017-07-21', '2017-07-22', '2017-07-19', 20000.00, 20000.00, 2000000.00, '2017-07-21 13:12:11', '2017-07-21 13:12:11'),
+(6, 4, 1, 1, 2017, NULL, '2017-08-11', '2017-08-11', '254', 'prueba con los rubros', 'prueba guardar rubros', '4 dias', '2017-08-11', '2017-08-11', '2017-08-11', 2500.00, 2500.00, 2500.00, '2017-08-11 22:32:06', '2017-08-11 22:32:06'),
+(7, 2, 1, 1, 2017, NULL, '2017-08-11', '2017-08-11', '214', '455', '4545', '44', '2017-08-11', '2017-08-11', '2017-08-11', 2500.00, 2500.00, 2500.00, '2017-08-11 22:35:40', '2017-08-11 22:35:40'),
+(8, 1, 1, 1, 2017, NULL, '2017-08-11', '2017-08-11', '5555', '555', '555', '555', '2017-08-11', '2017-08-11', '2017-08-11', 555.00, 55.00, 555.00, '2017-08-11 22:42:44', '2017-08-11 22:42:44'),
+(9, 23, 1, 1, 2017, '2017-0069', '2017-09-25', '2017-09-25', '5', 'prueba', 'prueba', '4 días', '2017-09-25', '2017-09-25', '2017-09-25', 2500.00, 2500.00, 5000.00, '2017-08-11 22:45:18', '2017-09-25 15:19:19'),
+(12, 1, 1, 1, 2017, NULL, '2017-08-14', '2017-08-14', '2147', 'pruba con impuestos', 'prueba con impuestos', '6 dias', '2017-08-14', '2017-08-14', '2017-08-14', 20000.00, 20000.00, 20000.00, '2017-08-14 20:20:32', '2017-08-14 20:20:32'),
+(13, 23, 1, 1, 2017, NULL, '2017-08-16', '2017-08-16', '20174', 'Servicio de internet', 'Servicio de internet', '5 dias', '2017-08-14', '2017-08-15', '2017-08-11', 25000.00, 25000.00, 25000.00, '2017-08-16 21:26:02', '2017-08-16 21:26:02'),
+(14, 1, 1, 1, 2017, NULL, '2017-08-18', '2017-08-18', '564', 'prueba currency format', 'pruena currency format', '9 dias', '2017-08-18', '2017-08-18', '2017-08-18', 25000.00, 25000.00, 25000.00, '2017-08-18 19:42:17', '2017-08-18 19:42:17'),
+(15, 1, 1, 1, 2017, NULL, '2017-08-18', '2017-08-18', '212311', 'suma ok', 'suma ok', '9 dias', '2017-08-18', '2017-08-18', '2017-08-18', 25000.00, 75000.00, 100000.00, '2017-08-18 20:29:03', '2017-08-18 20:29:03'),
+(16, 23, 1, 1, 2017, NULL, '2017-09-07', '2017-09-07', '654564', 'prueba tercero en vista', 'prueba tercero en vista', '6 dias', '2017-09-07', '2017-09-07', '2017-09-07', 25000.00, 30000.00, 55000.00, '2017-09-07 22:20:47', '2017-09-07 22:20:47'),
+(17, 1, 1, 1, 2017, NULL, '2017-09-12', '2017-09-12', '98745641', 'compra de abono', 'compra de abono', '4 días', '2017-09-12', '2017-09-12', '2017-09-12', 15000.00, 25000.00, 40000.00, '2017-09-12 22:47:22', '2017-09-12 22:47:22'),
+(18, 1, 1, 1, 2017, NULL, '2017-09-12', '2017-09-11', '142554144', 'Fotos del plantel', 'Fotos del plantel', '4 días', '2017-09-08', '2017-09-08', '2017-09-08', 25000.00, 50000.00, 75000.00, '2017-09-13 22:07:54', '2017-09-13 22:07:54'),
+(19, 31, 1, 1, 2017, NULL, '2017-09-12', '2017-09-12', '64745', 'Fotos del plantel', 'Fotos del plantel', '6 días', '2017-09-08', '2017-09-11', '2017-09-11', 25000.00, 50000.00, 75000.00, '2017-09-13 22:28:54', '2017-09-13 22:28:54'),
+(20, 23, 1, 1, 2017, NULL, '2017-04-24', '2017-04-03', '219566033', 'SERVICIO DE TELÉFONO E INTERNET EN EL ABONADO No. 2455015 PRESTADO EN LA SEDE ANTONIO MARÍA LOZANO, PERTENECIENTE A ESTA INSTITUCIÓN, CORRESPONDIENTE DEL MES DE MARZO DEL PRESENTE AÑO; SEGÚN FACTURA No. 219566033 DE FECHA 03 DE ABRIL DEL 2,017, QUE SE ADJUNTA A LA PRESENTE CUENTA DE PAGO.', 'no aplica', 'DOS DÍAS', '2017-03-23', '2017-04-17', '2017-04-19', 168254.00, 0.00, 168254.00, '2017-09-18 14:22:27', '2017-09-18 14:22:27'),
+(21, 23, 1, 1, 2017, NULL, '2017-08-08', '2017-09-18', '545111', 'prueba', 'no aplica', '4 días', '2017-09-18', '2017-09-18', '2017-09-18', 180000.00, 0.00, 180000.00, '2017-09-18 16:25:49', '2017-09-18 16:25:49'),
+(22, 1, 1, 1, 2017, NULL, '2017-09-19', '2017-09-19', '21', 'prueba de guardado una vez', 'no aplica', '4 días', '2017-09-19', '2017-09-19', '2017-09-19', 5000.00, 1600.00, 6600.00, '2017-09-19 19:44:20', '2017-09-19 19:44:20'),
+(23, 1, 1, 1, 2017, NULL, '2017-09-19', '2017-09-19', '44', 'PRUEBA VALIDATE', 'NO APLICA', '4 días', '2017-09-19', '2017-09-19', '2017-09-19', 0.00, 0.00, 0.00, '2017-09-19 20:27:36', '2017-09-19 20:27:36'),
+(24, 1, 1, 1, 2017, NULL, '2017-09-19', '2017-09-19', '545', '564', '564', '4 días', '2017-09-19', '2017-09-19', '2017-09-19', 0.00, 54565.00, 54565.00, '2017-09-19 20:46:58', '2017-09-19 21:12:07'),
+(25, 30, 1, 1, 2017, '2017-0360', '2017-09-25', '2017-09-25', '360', 'prueba nueva correciones', 'no aplica', '4 días', '2017-09-25', '2017-09-25', '2017-09-25', 360000.00, 400000.00, 780000.00, '2017-09-25 15:59:42', '2017-09-25 16:51:45'),
+(26, 22, 1, 1, 2017, NULL, '2017-09-25', '2017-09-25', '240', 'prueba suma presupuesto', 'no aplica', '4 días', '2017-09-25', '2017-09-25', '2017-09-25', 25000.00, 50000.00, 75000.00, '2017-09-25 16:54:05', '2017-09-25 16:54:05');
 
 -- --------------------------------------------------------
 
@@ -1349,8 +1356,7 @@ INSERT INTO `datos_basicos` (`cdatos`, `cterce`, `ctidocumento`, `cestado`, `vig
 CREATE TABLE `datos_cuentas` (
   `iddatos_cuentas` int(11) NOT NULL,
   `cdatos` int(11) NOT NULL,
-  `cheques_ccheque` int(11) NOT NULL,
-  `cheques_cuentas_bancos_idcuentas_bancos` int(11) NOT NULL,
+  `idcheque` int(11) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -1377,22 +1383,19 @@ CREATE TABLE `datos_impuestos` (
 --
 
 INSERT INTO `datos_impuestos` (`idDatos_Impuesto`, `cdatos`, `cimpu`, `vbase`, `porcentaje_Impuesto`, `vimpuesto`, `created_at`, `updated_at`) VALUES
-(11, 9, 1, 0, 0, 0, '2017-08-22 21:53:05', '2017-08-22 21:53:05'),
-(24, 9, 5, 0, 0, 0, '2017-08-22 22:15:30', '2017-08-22 22:15:30'),
-(25, 9, 1, 0, 0, 0, '2017-08-22 22:18:30', '2017-08-22 22:18:30'),
-(26, 9, 6, 0, 0, 0, '2017-08-22 22:18:31', '2017-08-22 22:18:31'),
-(27, 9, 1, 0, 0, 0, '2017-08-22 22:22:44', '2017-08-22 22:22:44'),
-(28, 9, 4, 0, 15, 0, '2017-08-22 22:22:44', '2017-08-22 22:22:44'),
-(29, 9, 1, 0, 0, 0, '2017-08-22 22:27:17', '2017-08-22 22:27:17'),
-(30, 9, 2, 0, 0, 0, '2017-08-22 22:27:17', '2017-08-22 22:27:17'),
-(31, 9, 1, 0, 0, 0, '2017-08-22 22:29:43', '2017-08-22 22:29:43'),
-(32, 9, 4, 15000, 15, 2250, '2017-08-22 22:29:43', '2017-08-22 22:29:43'),
 (33, 16, 4, 55000, 15, 8250, '2017-09-07 22:24:47', '2017-09-07 22:24:47'),
-(34, 9, 4, 25000, 15, 3750, '2017-09-12 22:55:07', '2017-09-12 22:55:07'),
 (35, 18, 4, 75000, 15, 11250, '2017-09-13 22:09:28', '2017-09-13 22:09:28'),
 (36, 18, 3, 75000, 0, 0, '2017-09-13 22:09:29', '2017-09-13 22:09:29'),
 (37, 19, 4, 75000, 15, 11250, '2017-09-13 22:30:39', '2017-09-13 22:30:39'),
-(38, 19, 3, 75000, 0, 0, '2017-09-13 22:30:39', '2017-09-13 22:30:39');
+(38, 19, 3, 75000, 0, 0, '2017-09-13 22:30:39', '2017-09-13 22:30:39'),
+(39, 21, 1, 180000, 15, 27000, '2017-09-18 16:36:57', '2017-09-18 16:36:57'),
+(40, 21, 3, 180000, 15, 27000, '2017-09-18 16:36:57', '2017-09-18 16:36:57'),
+(41, 25, 1, 360000, 10, 36000, '2017-09-25 16:19:42', '2017-09-25 16:19:42'),
+(42, 25, 2, 360000, 2.5, 9000, '2017-09-25 16:19:42', '2017-09-25 16:19:42'),
+(43, 25, 3, 360000, 3, 10800, '2017-09-25 16:19:42', '2017-09-25 16:19:42'),
+(44, 25, 4, 360000, 15, 54000, '2017-09-25 16:19:43', '2017-09-25 16:19:43'),
+(48, 9, 1, 360000, 10, 36000, '2017-09-27 19:44:00', '2017-09-27 19:44:00'),
+(49, 9, 2, 360000, 2.5, 9000, '2017-09-27 19:44:00', '2017-09-27 19:44:00');
 
 -- --------------------------------------------------------
 
@@ -1420,14 +1423,20 @@ INSERT INTO `datos_presupuesto` (`iddatos_presupuesto`, `crubro`, `cdatos`, `val
 (4, '1.3', 12, 10000.00, '2017-08-14 20:20:56', '2017-08-14 20:20:56'),
 (5, '1.3', 13, 0.00, '2017-08-16 21:26:33', '2017-08-16 21:26:33'),
 (6, '2.1.2.2.6.1', 13, 25000.00, '2017-08-16 21:26:33', '2017-08-16 21:26:33'),
-(7, '1.3', 9, 2500.00, '2017-08-23 22:21:26', '2017-08-23 22:21:26'),
-(8, '2.1.2.2.6.1', 9, 5000.00, '2017-08-23 22:21:26', '2017-08-23 22:21:26'),
 (9, '1.3', 16, 50000.00, '2017-09-07 22:21:26', '2017-09-07 22:21:26'),
 (10, '2.1.2.2.6.1', 16, 5000.00, '2017-09-07 22:21:27', '2017-09-07 22:21:27'),
 (11, '2.1.2.2.6.1', 17, 20000.00, '2017-09-12 22:48:00', '2017-09-12 22:48:00'),
 (12, '1.3', 17, 20000.00, '2017-09-12 22:48:01', '2017-09-12 22:48:01'),
 (13, '1.3', 18, 75000.00, '2017-09-13 22:08:53', '2017-09-13 22:08:53'),
-(14, '1.3', 19, 75000.00, '2017-09-13 22:29:47', '2017-09-13 22:29:47');
+(14, '1.3', 19, 75000.00, '2017-09-13 22:29:47', '2017-09-13 22:29:47'),
+(15, '1.3', 20, 0.00, '2017-09-18 14:23:09', '2017-09-18 14:23:09'),
+(16, '2.1.2.2.6.1', 20, 168254.00, '2017-09-18 14:23:09', '2017-09-18 14:23:09'),
+(17, '2.1.2.2.6.1', 21, 180000.00, '2017-09-18 16:31:14', '2017-09-18 16:31:14'),
+(21, '1.3', 4, 0.00, '2017-09-22 14:01:59', '2017-09-22 14:01:59'),
+(22, '2.1.2.2.6.1', 4, 0.00, '2017-09-22 14:03:49', '2017-09-22 14:03:49'),
+(23, '1.3', 25, 760000.00, '2017-09-25 16:12:28', '2017-09-25 16:12:28'),
+(24, '2.1.2.2.6.1', 25, 760000.00, '2017-09-25 16:12:29', '2017-09-25 16:12:29'),
+(30, '2.1.2.2.6.1', 9, 2500.00, '2017-09-27 19:32:41', '2017-09-27 19:32:41');
 
 -- --------------------------------------------------------
 
@@ -1518,9 +1527,9 @@ CREATE TABLE `impuestos` (
 --
 
 INSERT INTO `impuestos` (`cimpu`, `nimpuesto`, `porcentajeImpuesto`, `created_at`, `updated_at`) VALUES
-(1, 'Honorarios', 0, NULL, NULL),
-(2, 'Servicios', 0, NULL, NULL),
-(3, 'Compras', 0, NULL, NULL),
+(1, 'Honorarios', 10, NULL, NULL),
+(2, 'Servicios', 2.5, NULL, NULL),
+(3, 'Compras', 3, NULL, NULL),
 (4, 'Iva', 15, NULL, NULL),
 (5, 'Impto Guerra', 0, NULL, NULL),
 (6, 'Bomberos', 0, NULL, NULL);
@@ -1627,7 +1636,8 @@ CREATE TABLE `reporte_certificado_precio` (
 INSERT INTO `reporte_certificado_precio` (`id`, `cdatos`, `created_at`, `updated_at`) VALUES
 (1, 9, '2017-09-11 19:58:23', '2017-09-11 19:58:23'),
 (2, 18, '2017-09-13 22:14:13', '2017-09-13 22:14:13'),
-(3, 19, '2017-09-13 22:34:31', '2017-09-13 22:34:31');
+(3, 19, '2017-09-13 22:34:31', '2017-09-13 22:34:31'),
+(4, 20, '2017-09-18 15:05:02', '2017-09-18 15:05:02');
 
 -- --------------------------------------------------------
 
@@ -1654,7 +1664,10 @@ INSERT INTO `reporte_comprobante_egreso` (`id`, `cdatos`, `vtdeduc`, `vneto`, `c
 (4, 1, 0.00, 4.00, '2017-09-05 22:13:15', '2017-09-05 22:13:15'),
 (5, 16, 8250.00, 46750.00, '2017-09-07 22:25:20', '2017-09-07 22:25:20'),
 (6, 18, 11250.00, 63750.00, '2017-09-13 22:10:14', '2017-09-13 22:10:14'),
-(7, 19, 11250.00, 63750.00, '2017-09-13 22:31:14', '2017-09-13 22:31:14');
+(7, 19, 11250.00, 63750.00, '2017-09-13 22:31:14', '2017-09-13 22:31:14'),
+(8, 20, 0.00, 168254.00, '2017-09-18 14:25:12', '2017-09-18 14:25:12'),
+(9, 21, 23400.00, 156600.00, '2017-09-18 16:39:03', '2017-09-18 16:39:03'),
+(10, 4, 0.00, 5000.00, '2017-09-20 22:06:41', '2017-09-20 22:06:41');
 
 -- --------------------------------------------------------
 
@@ -1678,7 +1691,8 @@ INSERT INTO `reporte_contrato_prestacion_servicio` (`id`, `cdatos`, `created_at`
 (2, 1, '2017-09-05 22:19:15', '2017-09-05 22:19:15'),
 (3, 16, '2017-09-07 22:25:59', '2017-09-07 22:25:59'),
 (4, 18, '2017-09-13 22:11:50', '2017-09-13 22:11:50'),
-(5, 19, '2017-09-13 22:32:40', '2017-09-13 22:32:40');
+(5, 19, '2017-09-13 22:32:40', '2017-09-13 22:32:40'),
+(6, 20, '2017-09-18 14:35:17', '2017-09-18 14:35:17');
 
 -- --------------------------------------------------------
 
@@ -1713,7 +1727,9 @@ CREATE TABLE `reporte_disponibilidad_presupuestal` (
 INSERT INTO `reporte_disponibilidad_presupuestal` (`id`, `cdatos`, `created_at`, `updated_at`) VALUES
 (1, 9, '2017-09-08 22:06:36', '2017-09-08 22:06:36'),
 (2, 18, '2017-09-13 22:12:32', '2017-09-13 22:12:32'),
-(3, 19, '2017-09-13 22:33:20', '2017-09-13 22:33:20');
+(3, 19, '2017-09-13 22:33:20', '2017-09-13 22:33:20'),
+(4, 20, '2017-09-18 14:48:10', '2017-09-18 14:48:10'),
+(5, 4, '2017-09-20 22:06:08', '2017-09-20 22:06:08');
 
 -- --------------------------------------------------------
 
@@ -1736,7 +1752,10 @@ INSERT INTO `reporte_documento_equivalente` (`id`, `cdatos`, `created_at`, `upda
 (1, 9, '2017-09-05 22:14:51', '2017-09-05 22:14:51'),
 (2, 16, '2017-09-07 22:24:54', '2017-09-07 22:24:54'),
 (3, 18, '2017-09-13 22:09:37', '2017-09-13 22:09:37'),
-(4, 19, '2017-09-13 22:30:51', '2017-09-13 22:30:51');
+(4, 19, '2017-09-13 22:30:51', '2017-09-13 22:30:51'),
+(5, 20, '2017-09-18 14:24:27', '2017-09-18 14:24:27'),
+(6, 21, '2017-09-18 16:37:14', '2017-09-18 16:37:14'),
+(7, 4, '2017-09-19 21:23:00', '2017-09-19 21:23:00');
 
 -- --------------------------------------------------------
 
@@ -1758,7 +1777,8 @@ CREATE TABLE `reporte_recibo_satisfaccion` (
 INSERT INTO `reporte_recibo_satisfaccion` (`id`, `cdatos`, `created_at`, `updated_at`) VALUES
 (1, 9, '2017-09-07 22:13:14', '2017-09-07 22:13:14'),
 (2, 18, '2017-09-13 22:11:18', '2017-09-13 22:11:18'),
-(3, 19, '2017-09-13 22:32:07', '2017-09-13 22:32:07');
+(3, 19, '2017-09-13 22:32:07', '2017-09-13 22:32:07'),
+(4, 20, '2017-09-18 14:30:18', '2017-09-18 14:30:18');
 
 -- --------------------------------------------------------
 
@@ -1780,7 +1800,8 @@ CREATE TABLE `reporte_registro_presupuestal` (
 INSERT INTO `reporte_registro_presupuestal` (`id`, `cdatos`, `created_at`, `updated_at`) VALUES
 (1, 9, '2017-09-08 22:42:42', '2017-09-08 22:42:42'),
 (2, 18, '2017-09-13 22:13:18', '2017-09-13 22:13:18'),
-(3, 19, '2017-09-13 22:34:01', '2017-09-13 22:34:01');
+(3, 19, '2017-09-13 22:34:01', '2017-09-13 22:34:01'),
+(4, 20, '2017-09-18 14:55:08', '2017-09-18 14:55:08');
 
 -- --------------------------------------------------------
 
@@ -1794,9 +1815,9 @@ CREATE TABLE `terceros` (
   `nit` int(11) NOT NULL,
   `dv` int(1) NOT NULL,
   `nombre` varchar(45) NOT NULL,
-  `telefono` int(15) NOT NULL,
+  `telefono` int(15) DEFAULT NULL,
   `direccion` varchar(45) NOT NULL,
-  `email` varchar(255) NOT NULL,
+  `email` varchar(255) DEFAULT NULL,
   `cnombre` varchar(45) DEFAULT NULL COMMENT 'Nombre contacto tercero',
   `ctelefono` varchar(15) DEFAULT NULL COMMENT 'Teléfono contacto tercero',
   `cemail` varchar(255) DEFAULT NULL COMMENT 'Email contacto tercero',
@@ -1823,7 +1844,12 @@ INSERT INTO `terceros` (`cterce`, `cciud`, `nit`, `dv`, `nombre`, `telefono`, `d
 (28, 1042, 6545656, 2, 'prueba 2', 56564, '654556', 'nano@gmail.com', NULL, NULL, NULL, '2017-09-12 21:41:24', '2017-09-12 21:41:24'),
 (29, 1042, 897546, 9, 'prueba 3', 31534, '5455', 'sistematizaref.programador5@gmail.com', NULL, NULL, NULL, '2017-09-12 21:44:52', '2017-09-12 21:44:52'),
 (30, 553, 14247832, 3, 'Foto el alto', 31451424, 'cr el alto', 'fotoelalto@gmail.com', NULL, NULL, NULL, '2017-09-13 22:06:51', '2017-09-13 22:06:51'),
-(31, 553, 8454144, 1, 'Foto Galan', 30245454, 'cra galan', 'fgalan@gmail.com', NULL, NULL, NULL, '2017-09-13 22:27:47', '2017-09-13 22:27:47');
+(31, 553, 8454144, 1, 'Foto Galan', 30245454, 'cra galan', 'fgalan@gmail.com', NULL, NULL, NULL, '2017-09-13 22:27:47', '2017-09-13 22:27:47'),
+(32, 1042, 2465451, 1, 'pan pa todos', NULL, 'cra 30 a # 41-60', NULL, NULL, NULL, NULL, '2017-09-18 12:42:09', '2017-09-18 12:42:09'),
+(33, 1042, 5645641, 8, 'agua viva', 3141511, 'cra viva 21', NULL, 'carlos maria', '3144231', NULL, '2017-09-18 12:50:49', '2017-09-18 12:50:49'),
+(34, 1042, 2451474, 1, 'smith', NULL, 'cra 123', NULL, NULL, NULL, NULL, '2017-09-28 13:11:00', '2017-09-28 13:11:00'),
+(35, 1042, 84847, 1, 'Yency', NULL, 'cra 848', NULL, NULL, NULL, NULL, '2017-09-28 13:14:39', '2017-09-28 13:14:39'),
+(36, 1042, 54465, 3, '4654', NULL, '465', NULL, NULL, NULL, NULL, '2017-09-28 13:22:11', '2017-09-28 13:22:11');
 
 -- --------------------------------------------------------
 
@@ -1927,7 +1953,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'jhonan360', 'nano@gmail.com', '$2y$10$QCv5ZDfS3pOitOEymIcr9u9ECeDJGqD1YgLXhLPzJxqwzQcq1RCAa', '5WfLKag4w4oHWmM8cD8ZcXWKYSumwHVy8JpASIYM922DzHznz6KzPkLCAaOs', '2017-07-12 14:39:19', '2017-07-12 14:39:19'),
+(1, 'jhonan360', 'nano@gmail.com', '$2y$10$QCv5ZDfS3pOitOEymIcr9u9ECeDJGqD1YgLXhLPzJxqwzQcq1RCAa', 'VFwSnlA52ThVE8CRRMf2npjYPX9JU0BHumSgu6pdEwH7HkDcqCmI8QwTTK2B', '2017-07-12 14:39:19', '2017-07-12 14:39:19'),
 (2, 'Critsthian', 'sistematizaref.programador5@gmail.com', '$2y$10$PzdQ.VBeH.vcgnKCJCiZJenyvTSsRO9zSJA2qxwLvOFessrYzOi3.', '2rPHVyFpn7oqJWqa2cGSHzKuLwHbUCRZP4meKJCbKaGr1fXav8bF55L1AbDC', '2017-08-15 15:32:53', '2017-08-15 15:32:53');
 
 --
@@ -1938,8 +1964,8 @@ INSERT INTO `users` (`id`, `name`, `email`, `password`, `remember_token`, `creat
 -- Indices de la tabla `articulos`
 --
 ALTER TABLE `articulos`
-  ADD PRIMARY KEY (`carti`,`unidades_idunidad`),
-  ADD KEY `fk_articulos_unidades1_idx` (`unidades_idunidad`);
+  ADD PRIMARY KEY (`carti`),
+  ADD KEY `fk_articulos_unidades1_idx` (`idunidad`);
 
 --
 -- Indices de la tabla `bancos`
@@ -1957,9 +1983,9 @@ ALTER TABLE `cargo`
 -- Indices de la tabla `cheques`
 --
 ALTER TABLE `cheques`
-  ADD PRIMARY KEY (`ccheque`,`cuentas_bancos_idcuentas_bancos`),
+  ADD PRIMARY KEY (`idcheque`),
   ADD KEY `fk_cheques_estados1_idx` (`cestado`),
-  ADD KEY `fk_cheques_cuentas_bancos1_idx` (`cuentas_bancos_idcuentas_bancos`);
+  ADD KEY `fk_cheques_cuentas_bancos1_idx` (`idcuentas_bancos`);
 
 --
 -- Indices de la tabla `ciudades`
@@ -1988,7 +2014,7 @@ ALTER TABLE `contratos`
 -- Indices de la tabla `contrato_articulo_detalle`
 --
 ALTER TABLE `contrato_articulo_detalle`
-  ADD PRIMARY KEY (`idcontrato_articulo_detalle`,`cdatos`),
+  ADD PRIMARY KEY (`idcontrato_articulo_detalle`),
   ADD KEY `fk_contrato_suministro_has_suministros_suministros1_idx` (`carti`),
   ADD KEY `fk_contrato_articulo_detalle_datos1_idx` (`cdatos`);
 
@@ -2004,8 +2030,7 @@ ALTER TABLE `cuentas_bancos`
 --
 ALTER TABLE `datos_basicos`
   ADD PRIMARY KEY (`cdatos`),
-  ADD UNIQUE KEY `ccoegre_UNIQUE` (`cegre`),
-  ADD UNIQUE KEY `nfactu_UNIQUE` (`nfactu`),
+  ADD UNIQUE KEY `convocatoria_UNIQUE` (`convocatoria`),
   ADD KEY `fk_datos_terceros1_idx` (`cterce`),
   ADD KEY `fk_datos_basicos_tipo_documento1_idx` (`ctidocumento`),
   ADD KEY `fk_datos_basicos_estados1_idx` (`cestado`);
@@ -2014,9 +2039,9 @@ ALTER TABLE `datos_basicos`
 -- Indices de la tabla `datos_cuentas`
 --
 ALTER TABLE `datos_cuentas`
-  ADD PRIMARY KEY (`iddatos_cuentas`,`cheques_ccheque`,`cheques_cuentas_bancos_idcuentas_bancos`),
+  ADD PRIMARY KEY (`iddatos_cuentas`),
   ADD KEY `fk_datos_cuentas_datos1_idx` (`cdatos`),
-  ADD KEY `fk_datos_cuentas_cheques1_idx` (`cheques_ccheque`,`cheques_cuentas_bancos_idcuentas_bancos`);
+  ADD KEY `fk_datos_cuentas_cheques1_idx` (`idcheque`);
 
 --
 -- Indices de la tabla `datos_impuestos`
@@ -2201,7 +2226,7 @@ ALTER TABLE `cargo`
 -- AUTO_INCREMENT de la tabla `cheques`
 --
 ALTER TABLE `cheques`
-  MODIFY `ccheque` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idcheque` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de la tabla `colegio`
 --
@@ -2221,7 +2246,7 @@ ALTER TABLE `cuentas_bancos`
 -- AUTO_INCREMENT de la tabla `datos_basicos`
 --
 ALTER TABLE `datos_basicos`
-  MODIFY `cdatos` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `cdatos` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 --
 -- AUTO_INCREMENT de la tabla `datos_cuentas`
 --
@@ -2231,12 +2256,12 @@ ALTER TABLE `datos_cuentas`
 -- AUTO_INCREMENT de la tabla `datos_impuestos`
 --
 ALTER TABLE `datos_impuestos`
-  MODIFY `idDatos_Impuesto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `idDatos_Impuesto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 --
 -- AUTO_INCREMENT de la tabla `datos_presupuesto`
 --
 ALTER TABLE `datos_presupuesto`
-  MODIFY `iddatos_presupuesto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `iddatos_presupuesto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 --
 -- AUTO_INCREMENT de la tabla `estados`
 --
@@ -2261,17 +2286,17 @@ ALTER TABLE `persona`
 -- AUTO_INCREMENT de la tabla `reporte_certificado_precio`
 --
 ALTER TABLE `reporte_certificado_precio`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT de la tabla `reporte_comprobante_egreso`
 --
 ALTER TABLE `reporte_comprobante_egreso`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT de la tabla `reporte_contrato_prestacion_servicio`
 --
 ALTER TABLE `reporte_contrato_prestacion_servicio`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT de la tabla `reporte_contrato_suministro`
 --
@@ -2281,27 +2306,27 @@ ALTER TABLE `reporte_contrato_suministro`
 -- AUTO_INCREMENT de la tabla `reporte_disponibilidad_presupuestal`
 --
 ALTER TABLE `reporte_disponibilidad_presupuestal`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT de la tabla `reporte_documento_equivalente`
 --
 ALTER TABLE `reporte_documento_equivalente`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT de la tabla `reporte_recibo_satisfaccion`
 --
 ALTER TABLE `reporte_recibo_satisfaccion`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT de la tabla `reporte_registro_presupuestal`
 --
 ALTER TABLE `reporte_registro_presupuestal`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT de la tabla `terceros`
 --
 ALTER TABLE `terceros`
-  MODIFY `cterce` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `cterce` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 --
 -- AUTO_INCREMENT de la tabla `tipo_documento`
 --
@@ -2335,13 +2360,13 @@ ALTER TABLE `users`
 -- Filtros para la tabla `articulos`
 --
 ALTER TABLE `articulos`
-  ADD CONSTRAINT `fk_articulos_unidades1` FOREIGN KEY (`unidades_idunidad`) REFERENCES `unidades` (`cunidad`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_articulos_unidades1` FOREIGN KEY (`idunidad`) REFERENCES `unidades` (`cunidad`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `cheques`
 --
 ALTER TABLE `cheques`
-  ADD CONSTRAINT `fk_cheques_cuentas_bancos1` FOREIGN KEY (`cuentas_bancos_idcuentas_bancos`) REFERENCES `cuentas_bancos` (`idcuentas_bancos`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_cheques_cuentas_bancos1` FOREIGN KEY (`idcuentas_bancos`) REFERENCES `cuentas_bancos` (`idcuentas_bancos`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_cheques_estados1` FOREIGN KEY (`cestado`) REFERENCES `estados` (`cestado`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
@@ -2383,7 +2408,7 @@ ALTER TABLE `datos_basicos`
 -- Filtros para la tabla `datos_cuentas`
 --
 ALTER TABLE `datos_cuentas`
-  ADD CONSTRAINT `fk_datos_cuentas_cheques1` FOREIGN KEY (`cheques_ccheque`,`cheques_cuentas_bancos_idcuentas_bancos`) REFERENCES `cheques` (`ccheque`, `cuentas_bancos_idcuentas_bancos`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_datos_cuentas_cheques1` FOREIGN KEY (`idcheque`) REFERENCES `cheques` (`idcheque`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_datos_cuentas_datos1` FOREIGN KEY (`cdatos`) REFERENCES `datos_basicos` (`cdatos`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --

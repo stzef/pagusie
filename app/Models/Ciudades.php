@@ -24,7 +24,7 @@ class Ciudades extends Model
      */
     public function departamento()
     {
-        return $this->belongsTo('App\Departamento', 'cdepar', 'cdepar');
+        return $this->belongsTo('App\Models\Departamento', 'cdepar', 'cdepar');
     }
 
     /**
@@ -32,7 +32,7 @@ class Ciudades extends Model
      */
     public function colegios()
     {
-        return $this->hasMany('App\Colegio', 'ciud', 'cciud');
+        return $this->hasMany('App\Models\Colegio', 'ciud', 'cciud');
     }
 
     /**
@@ -40,6 +40,6 @@ class Ciudades extends Model
      */
     public function terceros()
     {
-        return $this->hasMany('App\Tercero', 'cciud', 'cciud');
+        return $this->hasMany('App\Models\Tercero', 'cciud', 'cciud');
     }
 }

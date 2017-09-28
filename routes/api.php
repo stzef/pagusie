@@ -38,3 +38,6 @@ Route::group(['prefix' => 'presupuestos'], function(){
 Route::group(['prefix' => 'comprobanteegreso'], function(){
 	Route::get('/', "APIController@comprobanteegreso")->name("api.comprobanteegreso.index");
 });
+Route::group(['prefix' => 'bancos'], function(){
+	Route::get('/', "APIController@bancos")->name("api.bancos.index");
+});

@@ -24,10 +24,10 @@ class DatosPresupuestoController extends Controller
               'crubro.exists'=> 'El RUBRO no se encuentra en la base de datos',
               'cdatos.exists'=>'Los DATOS basicos no se encuentra en la base de datos',
               'cdatos.required'=>'Los DATOS basicos son requeridos',
-
               'valor.numeric'=> 'El VALOR debe ser un valor monetario',
           ]
       );
+        return $validator;
     }
     /**
      * Display a listing of the resource.
@@ -46,24 +46,29 @@ class DatosPresupuestoController extends Controller
      */
     public function create(Request $request){
     	$data = $request->all();
-        //var_dump($validator);exit();
+        
             //var_dump($validator);
-     
+        if ($data['index']==0) {
+            # code...
         $DatosPresupuesto=Datos_presupuesto::where('cdatos',$data['cdatos'])->get();
-       foreach ($DatosPresupuesto as $key => $presupuesto) {
-            if ($presupuesto->crubro==$data['crubro']) {
+        foreach ($DatosPresupuesto as $key => $presupuesto) {
+            /*if ($presupuesto->crubro==$data['crubro']) {
                 return response()->json(array("message"=>"El rubro ".$presupuesto->presupuesto->nrubro." ya se encuentra gurdado ","status"=>400),400);
-            }
-        }exit();
+            }*/
+                $DatosPresupuesto[$key]->delete();
+
+        }
+        }
         $validator = $this->validar($data);
+        //var_dump($validator);exit();
         if ($validator->fails()){
           $messages = $validator->messages();
           $message="";
           foreach ($messages->all() as $key) {
-             $message.=" ".$key;
-         }
-         return response()->json(array("message"=>$message,"status"=>400),400);
-     }else{
+           $message.=" ".$key;
+       }
+       return response()->json(array("message"=>$message,"status"=>400),400);
+   }else{
       $datos_presupuesto = Datos_presupuesto::create($data);
   }
   return response()->json(array("obj" => $datos_presupuesto->toArray()));
@@ -129,7 +134,7 @@ class DatosPresupuestoController extends Controller
     {
         $data = $request->all();
         $validator = $this->validar($data);
-         if ($validator->fails()){
+        if ($validator->fails()){
             $messages = $validator->messages();
             $message="";
             foreach ($messages->all() as $key) {

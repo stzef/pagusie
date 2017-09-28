@@ -15,10 +15,10 @@
 		<div class="form-group col-md-6">
 			<label for="tercero">Tercero</label>
 			<div class=form-inline>
-				<input @blur.prevent="searchTercero()" type="text" class="form-control" id="nittercero" aria-describedby="nittercero" placeholder="Ingrese el número del nit" v-model="terceros.nit" required style="width: 25%">
+				<input @blur.prevent="searchTercero()" type="text" class="form-control" id="nittercero" aria-describedby="nittercero" placeholder="Ingrese el número del nit" v-model="terceros.nit" required style="width: 35%">
 				<button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#searchtercero" @click = "list('table-terceros')"><div class="fa fa-search" aria-hidden="true"></div></button>
 				<button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#addtercero" >+</button>
-				<input  type="text" class="form-control" id="nombretercero" aria-describedby="nombretercero" v-model="terceros.nombre" required style="width: 50%" disabled >
+				<input  type="text" class="form-control" id="nombretercero" aria-describedby="nombretercero" v-model="terceros.nombre" required style="width: 40%" disabled >
 
 			</div>
 				<!--<template>
@@ -153,7 +153,7 @@
 						</table>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-error" data-dismiss="modal">Salir</button>
+						<center><button type="button" class="btn btn-danger" data-dismiss="modal">Salir</button></center>
 					</div>
 				</div>
 

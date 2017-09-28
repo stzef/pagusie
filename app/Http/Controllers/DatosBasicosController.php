@@ -10,12 +10,38 @@ use Illuminate\Support\Facades\Validator;
 
 class DatosBasicosController extends Controller
 {
- public function __construct(){
+   public function __construct(){
     $this->middleware('auth');
 }
-
+public function convocatoriaFormat($data){
+    $validator=Validator::make($data,
+    ['convocatoria'=> 'nullable|integer|digits_between:1,4|unique:Datos_basicos',
+    ],[
+        'convocatoria.integer'=> 'La CONVOCATORIA debe ser numérica',
+        'convocatoria.digits_between'=> 'La CONVOCATORIA debe de tener de :min a :max dígitos',
+    ]
+);
+    if ($data['convocatoria']!=null) {
+        if (!$validator->fails()) {
+            $length=4-strlen($data['convocatoria']);
+            $año=$data['vigencia'].'-';
+            $convocatoria= str_pad($año, $length+5, "0").$data['convocatoria'];
+            return $convocatoria;
+        }else{
+            $messages = $validator->messages();
+            $message="";
+        foreach ($messages->all() as $key) {
+            $message.=" ".$key;
+        }
+        return response()->json(array("message"=>$message,"status"=>400),400);
+        }
+    }else{
+       return null;
+    }
+}
 public function validar($data){
- $validator=Validator::make($data,
+   $data['convocatoria']=$this->convocatoriaFormat($data);
+   $validator=Validator::make($data,
     [
         'cterce'=>'required|exists:terceros,cterce',
         'ctidocumento'=>'required|exists:tipo_documento,ctidocumento',
@@ -32,9 +58,14 @@ public function validar($data){
         'vsiva'=>'required|numeric',
         'viva'=>'required|numeric',
         'vtotal'=>'required|numeric',
+        'convocatoria'=> 'nullable|max:9|unique:Datos_basicos,cdatos',
     ],
     [
         'vigencia.integer'=> 'La VIGENCIA debe ser numérica',
+        'convocatoria.integer'=> 'La CONVOCATORIA debe ser numérica',
+        'convocatoria.max'=> 'La CONVOCATORIA no cumple con los parametros',
+        'convocatoria.unique'=> 'La CONVOCATORIA ya esta utilizada',
+        'convocatoria.digits_between'=> 'La CONVOCATORIA debe de tener de :min a :max dígitos',
         'cegre.integer'=>'El CÓDIGO COMPROBANTE EGRESO deber ser numérico',
         'cegre.unique'=>'Ya existe un registro con este CÓDIGO COMPROBANTE EGRESO',
         'nfactu.unique'=>'Ya existe un registro con este NÚMERO DE FACTURA',
@@ -43,7 +74,7 @@ public function validar($data){
         'vtotal.numeric'=> 'El VALOR TOTAL debe ser un valor monetario',
     ]
 );
- return $validator;
+   return $validator;
 }
     /**
      * Display a listing of the resource.
@@ -61,9 +92,9 @@ public function validar($data){
      * @return \Illuminate\Http\Response
      */
     public function create(Request $request){
-       $data = $request->all();
-       $validator = $this->validar($data);
-       if ($validator->fails()){
+     $data = $request->all();
+     $validator = $this->validar($data);
+     if ($validator->fails()){
         $messages = $validator->messages();
         $message="";
         foreach ($messages->all() as $key) {
@@ -71,6 +102,7 @@ public function validar($data){
         }
         return response()->json(array("message"=>$message,"status"=>400),400);
     }else{
+        $data['convocatoria']=$this->convocatoriaFormat($data);
         $datos = Datos_basicos::create($data);
     }
     return response()->json(array("obj" => $datos->toArray()));
@@ -128,7 +160,8 @@ public function validar($data){
             }
             return response()->json(array("message"=>$message,"status"=>400),400);
         }else{
-           //var_dump($data->["cdatos"]);exit();
+         // var_dump($data['convocatoria']);exit();
+            $data['convocatoria']=$this->convocatoriaFormat($data);
             $copydata=$data;
             unset($copydata['cdatos']);
             $datos = Datos_basicos::where('cdatos',$data['cdatos'])->update($copydata);

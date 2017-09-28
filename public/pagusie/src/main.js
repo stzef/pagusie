@@ -29,14 +29,16 @@ var app=new Vue({
 		rubros:[],
 		valueRubros: {},
 		impuestos:[],
+		bancos:[],
 		valueImpuesto: {},
 		terceroSelected:{},
 		datos:{
-			'cdatos':'4',
+			'cdatos':'9',
 			'cterce':'',
 			'ctidocumento':'',
 			'cestado':'1',
 			'vigencia':'',
+			'convocatoria':'',
 			'fpago':'',
 			'cterce':'',
 			'ffactu':'',
@@ -67,6 +69,7 @@ var app=new Vue({
 		},
 		presupuesto:{
 			crubro:'',
+			nrubro:'',
 			valor:'',
 			rubrosSeleccionados: [],
 			sumaRubros:'',
@@ -80,22 +83,42 @@ var app=new Vue({
 			sumaImpuestos:'',
 			netopagar:'',
 		},
+		banco:{
+			cbanco:'',
+			nbanco:'',
+			numcuenta:'',
+			idcuentas_bancos:'',
+		},
+		cheque:{
+			idcheque:'',
+			idcuentas_bancos:'',
+			numcheque:'',
+			cestado:1,
+			concepto:'',
+			valor:'',
+			sumaCheques:'',
+			chequesSeleccionados:[],
+		},
 	},
 	methods:{
 		currencyFormat,
 		calcularDigitoVerificacion,
 		addRubro () {
 			var vm = this
-			var presupuesto = new Object();
-			presupuesto.crubro=vm.valueRubros.crubro
-			presupuesto.nrubro=vm.valueRubros.nrubro
-			presupuesto.valor=document.querySelector("#vrubro").value
-			if (vm.presupuesto.rubrosSeleccionados.some( (object) => object.crubro == presupuesto.crubro )){
-				alertify.error("No se puede repetir el rubro")
+			if(currencyFormat.sToN(this.presupuesto.sumaRubros)>currencyFormat.sToN(this.datos.vtotal)){
+				alertify.error("El presupuesto no pueden sobrepasar al valor total")
 			}else{
-				vm.presupuesto.rubrosSeleccionados.push(presupuesto)
-				alertify.success("Rubro Agregado")
-				vm.sumarValorLista(this.presupuesto.rubrosSeleccionados,"valor","presupuesto.sumaRubros")
+				var presupuesto = new Object();
+				presupuesto.crubro=vm.presupuesto.crubro
+				presupuesto.nrubro=vm.presupuesto.nrubro
+				presupuesto.valor=document.querySelector("#vrubro").value
+				if (vm.presupuesto.rubrosSeleccionados.some( (object) => object.crubro == presupuesto.crubro )){
+					alertify.error("No se puede repetir el rubro")
+				}else{
+					vm.presupuesto.rubrosSeleccionados.push(presupuesto)
+					alertify.success("Rubro Agregado")
+					vm.sumarValorLista(vm.presupuesto.rubrosSeleccionados,"valor","presupuesto.sumaRubros")
+				}
 			}
 		},
 		removeRubro(index){
@@ -106,47 +129,51 @@ var app=new Vue({
 		},
 		addImpuesto () {
 			var vm = this
-			var impuesto = new Object();
-			impuesto.cimpu=vm.valueImpuesto.cimpu
-			impuesto.nimpuesto=vm.valueImpuesto.nimpuesto
-			impuesto.vbase=document.querySelector("#valorBase").value
-			impuesto.porcentaje_Impuesto=vm.valueImpuesto.porcentajeImpuesto
-			impuesto.vimpuesto=document.querySelector("#valorImpuesto").value
-			if (vm.impuesto.impuestosSeleccionados.some( (object) => object.cimpu == impuesto.cimpu )){
-				alertify.error("No se puede repetir el impuesto")
+			if(currencyFormat.sToN(this.impuesto.sumaImpuestos)>currencyFormat.sToN(this.datos.vtotal)){
+				alertify.error("Los impuestos no pueden sobrepasar al valor total")
 			}else{
-				vm.impuesto.impuestosSeleccionados.push(impuesto)
-				alertify.success("Impuesto Agregado")
+				var impuesto = new Object();
+				impuesto.cimpu=vm.valueImpuesto.cimpu
+				impuesto.nimpuesto=vm.valueImpuesto.nimpuesto
+				impuesto.vbase=document.querySelector("#valorBase").value
+				impuesto.porcentaje_Impuesto=vm.valueImpuesto.porcentajeImpuesto
+				impuesto.vimpuesto=document.querySelector("#valorImpuesto").value
+				if (vm.impuesto.impuestosSeleccionados.some( (object) => object.cimpu == impuesto.cimpu )){
+					alertify.error("No se puede repetir el impuesto")
+				}else{
+					vm.impuesto.impuestosSeleccionados.push(impuesto)
+					alertify.success("Impuesto Agregado")
 				//console.log(vm.impuesto.impuestosSeleccionados)
 				vm.sumarValorLista(this.impuesto.impuestosSeleccionados,"vimpuesto","impuesto.sumaImpuestos")
 			}
-		},
-		removeImpuesto(index){
-			var vm = this
-			vm.impuesto.impuestosSeleccionados.splice(index,1);
-			alertify.success("Impuesto Removido")
-			vm.sumarValorLista(this.impuesto.impuestosSeleccionados,"vimpuesto","impuesto.sumaImpuestos")
-		},
-		setDv(dv){
-			console.info("dv",dv)
-			this.terceros.dv=dv
-		},
-		showDepartamentos ({ndepartamento}) {
-			var vm = this
-			if(vm.valueDepartamento!=null){
-				vm.terceros.cdepar= vm.valueDepartamento.cdepar
-			}
-			return `${ndepartamento}`
-		},
-		showCiudades ({nciudad}) {
-			var vm = this
-			if(vm.valueCiudad!=null){
-				vm.terceros.cciud= vm.valueCiudad.cciud
-			}
-			return `${nciudad}`
-		},
-		showImpuestos ({nimpuesto, porcentajeImpuesto }) {
-			var vm = this
+		}
+	},
+	removeImpuesto(index){
+		var vm = this
+		vm.impuesto.impuestosSeleccionados.splice(index,1);
+		alertify.success("Impuesto Removido")
+		vm.sumarValorLista(this.impuesto.impuestosSeleccionados,"vimpuesto","impuesto.sumaImpuestos")
+	},
+	setDv(dv){
+		console.info("dv",dv)
+		this.terceros.dv=dv
+	},
+	showDepartamentos ({ndepartamento}) {
+		var vm = this
+		if(vm.valueDepartamento!=null){
+			vm.terceros.cdepar= vm.valueDepartamento.cdepar
+		}
+		return `${ndepartamento}`
+	},
+	showCiudades ({nciudad}) {
+		var vm = this
+		if(vm.valueCiudad!=null){
+			vm.terceros.cciud= vm.valueCiudad.cciud
+		}
+		return `${nciudad}`
+	},
+	showImpuestos ({nimpuesto, porcentajeImpuesto }) {
+		var vm = this
 			//vm.impuesto.cimpu = vm.valueImpuesto.cimpu
 			//vm.impuesto.porcentaje_Impuesto=vm.valueImpuesto.porcentajeImpuesto
 
@@ -244,6 +271,8 @@ var app=new Vue({
 				if(response.status == 400){
 					alertify.error(response["message"])
 				}else{
+					this.datos.cterce=response.obj.id
+					console.log(response.obj.id)
 					alertify.success('Creación Exitosa')
 				}
 			})
@@ -252,6 +281,8 @@ var app=new Vue({
 				alertify.error('Error al crear el tercero')
 			})
 			this.GetTercero()
+
+			//this.datos.cterce=this.terceros[this.terceros.length].cterce
 		},
 		SetFormatDate:function(){
 			this.datos.fpago=moment(this.datos.fpago, 'YYYY-MM-DD').format('YYYY-MM-DD')
@@ -372,7 +403,32 @@ var app=new Vue({
 	},
 	list(table){
 		$('.'+table).DataTable().destroy();
-		$('.'+table).DataTable();
+		$('.'+table).DataTable( {
+			"language": {
+				"sProcessing":     "Procesando...",
+				"sLengthMenu":     "Mostrar _MENU_ registros",
+				"sZeroRecords":    "No se encontraron resultados",
+				"sEmptyTable":     "Ningún dato disponible en esta tabla",
+				"sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+				"sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+				"sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+				"sInfoPostFix":    "",
+				"sSearch":         "Buscar:",
+				"sUrl":            "",
+				"sInfoThousands":  ",",
+				"sLoadingRecords": "Cargando...",
+				"oPaginate": {
+					"sFirst":    "Primero",
+					"sLast":     "Último",
+					"sNext":     "Siguiente",
+					"sPrevious": "Anterior"
+				},
+				"oAria": {
+					"sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+					"sSortDescending": ": Activar para ordenar la columna de manera descendente"
+				}
+			}
+		} );
 	},
 	openReport(name,cdatos){
 		window.open(name+"?cdatos="+cdatos);
@@ -385,63 +441,15 @@ var app=new Vue({
 		if (presupuestoArray.length == 0){
 			alertify.error("Seleccione un rubro")
 		}
-		/*else{
-			if (presupuestoArray.length < vm.CountDatosPresupuesto(cdatos)){
-				***** PREGUNTARLE A CARLOS
-			}
-		}*/
-		presupuestoArray.forEach(function (item, index, array) {
-			var itemCopy = Object.assign({},item);
-			itemCopy.valor=currencyFormat.sToN(itemCopy.valor)
-			var presupuesto = $.param(itemCopy)
-			presupuesto=presupuesto+"&cdatos="+cdatos
-			fetch("/datospresupuesto/create",{
-				credentials: 'include',
-				method : "POST",
-				type: "POST",
-				headers: {
-					'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
-					'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
-					'X-CSRF-TOKEN' : vm._token,
-				},
-				body: presupuesto
-			})
-			.then(response => {
-				console.log(response)
-				return response.json();
-			})
-			.then(response => {
-				console.log(response["message"])
-				if(response.status == 400){
-					alertify.error(response["message"])
-				}else{
-					alertify.success('Creación Exitosa')
-				}
-			})
-			.catch(function(error) {
-				console.warn(error)
-				alertify.error('Error al agregar el presupuesto '+item.nrubro)
-			})
-		});
-	},
-	createImpuesto(){
-		var vm = this
-		vm._token = $('form').find("input").val()
-		var cdatos=vm.datos.cdatos
-		var impuestoArray =vm.impuesto.impuestosSeleccionados
-		if (impuestoArray.length == 0){
-			alertify.error("Seleccione un impuesto")
-		}
-		if(currencyFormat.sToN(this.impuesto.sumaImpuestos)>=currencyFormat.sToN(this.datos.vtotal)){
-			alertify.error("Los impuestos no pueden sobrepasar al valor total")
+		if(currencyFormat.sToN(this.presupuesto.sumaRubros)>currencyFormat.sToN(this.datos.vtotal)){
+			alertify.error("El presupuesto no pueden sobrepasar al valor total")
 		}else{
-			impuestoArray.forEach(function (item, index, array) {
+			presupuestoArray.forEach(function (item, index, array) {
 				var itemCopy = Object.assign({},item);
-				itemCopy.vbase=currencyFormat.sToN(itemCopy.vbase)
-				itemCopy.vimpuesto=currencyFormat.sToN(itemCopy.vimpuesto)
-				var impuesto = $.param(itemCopy)
-				impuesto=impuesto+"&cdatos="+cdatos
-				fetch("/datosimpuesto/create",{
+				itemCopy.valor=currencyFormat.sToN(itemCopy.valor)
+				var presupuesto = $.param(itemCopy)
+				presupuesto=presupuesto+"&cdatos="+cdatos+"&index="+index
+				fetch("/datospresupuesto/create",{
 					credentials: 'include',
 					method : "POST",
 					type: "POST",
@@ -450,7 +458,7 @@ var app=new Vue({
 						'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
 						'X-CSRF-TOKEN' : vm._token,
 					},
-					body: impuesto
+					body: presupuesto
 				})
 				.then(response => {
 					console.log(response)
@@ -466,44 +474,90 @@ var app=new Vue({
 				})
 				.catch(function(error) {
 					console.warn(error)
-					alertify.error('Error al agregar el impuesto '+item.nimpuesto)
+					alertify.error('Error al agregar el presupuesto '+item.nrubro)
 				})
-			});
-		}
-	},
-	operacionAritmetica(campos,operacion,final){
-		var total=0
-		campos.forEach(function (item, index, array) {
-			if(operacion=='+'){
-				total=total+currencyFormat.sToN(document.querySelector("#"+item).value)
+			});}	
+		},
+		createImpuesto(){
+			var vm = this
+			vm._token = $('form').find("input").val()
+			var cdatos=vm.datos.cdatos
+			var impuestoArray =vm.impuesto.impuestosSeleccionados
+			if (impuestoArray.length == 0){
+				alertify.error("Seleccione un impuesto")
 			}
-			if(operacion=='%'){
-				if(index==0){
-					total=currencyFormat.sToN(document.querySelector("#"+item).value)
-				}else{
-					var porcet=currencyFormat.sToN(document.querySelector("#"+item).value)/100
-					total=total*porcet
-					total=Math.round(total)
-				}
-			}
-		});
-		document.querySelector("#"+final).value=currencyFormat.format(total)
-	},
-	sumarValorLista(campos,campo,final){
-		var total=0
-		campos.forEach(function (item, index, array) {
-			eval("total=total+currencyFormat.sToN(item."+campo+")");
-		});
-		eval("this."+final+"=currencyFormat.format(total)")
-		if(final="impuesto.sumaImpuestos"){
-			if(currencyFormat.sToN(this.impuesto.sumaImpuestos)>=currencyFormat.sToN(this.datos.vtotal)){
+			if(currencyFormat.sToN(this.impuesto.sumaImpuestos)>currencyFormat.sToN(this.datos.vtotal)){
 				alertify.error("Los impuestos no pueden sobrepasar al valor total")
+			}else{
+				impuestoArray.forEach(function (item, index, array) {
+					var itemCopy = Object.assign({},item);
+					itemCopy.vbase=currencyFormat.sToN(itemCopy.vbase)
+					itemCopy.vimpuesto=currencyFormat.sToN(itemCopy.vimpuesto)
+					var impuesto = $.param(itemCopy)
+					impuesto=impuesto+"&cdatos="+cdatos+"&index="+index
+					fetch("/datosimpuesto/create",{
+						credentials: 'include',
+						method : "POST",
+						type: "POST",
+						headers: {
+							'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+							'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+							'X-CSRF-TOKEN' : vm._token,
+						},
+						body: impuesto
+					})
+					.then(response => {
+						console.log(response)
+						return response.json();
+					})
+					.then(response => {
+						console.log(response["message"])
+						if(response.status == 400){
+							alertify.error(response["message"])
+						}else{
+							alertify.success('Creación Exitosa')
+						}
+					})
+					.catch(function(error) {
+						console.warn(error)
+						alertify.error('Error al agregar el impuesto '+item.nimpuesto)
+					})
+				});
 			}
-			this.impuesto.netopagar=currencyFormat.format(currencyFormat.sToN(this.datos.vtotal)-currencyFormat.sToN(this.impuesto.sumaImpuestos))
-		}
-	},
-	existsComprobanteEgreso(){
-		var cegre=this.datos.cegre
+		},
+		operacionAritmetica(campos,operacion,final){
+			var total=0
+			campos.forEach(function (item, index, array) {
+				if(operacion=='+'){
+					total=total+currencyFormat.sToN(document.querySelector("#"+item).value)
+				}
+				if(operacion=='%'){
+					if(index==0){
+						total=currencyFormat.sToN(document.querySelector("#"+item).value)
+					}else{
+						var porcet=currencyFormat.sToN(document.querySelector("#"+item).value)/100
+						total=total*porcet
+						total=Math.round(total)
+					}
+				}
+			});
+			document.querySelector("#"+final).value=currencyFormat.format(total)
+		},
+		sumarValorLista(campos,campo,final){
+			var total=0
+			campos.forEach(function (item, index, array) {
+				eval("total=total+currencyFormat.sToN(item."+campo+")");
+			});
+			eval("this."+final+"=currencyFormat.format(total)")
+			if(final="impuesto.sumaImpuestos"){
+				if(currencyFormat.sToN(this.impuesto.sumaImpuestos)>=currencyFormat.sToN(this.datos.vtotal)){
+					alertify.error("Los impuestos no pueden sobrepasar al valor total")
+				}
+				this.impuesto.netopagar=currencyFormat.format(currencyFormat.sToN(this.datos.vtotal)-currencyFormat.sToN(this.impuesto.sumaImpuestos))
+			}
+		},
+		existsComprobanteEgreso(){
+			var cegre=this.datos.cegre
 		fetch("api/comprobanteegreso/?cegre="+cegre,{ //ruta
 			credentials: 'include',
 			type : "GET",
@@ -530,7 +584,7 @@ var app=new Vue({
 				return dpresu
 			});
 		}else{
-		console.log("hp",cdatos)
+			console.log("hp",cdatos)
 				fetch("datospresupuesto/show?cdatos="+cdatos,{ //ruta
 					credentials: 'include',
 					type : "GET",
@@ -542,9 +596,9 @@ var app=new Vue({
 				});
 			}
 		},
-	CountDatosPresupuesto(cdatos){
-		var vm = this
-		if(cdatos==undefined){
+		CountDatosPresupuesto(cdatos){
+			var vm = this
+			if(cdatos==undefined){
 			fetch("datospresupuesto/count",{ //ruta
 				credentials: 'include',
 				type : "GET",
@@ -555,7 +609,7 @@ var app=new Vue({
 				return dpresu
 			});
 		}else{
-		console.log("hp",cdatos)
+			console.log("hp",cdatos)
 				fetch("datospresupuesto/count?cdatos="+cdatos,{ //ruta
 					credentials: 'include',
 					type : "GET",
@@ -568,24 +622,191 @@ var app=new Vue({
 			}
 		},
 		selectTercero(index){
-
-			//this.tercero.find(callback[, 'Rodrigo'])
+			this.datos.cterce =this.tercero[index].cterce
 			this.terceros.nit=this.tercero[index].nit
 			this.terceros.nombre=this.tercero[index].nombre
 		},
 		searchTercero(){
 			var nit=this.terceros.nit
 			var nombre=""
+			var cterce=""
 			this.tercero.find(function(value, index) {
 				if(value.nit==nit){
+					cterce=value.cterce
 					nombre=value.nombre
 					console.log(value.nombre)
 				}
 			}
-				)
+			)
+			this.datos.cterce= cterce
 			this.terceros.nombre=nombre
 		},
+		selectPresupuesto(index){
 
+			//this.tercero.find(callback[, 'Rodrigo'])
+			this.presupuesto.crubro =this.rubros[index].crubro
+			this.presupuesto.nrubro =this.rubros[index].nrubro
+			
+		},
+		searchPresupuesto(){
+			var crubro=this.presupuesto.crubro
+			var nrubro=""
+			this.rubros.find(function(value, index) {
+				if(value.crubro==crubro){
+					crubro=value.crubro
+					nrubro=value.nrubro
+					console.log("nrubro", value.nrubro)
+				}
+			}
+			)
+			this.presupuesto.crubro= crubro
+			this.presupuesto.nrubro=nrubro
+		},
+		GetBancos(cbanco){
+			var vm = this
+			if(cbanco==undefined){
+				 fetch("api/bancos",{ //ruta
+				 	credentials: 'include',
+				 	type : "GET",
+				 }).then(response => {
+				 	return response.json()
+				 }).then(bancos => {
+				 	console.log(bancos)
+				 	vm.bancos = bancos
+				 });
+				}
+			},
+			selectBanco(index){
+				this.banco.cbanco =this.bancos[index].cbanco
+				this.banco.nbanco=this.bancos[index].nbanco
+				this.banco.numcuenta=this.bancos[index].numcuenta
+				this.banco.idcuentas_bancos=this.bancos[index].idcuentas_bancos
+			},
+			createCheques:function(){
+				this._token = $('form').find("input").val()
+				this.cheque.valor=document.querySelector("#vCheque").value
+				this.cheque.idcuentas_bancos=this.banco.idcuentas_bancos
+				var copycheque=Object.assign({},this.cheque)
+				copycheque.valor=currencyFormat.sToN(copycheque.valor)
+				console.log("copycheque")
+				var dato = $.param(copycheque)
+				console.log(dato)
+				if(this.datos.cdatos!=''){
+					fetch("/cheques/create",{
+						credentials: 'include',
+						method : "POST",
+						type: "POST",
+						headers: {
+							'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+							'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+							'X-CSRF-TOKEN' : this._token,
+						},
+						body: dato,
+					})
+					.then(response => {
+						console.info(response)
+						return response.json();
+					})
+					.then(response => {
+						console.log(response["message"])
+						if(response.status == 400){
+							alertify.error(response["message"])
+						}else{
+							alertify.success('Creación Exitosa')
+							console.log(response.obj.id)
+							this.cheque.idcheque=response.obj.id
+							this.CreateDatosCuentas()
+						}
+					})
+					.catch(function(error) {
+						console.warn(error)
+						alertify.error('Error al crear las cuentas')
+					})
+				}else{
+					alertify.error('Los DATOS deben de estar creados')
+				}
+			},
+			CreateDatosCuentas(){
+				this._token = $('form').find("input").val()
+				if(this.datos.cdatos!='' && this.cheque.idcheque!=''){
+					var datosCuentas=Object.assign({})
+					datosCuentas.cdatos=this.datos.cdatos
+					datosCuentas.idcheque=this.cheque.idcheque
+					var dato = $.param(datosCuentas)
+					console.log(dato)
+					fetch("/datoscuentas/create",{
+						credentials: 'include',
+						method : "POST",
+						type: "POST",
+						headers: {
+							'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+							'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+							'X-CSRF-TOKEN' : this._token,
+						},
+						body: dato,
+					})
+					.then(response => {
+						console.info(response)
+						return response.json();
+					})
+					.then(response => {
+						console.log(response["message"])
+						if(response.status == 400){
+							alertify.error(response["message"])
+						}else{
+							alertify.success('Creación Exitosa')
+							this.cheque.idcheque=response.obj.id
+						}
+					})
+					.catch(function(error) {
+						console.warn(error)
+						alertify.error('Error al crear los las cuentas')
+					})
+				}else{
+					alertify.error('Los DATOS deben de estar creados o el CHEQUE debe de estar creado')
+				}
+			},
+			createBanco(){
+				this._token = $('form').find("input").val()
+				var banco=Object.assign({})
+				banco.nbanco=this.banco.nbanco
+				banco.numcuenta=this.banco.numcuenta
+				var dato = $.param(banco)
+				console.log(dato)
+				fetch("/banco/create",{
+					credentials: 'include',
+					method : "POST",
+					type: "POST",
+					headers: {
+						'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+						'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+						'X-CSRF-TOKEN' : this._token,
+					},
+					body: dato,
+				})
+				.then(response => {
+					console.info(response)
+					return response.json();
+				})
+				.then(response => {
+					console.log(response["message"])
+					if(response.status == 400){
+						alertify.error(response["message"])
+					}else{
+						alertify.success('Creación Exitosa')
+						console.log(response)
+						this.banco.cbanco=response.obj.cbanco
+						this.banco.numcuenta=response.obj.numcuenta
+						this.banco.idcuentas_bancos=response.obj.idcuentas_bancos
+
+					}
+				})
+				.catch(function(error) {
+					console.warn(error)
+					alertify.error('Error al crear los las cuentas')
+				})
+				this.GetBancos()
+			},
 	},// end methods
 	delimiters : ["[[","]]"],
 	mounted (){
@@ -600,6 +821,8 @@ var app=new Vue({
 		vm.GetRubros()
 		vm.GetImpuestos()
 		vm.GetTercero()
+		vm.GetBancos()
+
 		//vm.GetTercero(1,300)
 	    fetch("api/departamentos/",{ //ruta
 	    	credentials: 'include',
@@ -637,5 +860,6 @@ var app=new Vue({
 	      	}
 	      });
 	      //aca
+
 	  }
 	})

@@ -12,6 +12,27 @@ class DatosImpuestoController extends Controller
 public function __construct(){
 		$this->middleware('auth');
 	}
+ public function validar($data){
+ $validator = Validator::make($data,
+            [
+            'cimpu'=>'required|exists:Impuestos,cimpu',
+            'cdatos'=>'required|exists:Datos_basicos,cdatos',
+            'vbase'=>'required|numeric',
+            'porcentaje_Impuesto'=>'required|numeric',
+            'vimpuesto'=>'required|numeric',
+            ],
+            [
+            'cimpu.exists'=> 'El IMPUESTO no se encuentra en la base de datos',
+            'cdatos.exists'=>'Los DATOS basicos no se encuentra en la base de datos',
+            'cdatos.required'=>'Los DATOS basicos son requeridos',
+
+            'vbase.numeric'=> 'El VALOR BASE debe ser un valor monetario',
+            'vimpuesto.numeric'=> 'El VALOR DEL IMPUESTO debe ser un valor monetario',
+            'porcentaje_Impuesto.numeric'=> 'El PORCENTAJE debe ser un valor numérico',
+            ]
+            );
+ return $validator;
+ }
     /**
      * Display a listing of the resource.
      *
@@ -30,27 +51,16 @@ public function __construct(){
     public function create(Request $request){
     	$data = $request->all();
     	
-    	$validator = Validator::make($data,
-    		[
-    		'cimpu'=>'required|exists:Impuestos,cimpu',
-    		'cdatos'=>'required|exists:Datos_basicos,cdatos',
-    		'vbase'=>'required|numeric',
-    		'porcentaje_Impuesto'=>'required|numeric',
-    		'vimpuesto'=>'required|numeric',
-    		],
-    		[
-    		'cimpu.exists'=> 'El IMPUESTO no se encuentra en la base de datos',
-    		'cdatos.exists'=>'Los DATOS basicos no se encuentra en la base de datos',
-            'cdatos.required'=>'Los DATOS basicos son requeridos',
-
-    		'vbase.numeric'=> 'El VALOR BASE debe ser un valor monetario',
-    		'vimpuesto.numeric'=> 'El VALOR DEL IMPUESTO debe ser un valor monetario',
-    		'porcentaje_Impuesto.numeric'=> 'El PORCENTAJE debe ser un valor numérico',
-    		]
-    		);
+    	
     	//var_dump($validator);exit();
     		//var_dump($validator);
-
+        if ($data['index']==0) {
+            $DatosImpuesto=Datos_impuestos::where('cdatos',$data['cdatos'])->get();
+            foreach ($DatosImpuesto as $key => $impuesto) {
+                    $DatosImpuesto[$key]->delete();
+            }
+        }
+        $validator = $this->validar($data);
     	if ($validator->fails()){
     		$messages = $validator->messages();
     		$message="";
