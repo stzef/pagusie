@@ -30,7 +30,7 @@ class Cheques extends Model
      */
     public function cuentasBanco()
     {
-        return $this->belongsTo('App\Models\CuentasBanco', 'idcuentas_bancos', 'idcuentas_bancos');
+        return $this->belongsTo('App\Models\Cuentas_bancos', 'idcuentas_bancos', 'idcuentas_bancos');
     }
 
     /**
@@ -38,7 +38,7 @@ class Cheques extends Model
      */
     public function estado()
     {
-        return $this->belongsTo('App\Models\Estado', 'cestado', 'cestado');
+        return $this->belongsTo('App\Models\Estados', 'cestado', 'cestado');
     }
 
     /**
@@ -46,6 +46,6 @@ class Cheques extends Model
      */
     public function datosCuentas()
     {
-        return $this->hasMany('App\DatosCuenta', 'idcheque', 'idcheque');
+        return $this->hasMany('App\Models\Datos_cuentas', 'idcheque', 'idcheque');
     }
 }

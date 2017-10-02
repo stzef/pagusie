@@ -76,7 +76,7 @@ class Datos_basicos extends Model
      */
     public function datosCuentas()
     {
-        return $this->hasMany('App\Models\DatosCuenta', 'cdatos', 'cdatos');
+        return $this->hasMany('App\Models\Datos_cuentas', 'cdatos', 'cdatos');
     }
 
     /**
@@ -84,7 +84,7 @@ class Datos_basicos extends Model
      */
     public function datosImpuestos()
     {
-        return $this->hasMany('App\Models\DatosImpuesto', 'cdatos', 'cdatos');
+        return $this->hasMany('App\Models\Datos_impuestos', 'cdatos', 'cdatos');
     }
 
     /**
@@ -92,6 +92,6 @@ class Datos_basicos extends Model
      */
     public function datosPresupuestos()
     {
-        return $this->hasMany('App\Models\DatosPresupuesto', 'cdatos', 'cdatos');
+        return $this->hasMany('App\Models\Datos_presupuesto', 'cdatos', 'cdatos');
     }
 }

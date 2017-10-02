@@ -10,6 +10,7 @@ use App\Models\Colegio;
 use App\Models\Impuestos;
 use App\Models\Datos_presupuesto;
 use App\Models\Datos_impuestos;
+use App\Models\Datos_cuentas;
 use PDF;
 use App\Helper\Helper;
 use App\Helper\NumeroALetras;
@@ -36,7 +37,11 @@ class ComprobanteEgresoController extends Controller
 		$datos->fregis=Helper::formatDate($datos->fregis,0);
 		$tercero=$datos->tercero;
 		$datos_impuestos=Datos_impuestos::where('cdatos',$cdatos)->get();
-		
+		$cheque=$datos->datoscuentas->first()->cheque->first();
+		$cuentasbanco=$cheque->cuentasbanco;
+		$datos->numcheque=$cheque->numcheque;
+		$datos->numcuenta=$cuentasbanco->numcuenta;
+		$datos->nbanco=$cuentasbanco->banco->nbanco;
 		$vtdedu=0;
 		foreach ($impuestos as $key => $impuesto) {
 			foreach ($datos_impuestos as $key2 => $dimpuesto) {
@@ -57,7 +62,7 @@ class ComprobanteEgresoController extends Controller
 
 		$data = array("datos" => $datos,"tercero" => $tercero,"colegio"=>$colegio,"impuestos"=>$impuestos,"rubros"=>$rubros,"Datosimpuesto"=>$datos_impuestos,"reporte"=>$reporteCE);
 		//return view('pdf.comprobante_egreso', $data);
-		
+
 		PDF::setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif']);
 		$pdf = PDF::loadView('pdf.comprobante_egreso', $data);
 		$namefile='Comprobante De Egreso Nº '.$reporteCE->id.'.pdf';

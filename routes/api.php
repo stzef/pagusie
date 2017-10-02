@@ -41,3 +41,6 @@ Route::group(['prefix' => 'comprobanteegreso'], function(){
 Route::group(['prefix' => 'bancos'], function(){
 	Route::get('/', "APIController@bancos")->name("api.bancos.index");
 });
+Route::group(['prefix' => 'datosedit'], function(){
+	Route::get('/', "APIController@datosEdit")->name("api.datosEdit.index");
+});

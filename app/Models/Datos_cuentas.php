@@ -17,14 +17,14 @@ class Datos_cuentas extends Model
 {
     /**
      * The table associated with the model.
-     * 
+     *
      * @var string
      */
     protected $table = 'datos_cuentas';
 
     /**
      * The primary key for the model.
-     * 
+     *
      * @var string
      */
     protected $primaryKey = 'iddatos_cuentas';
@@ -39,7 +39,7 @@ class Datos_cuentas extends Model
      */
     public function cheque()
     {
-        return $this->belongsTo('App\Models\Cheque', 'idcheque', 'idcheque');
+        return $this->belongsTo('App\Models\Cheques', 'idcheque', 'idcheque');
     }
 
     /**
@@ -47,6 +47,6 @@ class Datos_cuentas extends Model
      */
     public function datosBasico()
     {
-        return $this->belongsTo('App\Models\DatosBasico', 'cdatos', 'cdatos');
+        return $this->belongsTo('App\Models\Datos_basicos', 'cdatos', 'cdatos');
     }
 }

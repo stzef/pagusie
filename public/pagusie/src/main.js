@@ -30,10 +30,11 @@ var app=new Vue({
 		valueRubros: {},
 		impuestos:[],
 		bancos:[],
+		datosEdit:[],
 		valueImpuesto: {},
 		terceroSelected:{},
 		datos:{
-			'cdatos':'9',
+			'cdatos':'27',
 			'cterce':'',
 			'ctidocumento':'',
 			'cestado':'1',
@@ -105,7 +106,7 @@ var app=new Vue({
 		calcularDigitoVerificacion,
 		addRubro () {
 			var vm = this
-			if(currencyFormat.sToN(this.presupuesto.sumaRubros)>currencyFormat.sToN(this.datos.vtotal)){
+			if((currencyFormat.sToN(this.presupuesto.sumaRubros)+currencyFormat.sToN(document.querySelector("#vrubro").value))>currencyFormat.sToN(this.datos.vtotal)){
 				alertify.error("El presupuesto no pueden sobrepasar al valor total")
 			}else{
 				var presupuesto = new Object();
@@ -136,7 +137,7 @@ var app=new Vue({
 				impuesto.cimpu=vm.valueImpuesto.cimpu
 				impuesto.nimpuesto=vm.valueImpuesto.nimpuesto
 				impuesto.vbase=document.querySelector("#valorBase").value
-				impuesto.porcentaje_Impuesto=vm.valueImpuesto.porcentajeImpuesto
+				impuesto.porcentaje_Impuesto=vm.impuesto.porcentaje_Impuesto
 				impuesto.vimpuesto=document.querySelector("#valorImpuesto").value
 				if (vm.impuesto.impuestosSeleccionados.some( (object) => object.cimpu == impuesto.cimpu )){
 					alertify.error("No se puede repetir el impuesto")
@@ -246,7 +247,8 @@ var app=new Vue({
 					vm.terceroSelected=terceros[0]
 					vm.terceroSelected.vtotal=currencyFormat.format(vtotal)
 				});
-			}},
+			}
+		},
 		//end getTercero function
 		CreateTercero:function(){
 			this._token = $('form').find("input").val()
@@ -402,6 +404,7 @@ var app=new Vue({
 
 	},
 	list(table){
+		console.log(table)
 		$('.'+table).DataTable().destroy();
 		$('.'+table).DataTable( {
 			"language": {
@@ -476,7 +479,7 @@ var app=new Vue({
 					console.warn(error)
 					alertify.error('Error al agregar el presupuesto '+item.nrubro)
 				})
-			});}	
+			});}
 		},
 		createImpuesto(){
 			var vm = this
@@ -646,7 +649,7 @@ var app=new Vue({
 			//this.tercero.find(callback[, 'Rodrigo'])
 			this.presupuesto.crubro =this.rubros[index].crubro
 			this.presupuesto.nrubro =this.rubros[index].nrubro
-			
+
 		},
 		searchPresupuesto(){
 			var crubro=this.presupuesto.crubro
@@ -686,44 +689,49 @@ var app=new Vue({
 				this._token = $('form').find("input").val()
 				this.cheque.valor=document.querySelector("#vCheque").value
 				this.cheque.idcuentas_bancos=this.banco.idcuentas_bancos
-				var copycheque=Object.assign({},this.cheque)
-				copycheque.valor=currencyFormat.sToN(copycheque.valor)
-				console.log("copycheque")
-				var dato = $.param(copycheque)
-				console.log(dato)
-				if(this.datos.cdatos!=''){
-					fetch("/cheques/create",{
-						credentials: 'include',
-						method : "POST",
-						type: "POST",
-						headers: {
-							'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
-							'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
-							'X-CSRF-TOKEN' : this._token,
-						},
-						body: dato,
-					})
-					.then(response => {
-						console.info(response)
-						return response.json();
-					})
-					.then(response => {
-						console.log(response["message"])
-						if(response.status == 400){
-							alertify.error(response["message"])
-						}else{
-							alertify.success('Creación Exitosa')
-							console.log(response.obj.id)
-							this.cheque.idcheque=response.obj.id
-							this.CreateDatosCuentas()
-						}
-					})
-					.catch(function(error) {
-						console.warn(error)
-						alertify.error('Error al crear las cuentas')
-					})
+				if(currencyFormat.sToN(this.cheque.valor)<this.terceroSelected.vtotal || currencyFormat.sToN(this.cheque.valor)>this.terceroSelected.vtotal){
+					alertify.error('El valor del CHEQUE debe ser igual al valor a pagar')
 				}else{
-					alertify.error('Los DATOS deben de estar creados')
+					var copycheque=Object.assign({},this.cheque)
+					copycheque.valor=currencyFormat.sToN(copycheque.valor)
+					console.log("copycheque")
+					copycheque.cdatos=this.datos.cdatos
+					var dato = $.param(copycheque)
+					console.log(dato)
+					if(this.datos.cdatos!=''){
+						fetch("/cheques/create",{
+							credentials: 'include',
+							method : "POST",
+							type: "POST",
+							headers: {
+								'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+								'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+								'X-CSRF-TOKEN' : this._token,
+							},
+							body: dato,
+						})
+						.then(response => {
+							console.info(response)
+							return response.json();
+						})
+						.then(response => {
+							console.log(response["message"])
+							if(response.status == 400){
+								alertify.error(response["message"])
+							}else{
+								alertify.success('Creación Exitosa')
+								console.log(response.obj.id)
+								this.cheque.idcheque=response.obj.id
+								this.CreateDatosCuentas()
+							}
+						})
+						.catch(function(error) {
+							console.warn(error)
+							alertify.error('Error al crear las cuentas')
+						})
+					}else{
+						alertify.error('Los DATOS deben de estar creados')
+					}
 				}
 			},
 			CreateDatosCuentas(){
@@ -807,6 +815,21 @@ var app=new Vue({
 				})
 				this.GetBancos()
 			},
+			GetDatosEdit(){
+				var vm = this
+				 fetch("api/datosedit",{ //ruta
+				 	credentials: 'include',
+				 	type : "GET",
+				 }).then(response => {
+				 	return response.json()
+				 }).then(datosEdit => {
+				 	console.log(datosEdit)
+				 	vm.datosEdit = datosEdit
+				 	vm.datosEdit.forEach(function (item, index, array) {
+				 		item.vtotal=currencyFormat.format(item.vtotal)
+				 	});
+				 });
+				},
 	},// end methods
 	delimiters : ["[[","]]"],
 	mounted (){
@@ -822,7 +845,7 @@ var app=new Vue({
 		vm.GetImpuestos()
 		vm.GetTercero()
 		vm.GetBancos()
-
+		vm.GetDatosEdit()
 		//vm.GetTercero(1,300)
 	    fetch("api/departamentos/",{ //ruta
 	    	credentials: 'include',

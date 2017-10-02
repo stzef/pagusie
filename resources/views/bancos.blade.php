@@ -31,7 +31,7 @@
 		<div class="form-group col-md-4">
 			<label for="concepto">Concepto</label>
 			<textarea class="form-control" id="concepto" rows="3" v-model="cheque.concepto" required></textarea>
-		</div> 
+		</div>
 	</div>
 
 	<hr>
@@ -147,7 +147,7 @@
 				</form>
 			</div>
 			<div class="modal-footer">
-				
+
 			</div>
 		</div>
 

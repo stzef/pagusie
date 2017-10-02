@@ -17,7 +17,9 @@
 
 
 Route::get('/', 'HomeController@index')->name("index");
-
+Route::get('edit', function(){
+	return view('edit');
+})->name("edit");
 Route::group(['prefix'=>'datos'], function(){
 	Route::post('/create','DatosBasicosController@create')->name('datos.create');
 	Route::post('/update','DatosBasicosController@update')->name('datos.update');

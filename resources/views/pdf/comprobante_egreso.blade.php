@@ -70,7 +70,7 @@
 			</table>
 		</div>
 	</div>
-	
+
 	<div style="width:45%;display:inline-block;height: 15px;margin-top: 10px;" >
 		<table border="2">
 			<tr>
@@ -168,13 +168,13 @@
 				<td rowspan="{{count($rubros)}}">{{$datos->fdispo}}</td>
 				<td rowspan="{{count($rubros)}}">{{$datos->fregis}}</td>
 				<td>{{number_format($rubro->valor,2)}}</td>
-			</tr>	
+			</tr>
 			@else
 			<tr>
 				<td>{{$rubro->crubro}}</td>
 				<td>{{strtoupper($rubro->presupuesto->nrubro)}}</td>
 				<td>{{number_format($rubro->valor,2)}}</td>
-			</tr>	
+			</tr>
 			@endif
 			@endforeach
 			<tr>
@@ -189,11 +189,11 @@
 			<td colspan="2" class="text-center"><strong>FORMA DE PAGO</strong></td>
 			</tr>
 			<tr>
-				<td><strong>BANCO:</strong> </td>
-				<td><strong>N° DE CHEQUE:</strong> </td>
+				<td><strong>BANCO: </strong>{{ $datos->nbanco }} </td>
+				<td><strong>N° DE CHEQUE: </strong>{{ $datos->numcheque }} </td>
 			</tr>
 			<tr>
-				<td><strong>N° DE CUENTA:</strong> </td>
+				<td><strong>N° DE CUENTA: </strong> {{ $datos->numcuenta }}</td>
 				<td><strong>FECHA DE CHEQUE: </strong> {{$datos->fpago}}</td>
 		</table>
 	</div>
@@ -216,8 +216,20 @@
 				</tr>
 			</table>
 	</div>
-
-	<div style="width:50%;display:inline-block;height: 15px;margin-top: 2px;">
+	<div style="width:50%;display:inline-block;height: 15px;margin-top: 2px;" >
+		<table>
+		<tr>
+			<td class="td-without-border"><strong>RECIBÌ CONFORME</strong></td>
+		</tr>
+		<tr>
+		<td class="td-without-border"><strong>Nombre:</strong></td>
+		</tr>
+		<tr>
+		<td class="td-without-border"><strong>C.C Nº</strong></td>
+		</tr>
+		</table>
+	</div>
+	<!--<div style="width:50%;display:inline-block;height: 15px;margin-top: 2px;">
 		<table border="2" width="100%">
 		<tr>
 			<td><strong>RECIBÌ CONFORME:</strong> <br><br><br><br><br></td>
@@ -229,7 +241,7 @@
 		<td><strong>C.C Nº</strong></td>
 		</tr>
 		</table>
-	</div>
+	</div>-->
 	<div style="width:100%;height: 15px;margin-top: 145px;">
 	<table width="100%">
 	<tr>

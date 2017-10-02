@@ -79,7 +79,7 @@ public function comprobanteegreso(Request $request){
 	if($request->cegre){
 		$cegre=$request->cegre;
 		if (sizeof(Datos_basicos::where('cegre',$cegre)->get())>0){
-			return response()->json(true);		
+			return response()->json(true);
 		}
 		else{
 			return response()->json(false);
@@ -88,17 +88,13 @@ public function comprobanteegreso(Request $request){
 }
 public function bancos(Request $request){
 	if(!$request->cbanco){
-
-		$cuentas = Cuentas_bancos::all(); 
+		$cuentas = Cuentas_bancos::all();
 		$bancos = collect();
 		foreach ($cuentas as $cuenta) {
 			$temp=$cuenta;
-			
 			$temp->nbanco=$cuenta->banco->nbanco;
 			$bancos->push($temp);
 		}
-		
-		
 	}else{
 		$crubro=$request->crubro;
 		$banco = Bancos::where('crubro',$crubro)->get();
@@ -110,6 +106,15 @@ public function bancos(Request $request){
 		}
 	}
 	return response()->json($bancos->toArray());
+}
+public function datosEdit(Request $request){
+	$datos=Datos_basicos::all();
+	//$datos->tercero=$datos->tercero;
+	foreach ($datos as $key => $dato) {
+	$tercero=$dato->tercero->nombre;
+	$dato->tercero=$tercero;
+	}
+	return response()->json($datos->toArray());
 }
 
 }

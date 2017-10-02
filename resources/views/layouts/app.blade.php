@@ -23,7 +23,7 @@
 	<link rel="stylesheet" href="{{ URL::asset('bower_components/bootstrap/dist/css/bootstrap.css') }}" >
 	<link rel="stylesheet" href="{{ URL::asset('bower_components/datatables.net-dt/css/jquery.dataTables.css') }}" >
 	<style>
-	.tab-width{ 
+	.tab-width{
 		width: 16%;
 		text-align:center;
 	}
@@ -63,9 +63,9 @@
 									<a href="{{route('index')}}" >Nuevo</a>
 								</li>
 								<li>
-									<a href="" >Editar</a>
+									<a href="{{route('edit')}}" >Editar</a>
 								</li>
-							</ul>		
+							</ul>
 						</li>
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -75,7 +75,7 @@
 								<li>
 									<a href="" >Parametros</a>
 								</li>
-							</ul>		
+							</ul>
 						</li>
 						@endif
 					</ul>

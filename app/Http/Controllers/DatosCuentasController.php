@@ -21,7 +21,7 @@ class DatosCuentasController extends Controller
             'idcheque.required'=>'El CHEQUE es obligatorio',
             'cdatos.exists'=>'Los Datos debe existir',
             'cdatos.required'=>'Los Datos son obligatorio',
-            
+
         ]
     );
        return $validator;
@@ -56,6 +56,7 @@ class DatosCuentasController extends Controller
             return response()->json(array("message"=>$message,"status"=>400),400);
         }else{
             $datoscuentas = Datos_cuentas::create($data);
+
         }
         return response()->json(array("obj" => $datoscuentas->toArray()));
     }
