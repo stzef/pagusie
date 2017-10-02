@@ -2,11 +2,12 @@ import Vue from 'vue'
 import Datepicker from 'vuejs-datepicker'
 import moment from 'moment'
 import Multiselect from 'vue-multiselect';
-
 import calcularDigitoVerificacion from './../../calcularDigitoVerificacion'
 import currencyFormat from './../../currencyFormat'
 import $ from 'jquery';
 import 'datatables.net'
+import VueGoodTable from 'vue-good-table';
+Vue.use(VueGoodTable);
 //window.$ = $;
 
 var app=new Vue({
@@ -15,7 +16,88 @@ var app=new Vue({
 		Datepicker,
 		Multiselect,
 	},
+	
 	data : {
+		columnsEditDatos:[
+		{
+			label: 'Vigencia',
+			field: 'vigencia',
+		},
+		{
+			label: 'Convocatoria',
+			field: 'convocatoria',
+		},
+		{
+			label: 'Tercero',
+			field: 'tercero.nombre',
+		},
+		{
+			label: 'Concepto',
+			field: 'concepto',
+		},{
+			label: 'V. Total',
+			field: 'vtotal',
+			tdClass:'text-right'
+		},
+		{
+			label: 'Editar',
+			field: 'editar',
+			htmlContent: '<button>Hello</button>',
+			html: true,
+
+		},
+		{
+			label: 'Duplicar',
+			field: 'duplicar',
+			html: true,
+		},
+		],
+		columnsTerceros: [
+		{
+			label: 'Nit',
+			field: 'nit',
+		},
+		{
+			label: 'Nombre',
+			field: 'nombre',
+		},
+		{
+			label: 'Teléfono',
+			field: 'telefono',
+		},
+		{
+			label: 'E-Mail',
+			field: 'email',
+		},
+		],
+		columnsPresupuestos: [
+		{
+			label: 'Rubro',
+			field: 'crubro',
+		},
+		{
+			label: 'Nombre',
+			field: 'nrubro',
+		},
+		{
+			label: 'Valor Presupuestado',
+			field: 'vr_rubro_presupuestado',
+		},
+		{
+			label: 'Valor Ejecutado',
+			field: 'vr_rubro_ejecutado',
+		},
+		],
+		columnsBancos: [
+		{
+			label: 'Nombre',
+			field: 'nbanco',
+		},
+		{
+			label: 'Número de cuenta',
+			field: 'numcuenta',
+		},
+		],
 		date: moment().locale('es').format('YYYY-MM-DDThh:mm:00.000Z'),
 		tidocumento:[],
 		valueTdocu: {},
@@ -34,7 +116,7 @@ var app=new Vue({
 		valueImpuesto: {},
 		terceroSelected:{},
 		datos:{
-			'cdatos':'27',
+			'cdatos':'',
 			'cterce':'',
 			'ctidocumento':'',
 			'cestado':'1',
@@ -436,6 +518,10 @@ var app=new Vue({
 	openReport(name,cdatos){
 		window.open(name+"?cdatos="+cdatos);
 	},
+	openEdit(){
+		console.log("jhonan")
+		window.location.replace("localhost");
+	},
 	createPresupuesto(){
 		var vm = this
 		vm._token = $('form').find("input").val()
@@ -625,9 +711,11 @@ var app=new Vue({
 			}
 		},
 		selectTercero(index){
-			this.datos.cterce =this.tercero[index].cterce
-			this.terceros.nit=this.tercero[index].nit
-			this.terceros.nombre=this.tercero[index].nombre
+			this.datos.cterce =index.cterce
+			this.terceros.nit=index.nit
+			this.terceros.nombre=index.nombre
+			//console.log(document.getElementById("searchtercero").id)
+			alertify.success('Tercero Seleccionado')
 		},
 		searchTercero(){
 			var nit=this.terceros.nit
@@ -647,8 +735,8 @@ var app=new Vue({
 		selectPresupuesto(index){
 
 			//this.tercero.find(callback[, 'Rodrigo'])
-			this.presupuesto.crubro =this.rubros[index].crubro
-			this.presupuesto.nrubro =this.rubros[index].nrubro
+			this.presupuesto.crubro =index.crubro
+			this.presupuesto.nrubro =index.nrubro
 
 		},
 		searchPresupuesto(){
@@ -680,10 +768,10 @@ var app=new Vue({
 				}
 			},
 			selectBanco(index){
-				this.banco.cbanco =this.bancos[index].cbanco
-				this.banco.nbanco=this.bancos[index].nbanco
-				this.banco.numcuenta=this.bancos[index].numcuenta
-				this.banco.idcuentas_bancos=this.bancos[index].idcuentas_bancos
+				this.banco.cbanco =index.cbanco
+				this.banco.nbanco=index.nbanco
+				this.banco.numcuenta=index.numcuenta
+				this.banco.idcuentas_bancos=index.idcuentas_bancos
 			},
 			createCheques:function(){
 				this._token = $('form').find("input").val()
@@ -827,8 +915,40 @@ var app=new Vue({
 				 	vm.datosEdit = datosEdit
 				 	vm.datosEdit.forEach(function (item, index, array) {
 				 		item.vtotal=currencyFormat.format(item.vtotal)
+				 		//item.editar='<button onClick="this.openEdit()" class="btn btn-info">Editar</button>'
+
+				 		item.editar='<a href="/?cdatos='+item.cdatos+'"'+'class="btn btn-info">Editar</a>'
+				 		item.duplicar='<button class="btn btn-info ">Duplicar</button>'
 				 	});
 				 });
+				},
+				getUrlParameter(name) {
+					name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+					var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+					var results = regex.exec(location.search);
+					return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '))
+				},
+				checkQueryString(){
+					var query = new URLSearchParams(window.location.search);
+
+					console.log(query)
+					var name= ''
+					if (query.has('cdatos')) {
+						var name= 'cdatos'
+						var cdatos =this.getUrlParameter(name)
+						console.log(cdatos)
+					}
+					
+				},
+				getDatosUpdate(cdatos){
+					fetch("api/datosupdate?cdatos="+cdatos,{ //ruta
+				 	credentials: 'include',
+				 	type : "GET",
+				 }).then(response => {
+				 	return response.json()
+				 }).then(datosEdit => {
+				 	console.log(datos)
+				 	});
 				},
 	},// end methods
 	delimiters : ["[[","]]"],
@@ -846,6 +966,8 @@ var app=new Vue({
 		vm.GetTercero()
 		vm.GetBancos()
 		vm.GetDatosEdit()
+		vm.checkQueryString()
+
 		//vm.GetTercero(1,300)
 	    fetch("api/departamentos/",{ //ruta
 	    	credentials: 'include',

@@ -94,7 +94,7 @@
 				<h4 class="modal-title">Buscar Presupuestos</h4>
 			</div>
 			<div class="modal-body">
-				<table  class="display table-presupuestos" width="100%" cellspacing="0">
+			<!--	<table  class="display table-presupuestos" width="100%" cellspacing="0">
 					<thead>
 						<tr>
 							<th>Rubro</th>
@@ -115,7 +115,21 @@
 							</tr>
 						</template>
 					</tbody>
-				</table>
+				</table>-->
+				<div>
+							<vue-good-table
+							global-Search-Placeholder="Buscar"
+							next-Text="Sig"
+							prev-Text="Ant"
+							rows-Per-Page-Text="Registros por página"
+							of-Text="de"
+							:columns="columnsPresupuestos"
+							:rows="rubros"
+							:paginate="true"
+							:global-search="true"
+							style-class="table table-bordered"
+							:on-Click="selectPresupuesto"/>
+						</div>
 			</div>
 			<div class="modal-footer">
 				<center><button type="button" class="btn btn-danger" data-dismiss="modal">Salir</button></center>

@@ -16,7 +16,7 @@
 			<label for="tercero">Tercero</label>
 			<div class=form-inline>
 				<input @blur.prevent="searchTercero()" type="text" class="form-control" id="nittercero" aria-describedby="nittercero" placeholder="Ingrese el número del nit" v-model="terceros.nit" required style="width: 35%">
-				<button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#searchtercero" @click = "list('table-terceros')"><div class="fa fa-search" aria-hidden="true"></div></button>
+				<button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#searchtercero"><div class="fa fa-search" aria-hidden="true"></div></button>
 				<button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#addtercero" >+</button>
 				<input  type="text" class="form-control" id="nombretercero" aria-describedby="nombretercero" v-model="terceros.nombre" required style="width: 40%" disabled >
 
@@ -127,7 +127,7 @@
 						<h4 class="modal-title">Buscar Terceros</h4>
 					</div>
 					<div class="modal-body">
-						<table  class="display table-terceros" width="100%" cellspacing="0">
+					<!--	<table  class="display table-terceros" width="100%" cellspacing="0">
 							<thead>
 								<tr>
 									<th>Nit</th>
@@ -150,7 +150,21 @@
 								</template>
 
 							</tbody>
-						</table>
+						</table>-->
+						<div>
+							<vue-good-table
+							global-Search-Placeholder="Buscar"
+							next-Text="Sig"
+							prev-Text="Ant"
+							rows-Per-Page-Text="Registros por página"
+							of-Text="de"
+							:columns="columnsTerceros"
+							:rows="tercero"
+							:paginate="true"
+							:global-search="true"
+							style-class="table table-bordered"
+							:on-Click="selectTercero"/>
+						</div>
 					</div>
 					<div class="modal-footer">
 						<center><button type="button" class="btn btn-danger" data-dismiss="modal">Salir</button></center>

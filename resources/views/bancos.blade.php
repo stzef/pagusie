@@ -14,7 +14,7 @@
 			<div class="form-inline">
 				<input type="text" class="form-control" id="nbanco" aria-describedby="nbanco" placeholder="Nombre del banco" v-model="banco.nbanco" required  disabled>
 				<input  type="text" class="form-control" id="numcuenta" aria-describedby="numcuenta" v-model="banco.numcuenta" required disabled placeholder="Número de cuenta">
-				<button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#searchbanco" @click = "list('table-bancos')"><div class="fa fa-search" aria-hidden="true"></div></button>
+				<button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#searchbanco"><div class="fa fa-search" aria-hidden="true"></div></button>
 				<button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#addbanco" >+</button>
 			</div>
 		</div>
@@ -86,7 +86,7 @@
 				<h4 class="modal-title">Buscar Bancos</h4>
 			</div>
 			<div class="modal-body">
-				<table  class="display table-bancos" width="100%" cellspacing="0">
+			<!--<table  class="display table-bancos" width="100%" cellspacing="0">
 					<thead>
 						<tr>
 							<th>Nombre</th>
@@ -103,7 +103,21 @@
 							</tr>
 						</template>
 					</tbody>
-				</table>
+				</table>-->
+				<div>
+							<vue-good-table
+							global-Search-Placeholder="Buscar"
+							next-Text="Sig"
+							prev-Text="Ant"
+							rows-Per-Page-Text="Registros por página"
+							of-Text="de"
+							:columns="columnsBancos"
+							:rows="bancos"
+							:paginate="true"
+							:global-search="true"
+							style-class="table table-bordered"
+							:on-Click="selectBanco"/>
+						</div>
 			</div>
 			<div class="modal-footer">
 				<center><button type="button" class="btn btn-danger" data-dismiss="modal">Salir</button></center>

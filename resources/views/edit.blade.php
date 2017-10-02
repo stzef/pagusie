@@ -5,7 +5,7 @@
 	<h1>Editar Cuentas</h1>
 </div>
 <hr>
-
+<!--
 <table  class="display table-edit-datos" width="100%" cellspacing="0" >
 	<thead>
 		<tr>
@@ -29,9 +29,25 @@
 			</tr>
 		</template>
 	</tbody>
-</table>
+</table>-->
+  <div>
+   <vue-good-table
+  global-Search-Placeholder="Buscar"
+  next-Text="Sig"
+  prev-Text="Ant"
+  rows-Per-Page-Text="Registros por página"
+  of-Text="de"
+  :columns="columnsEditDatos"
+  :rows="datosEdit"
+  :paginate="true"
+  :global-search="true"
+  :line-numbers="true"
+  style-class="table table-bordered"/>
+  </div>
+
 
 @endsection
 @section('scripts')
+
 
 @endsection

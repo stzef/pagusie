@@ -116,6 +116,15 @@ public function datosEdit(Request $request){
 	}
 	return response()->json($datos->toArray());
 }
+public function datosupdate(Request $request){
+	$datos=Datos_basicos::where('cdatos',$cdatos);
+	//$datos->tercero=$datos->tercero;
+	foreach ($datos as $key => $dato) {
+	$tercero=$dato->tercero->nombre;
+	$dato->tercero=$tercero;
+	}
+	return response()->json($datos->toArray());
+}
 
 }
 
