@@ -106,6 +106,7 @@ var app=new Vue({
 		ciudades:[],
 		valueCiudad: {},
 		_token:'',
+		estado:'',
 		tercero:[],
 		valueTercero: {},
 		rubros:[],
@@ -115,8 +116,9 @@ var app=new Vue({
 		datosEdit:[],
 		valueImpuesto: {},
 		terceroSelected:{},
+		textoBoton:'Guardar',
 		datos:{
-			'cdatos':'',
+			'cdatos':undefined,
 			'cterce':'',
 			'ctidocumento':'',
 			'cestado':'1',
@@ -173,14 +175,12 @@ var app=new Vue({
 			idcuentas_bancos:'',
 		},
 		cheque:{
-			idcheque:'',
-			idcuentas_bancos:'',
-			numcheque:'',
+			idcheque:undefined,
+			idcuentas_bancos:undefined,
+			numcheque:undefined,
 			cestado:1,
-			concepto:'',
-			valor:'',
-			sumaCheques:'',
-			chequesSeleccionados:[],
+			concepto:undefined,
+			valor:undefined,
 		},
 	},
 	methods:{
@@ -317,7 +317,6 @@ var app=new Vue({
 				 }).then(terceros => {
 				 	console.log(terceros)
 				 	vm.tercero = terceros
-				 	vm.valueTercero = terceros[0]
 				 });
 				}else{
 				fetch("api/terceros?cterce="+cterce,{ //ruta
@@ -388,7 +387,7 @@ var app=new Vue({
 			console.log("copydatos")
 			var dato = $.param(copydatos)
 			console.log(dato)
-			if(this.datos.cdatos==''){
+			if(this.datos.cdatos==undefined){
 				fetch("/datos/create",{
 					credentials: 'include',
 					method : "POST",
@@ -416,6 +415,7 @@ var app=new Vue({
 					this.GetTercero(response.obj.cterce, response.obj.vtotal)
 					document.querySelector("#valorBase").value=this.datos.vsiva
 					document.querySelector("#vrubro").value=this.datos.vtotal
+					this.estado="guardar";
 					//this.terceroSelected=selected
 					//alertify.success(this.datos.cdatos)
 				}
@@ -772,53 +772,91 @@ var app=new Vue({
 				this.banco.nbanco=index.nbanco
 				this.banco.numcuenta=index.numcuenta
 				this.banco.idcuentas_bancos=index.idcuentas_bancos
+				jQuery('#searchbanco').modal('hide')
 			},
+
 			createCheques:function(){
 				this._token = $('form').find("input").val()
 				this.cheque.valor=document.querySelector("#vCheque").value
 				this.cheque.idcuentas_bancos=this.banco.idcuentas_bancos
-				if(currencyFormat.sToN(this.cheque.valor)<this.terceroSelected.vtotal || currencyFormat.sToN(this.cheque.valor)>this.terceroSelected.vtotal){
-					alertify.error('El valor del CHEQUE debe ser igual al valor a pagar')
+				if (this.cheque.idcuentas_bancos==undefined) {
+					alertify.error('Seleccione un Banco')
 				}else{
-					var copycheque=Object.assign({},this.cheque)
-					copycheque.valor=currencyFormat.sToN(copycheque.valor)
-					console.log("copycheque")
-					copycheque.cdatos=this.datos.cdatos
-					var dato = $.param(copycheque)
-					console.log(dato)
-					if(this.datos.cdatos!=''){
-						fetch("/cheques/create",{
-							credentials: 'include',
-							method : "POST",
-							type: "POST",
-							headers: {
-								'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
-								'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
-								'X-CSRF-TOKEN' : this._token,
-							},
-							body: dato,
-						})
-						.then(response => {
-							console.info(response)
-							return response.json();
-						})
-						.then(response => {
-							console.log(response["message"])
-							if(response.status == 400){
-								alertify.error(response["message"])
-							}else{
-								alertify.success('Creación Exitosa')
-								console.log(response.obj.id)
-								this.cheque.idcheque=response.obj.id
-								this.CreateDatosCuentas()
-							}
-						})
-						.catch(function(error) {
-							console.warn(error)
-							alertify.error('Error al crear las cuentas')
-						})
+					if(currencyFormat.sToN(this.cheque.valor)<currencyFormat.sToN(this.terceroSelected.vtotal) || currencyFormat.sToN(this.cheque.valor)>currencyFormat.sToN(this.terceroSelected.vtotal)){
+						alertify.error('El valor del CHEQUE debe ser igual al valor a pagar')
 					}else{
-						alertify.error('Los DATOS deben de estar creados')
+						var copycheque=Object.assign({},this.cheque)
+						copycheque.valor=currencyFormat.sToN(copycheque.valor)
+						console.log("copycheque")
+						copycheque.cdatos=this.datos.cdatos
+						var dato = $.param(copycheque)
+						console.log(dato)
+						if(this.datos.cdatos!=''){
+							if (this.cheque.idcheque !=undefined) {
+								console.log("cheque update")
+								fetch("/cheques/update",{
+									credentials: 'include',
+									method : "POST",
+									type: "POST",
+									headers: {
+										'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+										'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+										'X-CSRF-TOKEN' : this._token,
+									},
+									body: dato,
+								})
+								.then(response => {
+									console.info(response)
+									return response.json();
+								})
+								.then(response => {
+									console.log(response["message"])
+									if(response.status == 400){
+										alertify.error(response["message"])
+									}else{
+										alertify.success('Guardado nuevamente')
+									}
+								})
+								.catch(function(error) {
+									console.warn(error)
+									alertify.error('Error al actualizar las cuentas')
+								})
+							}else{
+								console.log("cheque create")
+								fetch("/cheques/create",{
+									credentials: 'include',
+									method : "POST",
+									type: "POST",
+									headers: {
+										'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+										'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+										'X-CSRF-TOKEN' : this._token,
+									},
+									body: dato,
+								})
+								.then(response => {
+									console.info(response)
+									return response.json();
+								})
+								.then(response => {
+									console.log(response["message"])
+									if(response.status == 400){
+										alertify.error(response["message"])
+									}else{
+										alertify.success('Creación De Cheque Exitosa')
+										console.log(response.obj.id)
+										this.cheque.idcheque=response.obj.id
+										this.CreateDatosCuentas()
+									}
+								})
+								.catch(function(error) {
+									console.warn(error)
+									alertify.error('Error al crear las cuentas')
+								})
+							}
+						}else{
+							alertify.error('Los DATOS deben de estar creados')
+						}
 					}
 				}
 			},
@@ -918,7 +956,7 @@ var app=new Vue({
 				 		//item.editar='<button onClick="this.openEdit()" class="btn btn-info">Editar</button>'
 
 				 		item.editar='<a href="/?cdatos='+item.cdatos+'"'+'class="btn btn-info">Editar</a>'
-				 		item.duplicar='<button class="btn btn-info ">Duplicar</button>'
+				 		item.duplicar='<a href="/?cdatos='+item.cdatos+'&dupli=true'+'"'+'class="btn btn-info">Duplicar</a>'
 				 	});
 				 });
 				},
@@ -930,25 +968,187 @@ var app=new Vue({
 				},
 				checkQueryString(){
 					var query = new URLSearchParams(window.location.search);
+					console.log("query",query.has('dupli'))
+					if (query.has('cdatos') && query.has('dupli')) {
+						var cdatos =this.getUrlParameter('cdatos')
+						var dupli =this.getUrlParameter('dupli')
+						if (dupli=="true" && cdatos!="") {
+							console.log("cdatos",cdatos)
+							this.GetDatosDuplicar(cdatos)
+						}
+						console.log("dupli",dupli)
+					}else if(query.has('cdatos')){
+						var cdatos =this.getUrlParameter('cdatos')
+						console.log("else",cdatos)
+						this.GetDatosUpdate(cdatos)
 
-					console.log(query)
-					var name= ''
-					if (query.has('cdatos')) {
-						var name= 'cdatos'
-						var cdatos =this.getUrlParameter(name)
-						console.log(cdatos)
+
 					}
 					
 				},
-				getDatosUpdate(cdatos){
+				GetDatosUpdate(cdatos){
+					this.textoBoton="Editar"
 					fetch("api/datosupdate?cdatos="+cdatos,{ //ruta
-				 	credentials: 'include',
-				 	type : "GET",
-				 }).then(response => {
-				 	return response.json()
-				 }).then(datosEdit => {
-				 	console.log(datos)
-				 	});
+						credentials: 'include',
+						type : "GET",
+					}).then(response => {
+						return response.json()
+					}).then(datosUpdate => {
+						datosUpdate.viva=currencyFormat.format(datosUpdate.viva)
+						datosUpdate.vsiva=currencyFormat.format(datosUpdate.vsiva)
+						datosUpdate.vtotal=currencyFormat.format(datosUpdate.vtotal)
+						console.log('update',datosUpdate)
+						this.datos=datosUpdate
+						document.querySelector("#valorSinIva").value=this.datos.viva
+						document.querySelector("#valorIva").value=this.datos.vsiva
+						document.querySelector("#valorTotal").value=this.datos.vtotal
+						this.terceros=this.datos.tercero
+						this.terceroSelected=this.terceros
+						this.terceroSelected.vtotal=this.datos.vtotal
+						var arrayPresupuesto=[]
+						this.datos.presupuesto.forEach(function (item, index, array) {
+							var presupuestos = new Object()
+							presupuestos.crubro=item.crubro
+							presupuestos.nrubro=item.presupuesto.nrubro
+							presupuestos.valor=currencyFormat.format(item.valor)
+							arrayPresupuesto.push(presupuestos)
+						})	
+						this.presupuesto.rubrosSeleccionados=arrayPresupuesto
+						this.sumarValorLista(this.presupuesto.rubrosSeleccionados,"valor","presupuesto.sumaRubros")
+						var arrayImpuesto=[]
+						this.datos.impuesto.forEach(function (item, index, array) {
+							var impuestos = new Object()
+							impuestos.cimpu=item.cimpu
+							impuestos.nimpuesto=item.impuesto.nimpuesto
+							impuestos.vbase=currencyFormat.format(item.vbase)
+							impuestos.porcentaje_Impuesto=item.porcentaje_Impuesto
+							impuestos.vimpuesto=currencyFormat.format(item.vimpuesto)
+							arrayImpuesto.push(impuestos)
+						})	
+						this.impuesto.impuestosSeleccionados=arrayImpuesto
+						this.sumarValorLista(this.impuesto.impuestosSeleccionados,"vimpuesto","impuesto.sumaImpuestos")
+						this.estado="editar"
+						var cbanco
+						var idcuentas_bancos
+						var nbanco
+						var numcuenta
+						var concepto
+						var idcheque
+						var numcheque
+						var valor
+						this.datos.cuenta.forEach(function (item, index, array) {
+							cbanco=item.cheque.cuentasbanco.cbanco
+							idcuentas_bancos=item.cheque.idcuentas_bancos
+							nbanco=item.cheque.cuentasbanco.banco.nbanco
+							numcuenta=item.cheque.cuentasbanco.numcuenta
+							idcheque=item.cheque.idcheque
+							numcheque=item.cheque.numcheque
+							concepto=item.cheque.concepto
+							valor=item.cheque.valor
+						})
+						this.banco.cbanco=cbanco
+						this.banco.idcuentas_bancos=idcuentas_bancos
+						this.banco.nbanco=nbanco
+						this.banco.numcuenta=numcuenta
+						this.cheque.idcheque=idcheque
+						this.cheque.idcuentas_bancos=idcuentas_bancos
+						this.cheque.numcheque=numcheque
+						this.cheque.concepto=concepto
+						this.cheque.valor=currencyFormat.format(valor)
+						document.querySelector("#vCheque").value=this.cheque.valor
+
+					})
+					.catch(function(error) {
+						console.warn(error)
+						alertify.error('No se encuentra data')
+					})
+				},
+				GetDatosDuplicar(cdatos){
+					this.textoBoton="Guardar Duplicado"
+					fetch("api/datosupdate?cdatos="+cdatos,{ //ruta
+						credentials: 'include',
+						type : "GET",
+					}).then(response => {
+						return response.json()
+					}).then(datosUpdate => {
+						datosUpdate.cdatos=undefined
+						datosUpdate.viva=currencyFormat.format(datosUpdate.viva)
+						datosUpdate.vsiva=currencyFormat.format(datosUpdate.vsiva)
+						datosUpdate.vtotal=currencyFormat.format(datosUpdate.vtotal)
+						datosUpdate.fdispo=this.date
+						datosUpdate.festcomp=this.date
+						datosUpdate.ffactu=this.date
+						datosUpdate.fpago=this.date
+						datosUpdate.fregis=this.date
+						datosUpdate.convocatoria=undefined
+						this.datos=datosUpdate
+						document.querySelector("#valorSinIva").value=this.datos.viva
+						document.querySelector("#valorIva").value=this.datos.vsiva
+						document.querySelector("#valorTotal").value=this.datos.vtotal
+						this.terceros=this.datos.tercero
+						this.terceroSelected=this.terceros
+						this.terceroSelected.vtotal=this.datos.vtotal
+						var arrayPresupuesto=[]
+						this.datos.presupuesto.forEach(function (item, index, array) {
+							var presupuestos = new Object()
+							item.cdatos=undefined
+							item.iddatos_presupuesto=undefined
+							presupuestos.crubro=item.crubro
+							presupuestos.nrubro=item.presupuesto.nrubro
+							presupuestos.valor=currencyFormat.format(item.valor)
+							arrayPresupuesto.push(presupuestos)
+						})	
+						this.presupuesto.rubrosSeleccionados=arrayPresupuesto
+						this.sumarValorLista(this.presupuesto.rubrosSeleccionados,"valor","presupuesto.sumaRubros")
+						var arrayImpuesto=[]
+						this.datos.impuesto.forEach(function (item, index, array) {
+							var impuestos = new Object()
+							item.cdatos=undefined
+							item.idDatos_Impuesto=undefined
+							impuestos.cimpu=item.cimpu
+							impuestos.nimpuesto=item.impuesto.nimpuesto
+							impuestos.vbase=currencyFormat.format(item.vbase)
+							impuestos.porcentaje_Impuesto=item.porcentaje_Impuesto
+							impuestos.vimpuesto=currencyFormat.format(item.vimpuesto)
+							arrayImpuesto.push(impuestos)
+						})	
+						this.impuesto.impuestosSeleccionados=arrayImpuesto
+						this.sumarValorLista(this.impuesto.impuestosSeleccionados,"vimpuesto","impuesto.sumaImpuestos")
+						this.estado=""
+						var cbanco
+						var idcuentas_bancos
+						var nbanco
+						var numcuenta
+						var concepto
+						var idcheque
+						var numcheque
+						var valor
+						this.datos.cuenta.forEach(function (item, index, array) {
+							cbanco=item.cheque.cuentasbanco.cbanco
+							idcuentas_bancos=item.cheque.idcuentas_bancos
+							nbanco=item.cheque.cuentasbanco.banco.nbanco
+							numcuenta=item.cheque.cuentasbanco.numcuenta
+							idcheque=undefined
+							numcheque=undefined
+							concepto=item.cheque.concepto
+							valor=item.cheque.valor
+						})
+						this.banco.cbanco=cbanco
+						this.banco.idcuentas_bancos=idcuentas_bancos
+						this.banco.nbanco=nbanco
+						this.banco.numcuenta=numcuenta
+						this.cheque.idcheque=idcheque
+						this.cheque.idcuentas_bancos=idcuentas_bancos
+						this.cheque.numcheque=numcheque
+						this.cheque.concepto=concepto
+						this.cheque.valor=currencyFormat.format(valor)
+						document.querySelector("#vCheque").value=this.cheque.valor
+
+					})
+					.catch(function(error) {
+						console.warn(error)
+						alertify.error('No se encuentra data')
+					})
 				},
 	},// end methods
 	delimiters : ["[[","]]"],

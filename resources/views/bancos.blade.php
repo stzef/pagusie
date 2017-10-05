@@ -70,7 +70,7 @@
 <div class="form-group text-center">
 	<div class="col-md-4 col-md-offset-4">
 		<button type="submit" class="btn btn-primary">
-			Guardar
+			[[textoBoton]]
 		</button>
 	</div>
 </div>
@@ -105,19 +105,19 @@
 					</tbody>
 				</table>-->
 				<div>
-							<vue-good-table
-							global-Search-Placeholder="Buscar"
-							next-Text="Sig"
-							prev-Text="Ant"
-							rows-Per-Page-Text="Registros por página"
-							of-Text="de"
-							:columns="columnsBancos"
-							:rows="bancos"
-							:paginate="true"
-							:global-search="true"
-							style-class="table table-bordered"
-							:on-Click="selectBanco"/>
-						</div>
+					<vue-good-table
+					global-Search-Placeholder="Buscar"
+					next-Text="Sig"
+					prev-Text="Ant"
+					rows-Per-Page-Text="Registros por página"
+					of-Text="de"
+					:columns="columnsBancos"
+					:rows="bancos"
+					:paginate="true"
+					:global-search="true"
+					style-class="table table-bordered"
+					:on-Click="selectBanco"/>
+				</div>
 			</div>
 			<div class="modal-footer">
 				<center><button type="button" class="btn btn-danger" data-dismiss="modal">Salir</button></center>
@@ -148,16 +148,16 @@
 							<input type="text" class="form-control" id="numcuenta" aria-describedby="numcuenta" placeholder="Ingrese nombre del banco" v-model="banco.numcuenta" required >
 						</div>
 					</div>
-						<div class="form-group">
-			<div class="col-md-4">
-					<button type="submit" class="btn btn-primary">
-						Guardar
-					</button>
-				 	<button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar
-				 	</button>
+					<div class="form-group">
+						<div class="col-md-4">
+							<button type="submit" class="btn btn-primary">
+								Guardar
+							</button>
+							<button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar
+							</button>
 
-			</div>
-		</div>
+						</div>
+					</div>
 				</form>
 			</div>
 			<div class="modal-footer">

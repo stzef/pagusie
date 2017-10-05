@@ -6,6 +6,7 @@ use App\Models\Datos_basicos;
 use App\Models\Tipo_documento;
 use App\Models\Terceros;
 use Illuminate\Http\Request;
+use App\Helper\Helper;
 use Illuminate\Support\Facades\Validator;
 
 class DatosBasicosController extends Controller
@@ -13,32 +14,7 @@ class DatosBasicosController extends Controller
  public function __construct(){
     $this->middleware('auth');
 }
-public function convocatoriaFormat($data){
-    $validator=Validator::make($data,
-        ['convocatoria'=> 'nullable|integer|digits_between:1,4',
-        ],[
-        'convocatoria.integer'=> 'La CONVOCATORIA debe ser numérica',
-        'convocatoria.digits_between'=> 'La CONVOCATORIA debe de tener de :min a :max dígitos',
-        ]
-        );
-    if ($data['convocatoria']!=null) {
-        if (!$validator->fails()) {
-            $length=4-strlen($data['convocatoria']);
-            $año=$data['vigencia'].'-';
-            $convocatoria= str_pad($año, $length+5, "0").$data['convocatoria'];
-            return $convocatoria;
-        }else{
-            $messages = $validator->messages();
-            $message="";
-            foreach ($messages->all() as $key) {
-                $message.=" ".$key;
-            }
-            return response()->json(array("message"=>$message,"status"=>400),400);
-        }
-    }else{
-     return null;
- }
-}
+
 public function validar($data){
  $validator=Validator::make($data,
     [
@@ -92,8 +68,7 @@ public function validar($data){
      */
     public function create(Request $request){
        $data = $request->all();
-       $data['convocatoria']=$this->convocatoriaFormat($data);
-       $data['convocatoria']=$this->convocatoriaFormat($data);
+       $data['convocatoria']=Helper::convocatoriaFormat($data);
        if (gettype($data['convocatoria'])=="object") {
          return $data['convocatoria'];
      }
@@ -154,7 +129,7 @@ public function validar($data){
     public function update(Request $request, Datos_basicos $datos_basicos)
     {
         $data = $request->all();
-        $data['convocatoria']=$this->convocatoriaFormat($data);
+        $data['convocatoria']=Helper::convocatoriaFormat($data);
         if (gettype($data['convocatoria'])=="object") {
          return $data['convocatoria'];
      }
@@ -170,6 +145,11 @@ public function validar($data){
          // var_dump($data['convocatoria']);exit();
         $copydata=$data;
         unset($copydata['cdatos']);
+        unset($copydata['cuenta']);
+        unset($copydata['impuesto']);
+        unset($copydata['presupuesto']);
+        unset($copydata['tercero']);
+        //var_dump($copydata);
         $datos = Datos_basicos::where('cdatos',$data['cdatos'])->update($copydata);
     }
     return response()->json(array("obj" => $datos));

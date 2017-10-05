@@ -37,11 +37,17 @@ class ComprobanteEgresoController extends Controller
 		$datos->fregis=Helper::formatDate($datos->fregis,0);
 		$tercero=$datos->tercero;
 		$datos_impuestos=Datos_impuestos::where('cdatos',$cdatos)->get();
-		$cheque=$datos->datoscuentas->first()->cheque->first();
-		$cuentasbanco=$cheque->cuentasbanco;
-		$datos->numcheque=$cheque->numcheque;
-		$datos->numcuenta=$cuentasbanco->numcuenta;
-		$datos->nbanco=$cuentasbanco->banco->nbanco;
+		
+		if ($datos->datoscuentas->first()) {
+			$cheque=$datos->datoscuentas->first()->cheque->first();
+			$cuentasbanco=$cheque->cuentasbanco;
+			$datos->numcheque=$cheque->numcheque;
+			$datos->numcuenta=$cuentasbanco->numcuenta;
+			$datos->nbanco=$cuentasbanco->banco->nbanco;
+		}else{
+			$cheque=null;
+		}
+		
 		$vtdedu=0;
 		foreach ($impuestos as $key => $impuesto) {
 			foreach ($datos_impuestos as $key2 => $dimpuesto) {

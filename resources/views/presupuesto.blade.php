@@ -35,7 +35,7 @@
 			<div class="form-group col-md-2">
 				<label for="vrubro">Valor</label>
 				
-					<input type="text" class="form-control input-currency" id="vrubro" aria-describedby="vrubro" placeholder="Ingrese el valor"  required >
+				<input type="text" class="form-control input-currency" id="vrubro" aria-describedby="vrubro" placeholder="Ingrese el valor"  required >
 				
 			</div>
 			<div class="form-group col-md-2">
@@ -76,7 +76,7 @@
 		<div class="form-group text-center">
 			<div class="col-md-4 col-md-offset-4">
 				<button type="submit" class="btn btn-primary">
-					Guardar
+					[[textoBoton]]
 				</button>
 			</div>
 		</div>
@@ -117,19 +117,19 @@
 					</tbody>
 				</table>-->
 				<div>
-							<vue-good-table
-							global-Search-Placeholder="Buscar"
-							next-Text="Sig"
-							prev-Text="Ant"
-							rows-Per-Page-Text="Registros por página"
-							of-Text="de"
-							:columns="columnsPresupuestos"
-							:rows="rubros"
-							:paginate="true"
-							:global-search="true"
-							style-class="table table-bordered"
-							:on-Click="selectPresupuesto"/>
-						</div>
+					<vue-good-table
+					global-Search-Placeholder="Buscar"
+					next-Text="Sig"
+					prev-Text="Ant"
+					rows-Per-Page-Text="Registros por página"
+					of-Text="de"
+					:columns="columnsPresupuestos"
+					:rows="rubros"
+					:paginate="true"
+					:global-search="true"
+					style-class="table table-bordered"
+					:on-Click="selectPresupuesto"/>
+				</div>
 			</div>
 			<div class="modal-footer">
 				<center><button type="button" class="btn btn-danger" data-dismiss="modal">Salir</button></center>

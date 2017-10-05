@@ -18,8 +18,7 @@
 				<input @blur.prevent="searchTercero()" type="text" class="form-control" id="nittercero" aria-describedby="nittercero" placeholder="Ingrese el número del nit" v-model="terceros.nit" required style="width: 35%">
 				<button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#searchtercero"><div class="fa fa-search" aria-hidden="true"></div></button>
 				<button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#addtercero" >+</button>
-				<input  type="text" class="form-control" id="nombretercero" aria-describedby="nombretercero" v-model="terceros.nombre" required style="width: 40%" disabled >
-
+				<input  type="text" class="form-control" id="nombretercero" aria-describedby="nombretercero" v-model="terceros.nombre" required style="width: 50%" disabled >
 			</div>
 				<!--<template>
 						<multiselect v-model="valueTercero" :options="tercero" placeholder="Select one" label="nit" track-by="nit" :custom-label="showTerceros" ></multiselect>
@@ -47,14 +46,21 @@
 					<label for="numfactura">Número de factura</label>
 					<input type="text" class="form-control" id="numfactura" aria-describedby="numfactura" placeholder="Ingrese el número de factura" v-model="datos.nfactu" required>
 				</div>
+				<div class="form-group col-md-3" v-if="estado=='editar'">
+					<label for="convocatoria"> Convocatoria Nº</label>
+					<input type="text" class="form-control" id="convocatoria" aria-describedby="convocatoria" v-model="datos.convocatoria" required>
+				</div>
 			</div>
-			<div class="form-group">
-				<label for="concepto">Concepto</label>
-				<textarea class="form-control" id="concepto" rows="3" v-model="datos.concepto" required></textarea>
-			</div>
-			<div class="form-group">
-				<label for="Justificacion">Justificación</label>
-				<textarea class="form-control" id="Justificacion" rows="3" v-model="datos.justificacion" required></textarea>
+			<div class="row">
+
+				<div class="form-group col-md-12">
+					<label for="concepto">Concepto</label>
+					<textarea class="form-control" id="concepto" rows="3" v-model="datos.concepto" required></textarea>
+				</div>
+				<div class="form-group col-md-12">
+					<label for="Justificacion">Justificación</label>
+					<textarea class="form-control" id="Justificacion" rows="3" v-model="datos.justificacion" required></textarea>
+				</div>
 			</div>
 			<div class="row">
 				<div class="form-group col-md-3">
@@ -78,11 +84,11 @@
 			<div class="row">
 				<div class="form-group col-md-3">
 					<label for="valorSinIva">Vr. Antes IVA</label>
-					<input @change.prevent="operacionAritmetica(['valorSinIva','valorIva'],'+','valorTotal')" type="text" class="form-control input-currency" id="valorSinIva" aria-describedby="valorSinIva" placeholder="Ingrese el valor sin IVA"  required>
+					<input @blur.prevent="operacionAritmetica(['valorSinIva','valorIva'],'+','valorTotal')" type="text" class="form-control input-currency" id="valorSinIva" aria-describedby="valorSinIva" placeholder="Ingrese el valor sin IVA"  required>
 				</div>
 				<div class="form-group col-md-3">
 					<label for="valorIva">Vr. IVA</label>
-					<input @change.prevent="operacionAritmetica(['valorSinIva','valorIva'],'+','valorTotal')" type="text" class="form-control input-currency" id="valorIva" aria-describedby="valorIva" placeholder="Ingrese el valor con IVA"  required>
+					<input @blur.prevent="operacionAritmetica(['valorSinIva','valorIva'],'+','valorTotal')" type="text" class="form-control input-currency" id="valorIva" aria-describedby="valorIva" placeholder="Ingrese el valor con IVA"  required>
 				</div>
 				<div class="form-group col-md-3">
 					<label for=" valorTotal">Vr. Total</label>
@@ -92,7 +98,7 @@
 			<div class="form-group text-center">
 				<div class="col-md-4 col-md-offset-4">
 					<button type="submit" class="btn btn-primary">
-						Guardar
+						[[textoBoton]]
 					</button>
 				</div>
 			</div>

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Helper;
+use Illuminate\Support\Facades\Validator;
 
 class Helper
 {
@@ -19,9 +20,49 @@ static function formatDate($fecha,$opcion){
 		$nombreMes = str_replace($meses_EN, $meses_ES, $mes);
 		if ($opcion==0) {
 			return $numeroDia." de ".$nombreMes." de ".$anio;
-			# code...
 		}else{
 			return $nombredia." ".$numeroDia." de ".$nombreMes." de ".$anio;
 		}
 	}
+static function convocatoriaToN($convocatoria){
+	$convocatoria=substr($convocatoria, -4);
+	$number="";
+	$deci=false;
+	for ($i=0; $i <strlen($convocatoria); $i++) { 
+		if ($deci) {
+			$number=$number.$convocatoria[$i];
+		}
+		if ($convocatoria[$i]!='0' && $deci==false) {
+			$number=$convocatoria[$i];
+			$deci=true;
+		}
+	}
+	return $number;
+}
+static function convocatoriaFormat($data){
+    $validator=Validator::make($data,
+        ['convocatoria'=> 'nullable|integer|digits_between:1,4',
+        ],[
+        'convocatoria.integer'=> 'La CONVOCATORIA debe ser numérica',
+        'convocatoria.digits_between'=> 'La CONVOCATORIA debe de tener de :min a :max dígitos',
+        ]
+        );
+    if ($data['convocatoria']!=null) {
+        if (!$validator->fails()) {
+            $length=4-strlen($data['convocatoria']);
+            $año=$data['vigencia'].'-';
+            $convocatoria= str_pad($año, $length+5, "0").$data['convocatoria'];
+            return $convocatoria;
+        }else{
+            $messages = $validator->messages();
+            $message="";
+            foreach ($messages->all() as $key) {
+                $message.=" ".$key;
+            }
+            return response()->json(array("message"=>$message,"status"=>400),400);
+        }
+    }else{
+     return null;
+ }
+}
 }

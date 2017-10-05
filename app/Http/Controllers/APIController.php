@@ -10,8 +10,12 @@ use App\Models\Presupuesto;
 use App\Models\Impuestos;
 use App\Models\Terceros;
 use App\Models\Datos_basicos;
+use App\Models\Datos_presupuesto;
+use App\Models\Datos_impuestos;
+use App\Models\Datos_cuentas;
 use App\Models\Bancos;
 use App\Models\Cuentas_bancos;
+use App\Helper\Helper;
 use Illuminate\Support\Facades\Auth;
 class APIController extends Controller
 {
@@ -116,13 +120,32 @@ public function datosEdit(Request $request){
 	}
 	return response()->json($datos->toArray());
 }
-public function datosupdate(Request $request){
-	$datos=Datos_basicos::where('cdatos',$cdatos);
-	//$datos->tercero=$datos->tercero;
-	foreach ($datos as $key => $dato) {
-	$tercero=$dato->tercero->nombre;
-	$dato->tercero=$tercero;
+public function datosUpdate(Request $request){
+	$cdatos=$request->cdatos;
+	if ( !$cdatos ) return view('errors/generic',array('title' => 'Error.', 'message' => "El registro $cdatos no existe" ));
+		$datos=Datos_basicos::where('cdatos',$cdatos)->first();
+		if ( !$datos ) return view('errors/generic',array('title' => 'Error.', 'message' => "El registro $cdatos no existe" ));
+	$datos=Datos_basicos::where('cdatos',$cdatos)->first();
+	$datos->convocatoria=Helper::convocatoriaToN($datos->convocatoria);
+	$datos->tercero=$datos->tercero;
+	$presupuesto=Datos_presupuesto::where('cdatos',$cdatos)->get();
+	foreach ($presupuesto as $key => $presu) {
+		$presupuesto->presupuestos=$presu->presupuesto;
 	}
+	$impuesto=Datos_impuestos::where('cdatos',$cdatos)->get();
+	foreach ($impuesto as $key => $impu) {
+		$impuesto->impuestos=$impu->impuesto;
+	}
+	$cuenta=Datos_cuentas::where('cdatos',$cdatos)->get();
+	foreach ($cuenta as $key => $cuen) {
+		$cuenta->cheques=$cuen->cheque;
+		$cuenta->cuentabanco=$cuen->cheque->cuentasbanco;
+		$cuenta->bancos=$cuen->cheque->cuentasbanco->banco;
+	}
+	//var_dump($cuenta->bancos);exit();
+	$datos->presupuesto=$presupuesto;
+	$datos->impuesto=$impuesto;
+	$datos->cuenta=$cuenta;
 	return response()->json($datos->toArray());
 }
 

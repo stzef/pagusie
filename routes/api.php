@@ -44,3 +44,6 @@ Route::group(['prefix' => 'bancos'], function(){
 Route::group(['prefix' => 'datosedit'], function(){
 	Route::get('/', "APIController@datosEdit")->name("api.datosEdit.index");
 });
+Route::group(['prefix' => 'datosupdate'], function(){
+	Route::get('/', "APIController@datosUpdate")->name("api.datosUpdate.index");
+});

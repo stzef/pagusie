@@ -19,7 +19,7 @@
 Route::get('/', 'HomeController@index')->name("index");
 Route::get('edit', function(){
 	return view('edit');
-})->name("edit");
+})->middleware('auth')->name("edit");
 Route::group(['prefix'=>'datos'], function(){
 	Route::post('/create','DatosBasicosController@create')->name('datos.create');
 	Route::post('/update','DatosBasicosController@update')->name('datos.update');
@@ -45,6 +45,7 @@ Route::group(['prefix'=>'terceros'], function(){
 });
 Route::group(['prefix'=>'cheques'], function(){
 	Route::post('/create','ChequesController@create')->name('cheques.create');
+	Route::post('/update','ChequesController@update')->name('cheques.update');
 });
 Route::group(['prefix'=>'datoscuentas'], function(){
 	Route::post('/create','DatoscuentasController@create')->name('datoscuentas.create');
