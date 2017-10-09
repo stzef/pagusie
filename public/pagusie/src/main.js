@@ -16,7 +16,7 @@ var app=new Vue({
 		Datepicker,
 		Multiselect,
 	},
-	
+
 	data : {
 		columnsEditDatos:[
 		{
@@ -714,8 +714,7 @@ var app=new Vue({
 			this.datos.cterce =index.cterce
 			this.terceros.nit=index.nit
 			this.terceros.nombre=index.nombre
-			//console.log(document.getElementById("searchtercero").id)
-			alertify.success('Tercero Seleccionado')
+			jQuery('#searchtercero').modal('hide')
 		},
 		searchTercero(){
 			var nit=this.terceros.nit
@@ -733,10 +732,9 @@ var app=new Vue({
 			this.terceros.nombre=nombre
 		},
 		selectPresupuesto(index){
-
-			//this.tercero.find(callback[, 'Rodrigo'])
 			this.presupuesto.crubro =index.crubro
 			this.presupuesto.nrubro =index.nrubro
+			jQuery('#searchrubro').modal('hide')
 
 		},
 		searchPresupuesto(){
@@ -984,7 +982,7 @@ var app=new Vue({
 
 
 					}
-					
+
 				},
 				GetDatosUpdate(cdatos){
 					this.textoBoton="Editar"
@@ -1012,7 +1010,7 @@ var app=new Vue({
 							presupuestos.nrubro=item.presupuesto.nrubro
 							presupuestos.valor=currencyFormat.format(item.valor)
 							arrayPresupuesto.push(presupuestos)
-						})	
+						})
 						this.presupuesto.rubrosSeleccionados=arrayPresupuesto
 						this.sumarValorLista(this.presupuesto.rubrosSeleccionados,"valor","presupuesto.sumaRubros")
 						var arrayImpuesto=[]
@@ -1024,7 +1022,7 @@ var app=new Vue({
 							impuestos.porcentaje_Impuesto=item.porcentaje_Impuesto
 							impuestos.vimpuesto=currencyFormat.format(item.vimpuesto)
 							arrayImpuesto.push(impuestos)
-						})	
+						})
 						this.impuesto.impuestosSeleccionados=arrayImpuesto
 						this.sumarValorLista(this.impuesto.impuestosSeleccionados,"vimpuesto","impuesto.sumaImpuestos")
 						this.estado="editar"
@@ -1097,7 +1095,7 @@ var app=new Vue({
 							presupuestos.nrubro=item.presupuesto.nrubro
 							presupuestos.valor=currencyFormat.format(item.valor)
 							arrayPresupuesto.push(presupuestos)
-						})	
+						})
 						this.presupuesto.rubrosSeleccionados=arrayPresupuesto
 						this.sumarValorLista(this.presupuesto.rubrosSeleccionados,"valor","presupuesto.sumaRubros")
 						var arrayImpuesto=[]
@@ -1111,7 +1109,7 @@ var app=new Vue({
 							impuestos.porcentaje_Impuesto=item.porcentaje_Impuesto
 							impuestos.vimpuesto=currencyFormat.format(item.vimpuesto)
 							arrayImpuesto.push(impuestos)
-						})	
+						})
 						this.impuesto.impuestosSeleccionados=arrayImpuesto
 						this.sumarValorLista(this.impuesto.impuestosSeleccionados,"vimpuesto","impuesto.sumaImpuestos")
 						this.estado=""
