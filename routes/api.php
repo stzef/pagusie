@@ -47,3 +47,6 @@ Route::group(['prefix' => 'datosedit'], function(){
 Route::group(['prefix' => 'datosupdate'], function(){
 	Route::get('/', "APIController@datosUpdate")->name("api.datosUpdate.index");
 });
+Route::group(['prefix' => 'getconvocatoria'], function(){
+	Route::get('/', "APIController@getListConvocatoria")->name("api.getListConvocatoria.index");
+});

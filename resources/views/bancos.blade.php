@@ -26,11 +26,11 @@
 		</div>
 		<div class="form-group col-md-4">
 			<label for="cheque">Valor</label>
-			<input type="text" class="form-control input-currency" id="vCheque" aria-describedby="vCheque" placeholder="Ingrese el valor"  required >
+			<input type="text" class="form-control input-currency" id="vcheque" aria-describedby="vcheque" placeholder="Ingrese el valor"  required disabled>
 		</div>
 		<div class="form-group col-md-4">
 			<label for="concepto">Concepto</label>
-			<textarea class="form-control" id="concepto" rows="3" v-model="cheque.concepto" required></textarea>
+			<textarea class="form-control" id="concepto" rows="1" v-model="cheque.concepto" required></textarea>
 		</div>
 	</div>
 

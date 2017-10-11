@@ -86,7 +86,7 @@
 						@else
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-								{{ Auth::user()->name }} <span class="caret"></span>
+								{{ Auth::user()->username }} <span class="caret"></span>
 							</a>
 
 							<ul class="dropdown-menu" role="menu">
@@ -126,7 +126,7 @@
 <script>
 	$( function() {
 		var tabs = $( "#tabs" ).tabs();
-
+		var tabs = $( "#tabsContrato" ).tabs();
 		/*tabs.find( ".ui-tabs-nav" ).sortable({
 			axis: "x",
 			stop: function() {

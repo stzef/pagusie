@@ -30,12 +30,40 @@
 		</div>
 
 		<div id="tabs-5">
-		</div>
+			<div class="row">
+				<div class="col-md-7 col-xs-7">
+					<h4 v-if="terceroSelected.nombre">[[terceroSelected.nombre]]</h4>
+				</div>
+				<div class="col-md-4 col-xs-4">
+					<h4 v-if="terceroSelected.vtotal">Valor: [[terceroSelected.vtotal]]</h4>
+				</div>
+			</div>
+			
+			<div id="tabsContrato" class="row">
 
-		<div id="tabs-6">
-			@include("reportes")
-		</div>
+				<ul>
+					<li class="col-md-1 col-lg-1 tab-width"><a href="#tabs-1">Prestación De Servicios</a></li>
+					<li class="col-md-1 col-lg-1 tab-width"><a href="#tabs-2">Suministros</a></li>
+					<li class="col-md-1 col-lg-1 tab-width"><a href="#tabs-3">Suministros de contrato</a></li>
+				</ul>
+			</div>
+			<div id="tabs-1">
+				<form @submit.prevent="CreateContrato" accept-charset="utf-8">
+					<div class="row">
+						<div class="form-group col-md-3">
+							<label for="vigencia" class="form-label">Vigencia</label>
+							<input type="text" class="form-control" id="vigencia" aria-describedby="vigencia" placeholder="Ingrese el año de vigencia" v-model="datos.vigencia" required @blur.prevent="GetConvocatorias()">
+						</div>
+					</div>
+					</form>
+				</div>
 
+			</div>
+
+			<div id="tabs-6">
+				@include("reportes")
+			</div>
+
+		</div>
 	</div>
-</div>
-@endsection
+	@endsection

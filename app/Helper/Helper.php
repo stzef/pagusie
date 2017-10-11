@@ -50,8 +50,8 @@ static function convocatoriaFormat($data){
     if ($data['convocatoria']!=null) {
         if (!$validator->fails()) {
             $length=4-strlen($data['convocatoria']);
-            $año=$data['vigencia'].'-';
-            $convocatoria= str_pad($año, $length+5, "0").$data['convocatoria'];
+            $pre='CVT-'.$data['vigencia'].'-';
+            $convocatoria= str_pad($pre, $length+5, "0").$data['convocatoria'];
             return $convocatoria;
         }else{
             $messages = $validator->messages();
@@ -61,6 +61,16 @@ static function convocatoriaFormat($data){
             }
             return response()->json(array("message"=>$message,"status"=>400),400);
         }
+    }else{
+     return null;
+ }
+}
+static function convocatoriaSimpleFormat($data){
+    if ($data['convocatoria']!=null) {
+            $length=4-strlen($data['convocatoria']);
+            $pre='CVT-'.$data['vigencia'].'-';
+            $convocatoria= str_pad($pre, $length+5, "0").$data['convocatoria'];
+            return $convocatoria;
     }else{
      return null;
  }

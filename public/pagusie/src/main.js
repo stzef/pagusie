@@ -70,6 +70,20 @@ var app=new Vue({
 			field: 'email',
 		},
 		],
+		columnsConvocatoria: [
+		{
+			label: 'Vigencia',
+			field: 'vigencia',
+		},
+		{
+			label: 'Convocatoria',
+			field: 'convocatoria',
+		},
+		{
+			label: 'Tercero',
+			field: 'tercero',
+		},
+		],
 		columnsPresupuestos: [
 		{
 			label: 'Rubro',
@@ -114,9 +128,11 @@ var app=new Vue({
 		impuestos:[],
 		bancos:[],
 		datosEdit:[],
+		convocatorias:[],
 		valueImpuesto: {},
 		terceroSelected:{},
 		textoBoton:'Guardar',
+		convocatoriaSelected:undefined,
 		datos:{
 			'cdatos':undefined,
 			'cterce':'',
@@ -166,7 +182,7 @@ var app=new Vue({
 			vimpuesto:'',
 			impuestosSeleccionados: [],
 			sumaImpuestos:'',
-			netopagar:'',
+			netopagar:undefined,
 		},
 		banco:{
 			cbanco:'',
@@ -415,6 +431,7 @@ var app=new Vue({
 					this.GetTercero(response.obj.cterce, response.obj.vtotal)
 					document.querySelector("#valorBase").value=this.datos.vsiva
 					document.querySelector("#vrubro").value=this.datos.vtotal
+					//document.querySelector("#vcheque").value=this.datos.vtotal
 					this.estado="guardar";
 					//this.terceroSelected=selected
 					//alertify.success(this.datos.cdatos)
@@ -457,6 +474,8 @@ var app=new Vue({
 					alertify.error('Error al guardar los datos basicos nuevamente')
 				})
 			}
+			this.cheque.concepto=this.datos.concepto
+			this.GetConvocatorias()
 		},
 		GetRubros: function(){
 			var vm = this
@@ -604,7 +623,8 @@ var app=new Vue({
 						if(response.status == 400){
 							alertify.error(response["message"])
 						}else{
-							alertify.success('Creación Exitosa')
+							alertify.success('Creación Exitosa Impuesto '+item.nimpuesto)
+							
 						}
 					})
 					.catch(function(error) {
@@ -612,6 +632,8 @@ var app=new Vue({
 						alertify.error('Error al agregar el impuesto '+item.nimpuesto)
 					})
 				});
+				console.log(this.impuesto.netopagar)
+				document.querySelector("#vcheque").value=this.impuesto.netopagar
 			}
 		},
 		operacionAritmetica(campos,operacion,final){
@@ -772,14 +794,27 @@ var app=new Vue({
 				this.banco.idcuentas_bancos=index.idcuentas_bancos
 				jQuery('#searchbanco').modal('hide')
 			},
+			selectConvocatoria(index){
+				if (index.tercero=='') {
+					this.datos.convocatoria =index.convocatoria
+					jQuery('#searchconvocatoria').modal('hide')
+				}
+				if (index.convocatoria==this.convocatoriaSelected) {
+					this.datos.convocatoria =index.convocatoria
+					jQuery('#searchconvocatoria').modal('hide')
+				}
+			},
 
 			createCheques:function(){
 				this._token = $('form').find("input").val()
-				this.cheque.valor=document.querySelector("#vCheque").value
+				this.cheque.valor=document.querySelector("#vcheque").value
 				this.cheque.idcuentas_bancos=this.banco.idcuentas_bancos
 				if (this.cheque.idcuentas_bancos==undefined) {
 					alertify.error('Seleccione un Banco')
 				}else{
+					if (this.impuesto.netopagar==undefined) {
+						alertify.error('Deber realizar el procedo de impuesto')
+					}
 					if(currencyFormat.sToN(this.cheque.valor)<currencyFormat.sToN(this.terceroSelected.vtotal) || currencyFormat.sToN(this.cheque.valor)>currencyFormat.sToN(this.terceroSelected.vtotal)){
 						alertify.error('El valor del CHEQUE debe ser igual al valor a pagar')
 					}else{
@@ -971,18 +1006,13 @@ var app=new Vue({
 						var cdatos =this.getUrlParameter('cdatos')
 						var dupli =this.getUrlParameter('dupli')
 						if (dupli=="true" && cdatos!="") {
-							console.log("cdatos",cdatos)
 							this.GetDatosDuplicar(cdatos)
 						}
-						console.log("dupli",dupli)
 					}else if(query.has('cdatos')){
 						var cdatos =this.getUrlParameter('cdatos')
 						console.log("else",cdatos)
 						this.GetDatosUpdate(cdatos)
-
-
 					}
-
 				},
 				GetDatosUpdate(cdatos){
 					this.textoBoton="Editar"
@@ -996,6 +1026,7 @@ var app=new Vue({
 						datosUpdate.vsiva=currencyFormat.format(datosUpdate.vsiva)
 						datosUpdate.vtotal=currencyFormat.format(datosUpdate.vtotal)
 						console.log('update',datosUpdate)
+						this.convocatoriaSelected=datosUpdate.convocatoria
 						this.datos=datosUpdate
 						document.querySelector("#valorSinIva").value=this.datos.viva
 						document.querySelector("#valorIva").value=this.datos.vsiva
@@ -1053,8 +1084,15 @@ var app=new Vue({
 						this.cheque.numcheque=numcheque
 						this.cheque.concepto=concepto
 						this.cheque.valor=currencyFormat.format(valor)
-						document.querySelector("#vCheque").value=this.cheque.valor
-
+						if (this.cheque.concepto==undefined) {
+							this.cheque.concepto=this.datos.concepto
+						}
+						if (this.cheque.valor=='$ 0') {
+							document.querySelector("#vcheque").value=this.impuesto.netopagar
+						}else{
+							document.querySelector("#vcheque").value=this.cheque.valor
+						}
+						this.GetConvocatorias()
 					})
 					.catch(function(error) {
 						console.warn(error)
@@ -1140,14 +1178,35 @@ var app=new Vue({
 						this.cheque.numcheque=numcheque
 						this.cheque.concepto=concepto
 						this.cheque.valor=currencyFormat.format(valor)
-						document.querySelector("#vCheque").value=this.cheque.valor
-
+						if (this.cheque.concepto==undefined) {
+							this.cheque.concepto=this.datos.concepto
+						}
+						if (this.cheque.valor=='$ 0') {
+							document.querySelector("#vcheque").value=this.impuesto.netopagar
+						}else{
+							document.querySelector("#vcheque").value=this.cheque.valor
+						}
+						this.GetConvocatorias()
 					})
 					.catch(function(error) {
 						console.warn(error)
 						alertify.error('No se encuentra data')
 					})
 				},
+				GetConvocatorias(){
+					var vm = this
+					var vigencia=vm.datos.vigencia
+			 fetch("api/getconvocatoria?vigencia="+vigencia,{ //ruta
+			 	credentials: 'include',
+			 	type : "GET",
+			 }).then(response => {
+			 	return response.json()
+			 }).then(convocatorias => {
+			 	console.log(convocatorias)
+			 	vm.convocatorias = convocatorias
+			 });
+
+			}
 	},// end methods
 	delimiters : ["[[","]]"],
 	mounted (){
@@ -1165,6 +1224,7 @@ var app=new Vue({
 		vm.GetBancos()
 		vm.GetDatosEdit()
 		vm.checkQueryString()
+		vm.GetConvocatorias();
 
 		//vm.GetTercero(1,300)
 	    fetch("api/departamentos/",{ //ruta

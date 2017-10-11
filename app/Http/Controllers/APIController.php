@@ -17,6 +17,8 @@ use App\Models\Bancos;
 use App\Models\Cuentas_bancos;
 use App\Helper\Helper;
 use Illuminate\Support\Facades\Auth;
+use stdClass;
+use ArrayObject;
 class APIController extends Controller
 {
 /*
@@ -115,16 +117,16 @@ public function datosEdit(Request $request){
 	$datos=Datos_basicos::all();
 	//$datos->tercero=$datos->tercero;
 	foreach ($datos as $key => $dato) {
-	$tercero=$dato->tercero->nombre;
-	$dato->tercero=$tercero;
+		$tercero=$dato->tercero->nombre;
+		$dato->tercero=$tercero;
 	}
 	return response()->json($datos->toArray());
 }
 public function datosUpdate(Request $request){
 	$cdatos=$request->cdatos;
 	if ( !$cdatos ) return view('errors/generic',array('title' => 'Error.', 'message' => "El registro $cdatos no existe" ));
-		$datos=Datos_basicos::where('cdatos',$cdatos)->first();
-		if ( !$datos ) return view('errors/generic',array('title' => 'Error.', 'message' => "El registro $cdatos no existe" ));
+	$datos=Datos_basicos::where('cdatos',$cdatos)->first();
+	if ( !$datos ) return view('errors/generic',array('title' => 'Error.', 'message' => "El registro $cdatos no existe" ));
 	$datos=Datos_basicos::where('cdatos',$cdatos)->first();
 	$datos->convocatoria=Helper::convocatoriaToN($datos->convocatoria);
 	$datos->tercero=$datos->tercero;
@@ -147,6 +149,32 @@ public function datosUpdate(Request $request){
 	$datos->impuesto=$impuesto;
 	$datos->cuenta=$cuenta;
 	return response()->json($datos->toArray());
+}
+public function getListConvocatoria(Request $request){
+	$vigencia=$request->vigencia;
+	$convocatorias=Datos_basicos::where('vigencia',$vigencia)->where('convocatoria','!=','')->get();
+	$max=Helper::convocatoriaToN($convocatorias->max(['convocatoria']));
+	$data= new Datos_basicos;
+	$array=[];
+	$arrayobj = new ArrayObject;
+	for ($i=1; $i <=$max ; $i++) { 
+		$datasend= new stdClass;
+		$data->vigencia=$vigencia;
+		$data->convocatoria=$i;
+		$data->tercero='';
+		$convocatoriaok=Helper::convocatoriaSimpleFormat($data);
+		if (count($convocatorias->where('convocatoria',$convocatoriaok))>0) {
+			$datos=$convocatorias->where('convocatoria',$convocatoriaok)->first();
+			$ntercero=$datos->tercero->nombre;
+			$data->tercero=$ntercero;
+		}
+		$datasend->vigencia=$data->vigencia;
+		$datasend->convocatoria=$data->convocatoria;
+		$datasend->tercero=$data->tercero;
+		array_push($array,$datasend);
+		
+	}
+	return response()->json($array);
 }
 
 }

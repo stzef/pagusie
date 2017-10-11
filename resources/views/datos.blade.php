@@ -2,7 +2,7 @@
 	<div class="row">
 		<div class="form-group col-md-3">
 			<label for="vigencia" class="form-label">Vigencia</label>
-			<input type="text" class="form-control" id="vigencia" aria-describedby="vigencia" placeholder="Ingrese el año de vigencia" v-model="datos.vigencia" required>
+			<input type="text" class="form-control" id="vigencia" aria-describedby="vigencia" placeholder="Ingrese el año de vigencia" v-model="datos.vigencia" required @blur.prevent="GetConvocatorias()">
 		</div>
 <!--		<div class="form-group col-md-3">
 			<label for="cegreso">Codigo comprobante egreso</label>
@@ -47,8 +47,11 @@
 					<input type="text" class="form-control" id="numfactura" aria-describedby="numfactura" placeholder="Ingrese el número de factura" v-model="datos.nfactu" required>
 				</div>
 				<div class="form-group col-md-3" v-if="estado=='editar'">
-					<label for="convocatoria"> Convocatoria Nº</label>
-					<input type="text" class="form-control" id="convocatoria" aria-describedby="convocatoria" v-model="datos.convocatoria" required>
+					<div class=form-inline>
+						<label for="convocatoria"> Convocatoria Nº</label>
+						<input type="text" class="form-control" id="convocatoria" aria-describedby="convocatoria" v-model="datos.convocatoria" required>
+						<button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#searchconvocatoria"><div class="fa fa-search" aria-hidden="true"></div></button>
+					</div>
 				</div>
 			</div>
 			<div class="row">
@@ -118,6 +121,38 @@
 					</div>
 					<div class="modal-footer">
 						<!--  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
+					</div>
+				</div>
+
+			</div>
+		</div>
+		<div id="searchconvocatoria" class="modal fade" role="dialog">
+			<div class="modal-dialog" style="width: 800px">
+
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Seleccionar Convocatoria</h4>
+					</div>
+					<div class="modal-body">
+						<div>
+							<vue-good-table
+							global-Search-Placeholder="Buscar"
+							next-Text="Sig"
+							prev-Text="Ant"
+							rows-Per-Page-Text="Registros por página"
+							of-Text="de"
+							:columns="columnsConvocatoria"
+							:rows="convocatorias"
+							:paginate="true"
+							:global-search="true"
+							style-class="table table-bordered"
+							:on-Click="selectConvocatoria"/>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<center><button type="button" class="btn btn-danger" data-dismiss="modal">Salir</button></center>
 					</div>
 				</div>
 

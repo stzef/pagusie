@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 29-09-2017 a las 00:52:35
+-- Tiempo de generación: 12-10-2017 a las 00:46:48
 -- Versión del servidor: 10.1.24-MariaDB
 -- Versión de PHP: 7.1.6
 
@@ -49,6 +49,14 @@ CREATE TABLE `bancos` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Volcado de datos para la tabla `bancos`
+--
+
+INSERT INTO `bancos` (`cbanco`, `nbanco`, `created_at`, `updated_at`) VALUES
+(1, 'Popular', '2017-10-01 17:46:02', '2017-10-01 17:46:02'),
+(2, 'Bogota', '2017-10-01 17:47:35', '2017-10-01 17:47:35');
+
 -- --------------------------------------------------------
 
 --
@@ -86,6 +94,16 @@ CREATE TABLE `cheques` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `cheques`
+--
+
+INSERT INTO `cheques` (`idcheque`, `idcuentas_bancos`, `cestado`, `numcheque`, `concepto`, `valor`, `created_at`, `updated_at`) VALUES
+(1, 2, 1, 14, 'prueba', 25000.00, '2017-10-01 17:50:00', '2017-10-01 17:50:00'),
+(2, 1, 1, 14, 'prueba', 25000.00, '2017-10-01 17:50:42', '2017-10-01 17:50:42'),
+(3, 1, 1, 360, 'abono ;)', 250000.00, '2017-10-01 18:31:31', '2017-10-01 18:31:31'),
+(5, 1, 1, 360, 'abono ;)', 250000.00, '2017-10-01 18:41:25', '2017-10-01 18:41:25');
 
 -- --------------------------------------------------------
 
@@ -1225,13 +1243,13 @@ INSERT INTO `ciudades` (`cciud`, `cdepar`, `nciudad`) VALUES
 
 CREATE TABLE `colegio` (
   `ccolegio` int(11) NOT NULL,
-  `cciud` int(11) NOT NULL,
-  `rector` varchar(16) NOT NULL,
-  `auxad` varchar(16) NOT NULL,
-  `nombre` varchar(45) NOT NULL,
-  `nit` varchar(15) NOT NULL,
+  `ciud` int(11) NOT NULL,
+  `nombre` varchar(255) NOT NULL,
+  `nit` int(11) NOT NULL,
   `dv` int(1) NOT NULL,
-  `direccion` varchar(45) NOT NULL,
+  `direccion` varchar(255) NOT NULL,
+  `nrector` varchar(255) NOT NULL,
+  `nauxadmin` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -1240,8 +1258,8 @@ CREATE TABLE `colegio` (
 -- Volcado de datos para la tabla `colegio`
 --
 
-INSERT INTO `colegio` (`ccolegio`, `cciud`, `rector`, `auxad`, `nombre`, `nit`, `dv`, `direccion`, `created_at`, `updated_at`) VALUES
-(1, 1042, 'nano', 'nano', 'INSTITUCION EDUCATIVA TECNICA SUMAPAZ', '800.029.382', 7, 'CARRERA 25 Nº 5-43', NULL, NULL);
+INSERT INTO `colegio` (`ccolegio`, `ciud`, `nombre`, `nit`, `dv`, `direccion`, `nrector`, `nauxadmin`, `created_at`, `updated_at`) VALUES
+(1, 1042, 'INSTITUCION EDUCATIVA TECNICA SUMAPAZ', 800029382, 7, 'CARRERA 25 Nº 5-43', 'RICARDO ELIAS MORALES RODRIGUEZ', 'JAIME AUGUSTO SALGADO DAZA', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1251,12 +1269,11 @@ INSERT INTO `colegio` (`ccolegio`, `cciud`, `rector`, `auxad`, `nombre`, `nit`, 
 
 CREATE TABLE `contratos` (
   `ccontra` int(11) NOT NULL,
-  `tipo` varchar(45) NOT NULL,
+  `cdatos` int(11) NOT NULL,
+  `cticontrato` int(11) NOT NULL,
   `fecha` date NOT NULL,
   `texto` text NOT NULL,
-  `vttotal` double(10,2) NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `vttotal` double(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -1266,12 +1283,13 @@ CREATE TABLE `contratos` (
 --
 
 CREATE TABLE `contrato_articulo_detalle` (
-  `idcontrato_articulo_detalle` varchar(45) NOT NULL,
-  `cdatos` int(11) NOT NULL,
+  `idcontrato_articulo_detalle` int(11) NOT NULL,
+  `ccontra` int(11) NOT NULL,
   `carti` int(11) NOT NULL,
   `canti` int(11) NOT NULL,
   `vunita` double(10,2) NOT NULL,
   `vtotal` double(10,2) NOT NULL,
+  `centrada` varchar(13) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -1290,6 +1308,14 @@ CREATE TABLE `cuentas_bancos` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Volcado de datos para la tabla `cuentas_bancos`
+--
+
+INSERT INTO `cuentas_bancos` (`idcuentas_bancos`, `cbanco`, `numcuenta`, `created_at`, `updated_at`) VALUES
+(1, 1, '12356631', '2017-10-01 17:46:02', '2017-10-01 17:46:02'),
+(2, 2, '91919', '2017-10-01 17:47:35', '2017-10-01 17:47:35');
+
 -- --------------------------------------------------------
 
 --
@@ -1302,7 +1328,7 @@ CREATE TABLE `datos_basicos` (
   `ctidocumento` int(11) NOT NULL COMMENT 'ejemplo factura',
   `cestado` int(11) NOT NULL,
   `vigencia` int(11) NOT NULL COMMENT 'año presupuestal',
-  `convocatoria` varchar(9) DEFAULT NULL,
+  `convocatoria` varchar(13) DEFAULT NULL,
   `fpago` date NOT NULL,
   `ffactu` date NOT NULL COMMENT 'fecha factura',
   `nfactu` varchar(20) NOT NULL COMMENT 'numero de factura',
@@ -1330,7 +1356,7 @@ INSERT INTO `datos_basicos` (`cdatos`, `cterce`, `ctidocumento`, `cestado`, `vig
 (6, 4, 1, 1, 2017, NULL, '2017-08-11', '2017-08-11', '254', 'prueba con los rubros', 'prueba guardar rubros', '4 dias', '2017-08-11', '2017-08-11', '2017-08-11', 2500.00, 2500.00, 2500.00, '2017-08-11 22:32:06', '2017-08-11 22:32:06'),
 (7, 2, 1, 1, 2017, NULL, '2017-08-11', '2017-08-11', '214', '455', '4545', '44', '2017-08-11', '2017-08-11', '2017-08-11', 2500.00, 2500.00, 2500.00, '2017-08-11 22:35:40', '2017-08-11 22:35:40'),
 (8, 1, 1, 1, 2017, NULL, '2017-08-11', '2017-08-11', '5555', '555', '555', '555', '2017-08-11', '2017-08-11', '2017-08-11', 555.00, 55.00, 555.00, '2017-08-11 22:42:44', '2017-08-11 22:42:44'),
-(9, 23, 1, 1, 2017, '2017-0069', '2017-09-25', '2017-09-25', '5', 'prueba', 'prueba', '4 días', '2017-09-25', '2017-09-25', '2017-09-25', 2500.00, 2500.00, 5000.00, '2017-08-11 22:45:18', '2017-09-25 15:19:19'),
+(9, 1, 1, 1, 2017, NULL, '2017-10-01', '2017-10-01', '11', 'prueba cuentas XD', 'no aplica', '4 días', '2017-10-01', '2017-10-01', '2017-10-01', 300000.00, 350000.00, 650000.00, '2017-08-11 22:45:18', '2017-10-01 18:19:07'),
 (12, 1, 1, 1, 2017, NULL, '2017-08-14', '2017-08-14', '2147', 'pruba con impuestos', 'prueba con impuestos', '6 dias', '2017-08-14', '2017-08-14', '2017-08-14', 20000.00, 20000.00, 20000.00, '2017-08-14 20:20:32', '2017-08-14 20:20:32'),
 (13, 23, 1, 1, 2017, NULL, '2017-08-16', '2017-08-16', '20174', 'Servicio de internet', 'Servicio de internet', '5 dias', '2017-08-14', '2017-08-15', '2017-08-11', 25000.00, 25000.00, 25000.00, '2017-08-16 21:26:02', '2017-08-16 21:26:02'),
 (14, 1, 1, 1, 2017, NULL, '2017-08-18', '2017-08-18', '564', 'prueba currency format', 'pruena currency format', '9 dias', '2017-08-18', '2017-08-18', '2017-08-18', 25000.00, 25000.00, 25000.00, '2017-08-18 19:42:17', '2017-08-18 19:42:17'),
@@ -1344,8 +1370,10 @@ INSERT INTO `datos_basicos` (`cdatos`, `cterce`, `ctidocumento`, `cestado`, `vig
 (22, 1, 1, 1, 2017, NULL, '2017-09-19', '2017-09-19', '21', 'prueba de guardado una vez', 'no aplica', '4 días', '2017-09-19', '2017-09-19', '2017-09-19', 5000.00, 1600.00, 6600.00, '2017-09-19 19:44:20', '2017-09-19 19:44:20'),
 (23, 1, 1, 1, 2017, NULL, '2017-09-19', '2017-09-19', '44', 'PRUEBA VALIDATE', 'NO APLICA', '4 días', '2017-09-19', '2017-09-19', '2017-09-19', 0.00, 0.00, 0.00, '2017-09-19 20:27:36', '2017-09-19 20:27:36'),
 (24, 1, 1, 1, 2017, NULL, '2017-09-19', '2017-09-19', '545', '564', '564', '4 días', '2017-09-19', '2017-09-19', '2017-09-19', 0.00, 54565.00, 54565.00, '2017-09-19 20:46:58', '2017-09-19 21:12:07'),
-(25, 30, 1, 1, 2017, '2017-0360', '2017-09-25', '2017-09-25', '360', 'prueba nueva correciones', 'no aplica', '4 días', '2017-09-25', '2017-09-25', '2017-09-25', 360000.00, 400000.00, 780000.00, '2017-09-25 15:59:42', '2017-09-25 16:51:45'),
-(26, 22, 1, 1, 2017, NULL, '2017-09-25', '2017-09-25', '240', 'prueba suma presupuesto', 'no aplica', '4 días', '2017-09-25', '2017-09-25', '2017-09-25', 25000.00, 50000.00, 75000.00, '2017-09-25 16:54:05', '2017-09-25 16:54:05');
+(25, 30, 1, 1, 2017, 'CVT-2017-0050', '2017-09-25', '2017-09-25', '360', 'prueba nueva correciones', 'no aplica', '4 días', '2017-09-25', '2017-09-25', '2017-09-25', 400000.00, 360000.00, 780000.00, '2017-09-25 15:59:42', '2017-09-25 16:51:45'),
+(26, 22, 1, 1, 2017, NULL, '2017-09-25', '2017-09-25', '240', 'prueba suma presupuesto', 'no aplica', '4 días', '2017-09-25', '2017-09-25', '2017-09-25', 25000.00, 50000.00, 75000.00, '2017-09-25 16:54:05', '2017-09-25 16:54:05'),
+(27, 1, 1, 1, 2017, 'CVT-2017-0045', '2017-10-01', '2017-10-01', '12', 'prueba concepto', '1212', '4 días', '2017-10-01', '2017-10-01', '2017-10-01', 1212.00, 1211.00, 2423.00, '2017-10-01 18:20:50', '2017-10-01 21:31:23'),
+(28, 4, 1, 1, 2017, NULL, '2017-10-11', '2017-10-11', '1425414', 'pago mes de septiembre', 'no aplica', '3 días', '2017-10-11', '2017-10-11', '2017-10-11', 35000.00, 45000.00, 80000.00, '2017-10-11 21:00:43', '2017-10-11 21:00:43');
 
 -- --------------------------------------------------------
 
@@ -1360,6 +1388,15 @@ CREATE TABLE `datos_cuentas` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `datos_cuentas`
+--
+
+INSERT INTO `datos_cuentas` (`iddatos_cuentas`, `cdatos`, `idcheque`, `created_at`, `updated_at`) VALUES
+(1, 9, 1, '2017-10-01 17:50:00', '2017-10-01 17:50:00'),
+(2, 9, 2, '2017-10-01 17:50:42', '2017-10-01 17:50:42'),
+(3, 27, 5, '2017-10-01 18:41:25', '2017-10-01 18:41:25');
 
 -- --------------------------------------------------------
 
@@ -1395,7 +1432,12 @@ INSERT INTO `datos_impuestos` (`idDatos_Impuesto`, `cdatos`, `cimpu`, `vbase`, `
 (43, 25, 3, 360000, 3, 10800, '2017-09-25 16:19:42', '2017-09-25 16:19:42'),
 (44, 25, 4, 360000, 15, 54000, '2017-09-25 16:19:43', '2017-09-25 16:19:43'),
 (48, 9, 1, 360000, 10, 36000, '2017-09-27 19:44:00', '2017-09-27 19:44:00'),
-(49, 9, 2, 360000, 2.5, 9000, '2017-09-27 19:44:00', '2017-09-27 19:44:00');
+(49, 9, 2, 360000, 2.5, 9000, '2017-09-27 19:44:00', '2017-09-27 19:44:00'),
+(53, 27, 1, 250000, 10, 25000, '2017-10-01 18:31:01', '2017-10-01 18:31:01'),
+(54, 27, 3, 250000, 3, 7500, '2017-10-01 18:31:01', '2017-10-01 18:31:01'),
+(55, 27, 4, 250000, 15, 37500, '2017-10-01 18:31:01', '2017-10-01 18:31:01'),
+(70, 28, 1, 35000, 10, 3500, '2017-10-11 21:23:20', '2017-10-11 21:23:20'),
+(71, 28, 4, 35000, 15, 5250, '2017-10-11 21:23:20', '2017-10-11 21:23:20');
 
 -- --------------------------------------------------------
 
@@ -1436,7 +1478,10 @@ INSERT INTO `datos_presupuesto` (`iddatos_presupuesto`, `crubro`, `cdatos`, `val
 (22, '2.1.2.2.6.1', 4, 0.00, '2017-09-22 14:03:49', '2017-09-22 14:03:49'),
 (23, '1.3', 25, 760000.00, '2017-09-25 16:12:28', '2017-09-25 16:12:28'),
 (24, '2.1.2.2.6.1', 25, 760000.00, '2017-09-25 16:12:29', '2017-09-25 16:12:29'),
-(30, '2.1.2.2.6.1', 9, 2500.00, '2017-09-27 19:32:41', '2017-09-27 19:32:41');
+(30, '2.1.2.2.6.1', 9, 2500.00, '2017-09-27 19:32:41', '2017-09-27 19:32:41'),
+(31, '1.3', 27, 330000.00, '2017-10-01 18:23:47', '2017-10-01 18:23:47'),
+(32, '2.1.2.2.6.1', 27, 200000.00, '2017-10-01 18:23:48', '2017-10-01 18:23:48'),
+(33, '2.1.2.2.6.1', 28, 80000.00, '2017-10-11 21:01:18', '2017-10-11 21:01:18');
 
 -- --------------------------------------------------------
 
@@ -1571,31 +1616,6 @@ CREATE TABLE `password_resets` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `persona`
---
-
-CREATE TABLE `persona` (
-  `cpersona` int(11) NOT NULL,
-  `ccargo` int(11) NOT NULL,
-  `identificacion` varchar(45) NOT NULL,
-  `nombres` varchar(255) NOT NULL,
-  `apellidos` varchar(255) NOT NULL,
-  `direccion` varchar(255) NOT NULL,
-  `telefono` int(11) NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Volcado de datos para la tabla `persona`
---
-
-INSERT INTO `persona` (`cpersona`, `ccargo`, `identificacion`, `nombres`, `apellidos`, `direccion`, `telefono`, `created_at`, `updated_at`) VALUES
-(1, 2, '1106896645', 'Jhonan', 'Vargas', 'CR 30 a', 31332, NULL, NULL);
-
--- --------------------------------------------------------
-
---
 -- Estructura de tabla para la tabla `presupuesto`
 --
 
@@ -1667,7 +1687,8 @@ INSERT INTO `reporte_comprobante_egreso` (`id`, `cdatos`, `vtdeduc`, `vneto`, `c
 (7, 19, 11250.00, 63750.00, '2017-09-13 22:31:14', '2017-09-13 22:31:14'),
 (8, 20, 0.00, 168254.00, '2017-09-18 14:25:12', '2017-09-18 14:25:12'),
 (9, 21, 23400.00, 156600.00, '2017-09-18 16:39:03', '2017-09-18 16:39:03'),
-(10, 4, 0.00, 5000.00, '2017-09-20 22:06:41', '2017-09-20 22:06:41');
+(10, 4, 0.00, 5000.00, '2017-09-20 22:06:41', '2017-09-20 22:06:41'),
+(11, 27, 70000.00, -67577.00, '2017-10-01 21:32:24', '2017-10-01 21:32:24');
 
 -- --------------------------------------------------------
 
@@ -1814,11 +1835,11 @@ CREATE TABLE `terceros` (
   `cciud` int(11) NOT NULL,
   `nit` int(11) NOT NULL,
   `dv` int(1) NOT NULL,
-  `nombre` varchar(45) NOT NULL,
+  `nombre` varchar(255) NOT NULL,
   `telefono` int(15) DEFAULT NULL,
-  `direccion` varchar(45) NOT NULL,
+  `direccion` varchar(255) NOT NULL,
   `email` varchar(255) DEFAULT NULL,
-  `cnombre` varchar(45) DEFAULT NULL COMMENT 'Nombre contacto tercero',
+  `cnombre` varchar(255) DEFAULT NULL COMMENT 'Nombre contacto tercero',
   `ctelefono` varchar(15) DEFAULT NULL COMMENT 'Teléfono contacto tercero',
   `cemail` varchar(255) DEFAULT NULL COMMENT 'Email contacto tercero',
   `created_at` timestamp NULL DEFAULT NULL,
@@ -1849,7 +1870,27 @@ INSERT INTO `terceros` (`cterce`, `cciud`, `nit`, `dv`, `nombre`, `telefono`, `d
 (33, 1042, 5645641, 8, 'agua viva', 3141511, 'cra viva 21', NULL, 'carlos maria', '3144231', NULL, '2017-09-18 12:50:49', '2017-09-18 12:50:49'),
 (34, 1042, 2451474, 1, 'smith', NULL, 'cra 123', NULL, NULL, NULL, NULL, '2017-09-28 13:11:00', '2017-09-28 13:11:00'),
 (35, 1042, 84847, 1, 'Yency', NULL, 'cra 848', NULL, NULL, NULL, NULL, '2017-09-28 13:14:39', '2017-09-28 13:14:39'),
-(36, 1042, 54465, 3, '4654', NULL, '465', NULL, NULL, NULL, NULL, '2017-09-28 13:22:11', '2017-09-28 13:22:11');
+(36, 1042, 54465, 3, '4654', NULL, '465', NULL, NULL, NULL, NULL, '2017-09-28 13:22:11', '2017-09-28 13:22:11'),
+(37, 1042, 243321, 2, 'Fernando', NULL, 'rojas pinilla', NULL, NULL, NULL, NULL, '2017-10-01 17:48:20', '2017-10-01 17:48:20');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tipo_contrato`
+--
+
+CREATE TABLE `tipo_contrato` (
+  `cticontrato` int(11) NOT NULL,
+  `nticontratos` varchar(45) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `tipo_contrato`
+--
+
+INSERT INTO `tipo_contrato` (`cticontrato`, `nticontratos`) VALUES
+(1, 'Prestación de servicios'),
+(2, 'Suministros');
 
 -- --------------------------------------------------------
 
@@ -1879,7 +1920,7 @@ INSERT INTO `tipo_documento` (`ctidocumento`, `ntidocumento`, `created_at`, `upd
 
 CREATE TABLE `tiusuario` (
   `ctiusuario` int(11) NOT NULL,
-  `tiusuariocol` varchar(45) NOT NULL,
+  `ntipo` varchar(45) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -1888,7 +1929,7 @@ CREATE TABLE `tiusuario` (
 -- Volcado de datos para la tabla `tiusuario`
 --
 
-INSERT INTO `tiusuario` (`ctiusuario`, `tiusuariocol`, `created_at`, `updated_at`) VALUES
+INSERT INTO `tiusuario` (`ctiusuario`, `ntipo`, `created_at`, `updated_at`) VALUES
 (1, 'registrados', NULL, NULL),
 (2, 'administrador', NULL, NULL),
 (3, 'super admin', NULL, NULL);
@@ -1909,16 +1950,21 @@ CREATE TABLE `unidades` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `user`
+-- Estructura de tabla para la tabla `users`
 --
 
-CREATE TABLE `user` (
+CREATE TABLE `users` (
   `id` int(11) NOT NULL,
-  `username` varchar(255) NOT NULL,
-  `cpersona` int(11) NOT NULL,
   `ctiusuario` int(11) NOT NULL,
+  `ccargo` int(11) NOT NULL,
+  `identificacion` int(11) NOT NULL,
+  `nombres` varchar(255) NOT NULL,
+  `apellidos` varchar(255) NOT NULL,
+  `direccion` varchar(255) NOT NULL,
+  `telefono` varchar(15) NOT NULL,
+  `username` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
-  `password` varchar(32) NOT NULL,
+  `password` varchar(255) NOT NULL,
   `active` tinyint(4) NOT NULL,
   `remember_token` varchar(100) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -1926,35 +1972,11 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcado de datos para la tabla `user`
---
-
-INSERT INTO `user` (`id`, `username`, `cpersona`, `ctiusuario`, `email`, `password`, `active`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'nano', 1, 3, 'nano@gmail.com', '1234567', 1, '', NULL, NULL);
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `users`
---
-
-CREATE TABLE `users` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
 -- Volcado de datos para la tabla `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'jhonan360', 'nano@gmail.com', '$2y$10$QCv5ZDfS3pOitOEymIcr9u9ECeDJGqD1YgLXhLPzJxqwzQcq1RCAa', 'VFwSnlA52ThVE8CRRMf2npjYPX9JU0BHumSgu6pdEwH7HkDcqCmI8QwTTK2B', '2017-07-12 14:39:19', '2017-07-12 14:39:19'),
-(2, 'Critsthian', 'sistematizaref.programador5@gmail.com', '$2y$10$PzdQ.VBeH.vcgnKCJCiZJenyvTSsRO9zSJA2qxwLvOFessrYzOi3.', '2rPHVyFpn7oqJWqa2cGSHzKuLwHbUCRZP4meKJCbKaGr1fXav8bF55L1AbDC', '2017-08-15 15:32:53', '2017-08-15 15:32:53');
+INSERT INTO `users` (`id`, `ctiusuario`, `ccargo`, `identificacion`, `nombres`, `apellidos`, `direccion`, `telefono`, `username`, `email`, `password`, `active`, `remember_token`, `created_at`, `updated_at`) VALUES
+(1, 2, 2, 1106896645, 'Jhonan', 'Vargas', 'Cra 29 # 11-95', '313832414', 'nano', 'nano@gmail.com', '$2y$10$QCv5ZDfS3pOitOEymIcr9u9ECeDJGqD1YgLXhLPzJxqwzQcq1RCAa', 1, 'CBETM1oiGbGvkG7F8u0oQfWsAMzhLQ2X8dT2RMGGTJKieXZRZisJlBQeUK6c', '2017-10-11 05:00:00', NULL);
 
 --
 -- Índices para tablas volcadas
@@ -2000,15 +2022,15 @@ ALTER TABLE `ciudades`
 ALTER TABLE `colegio`
   ADD PRIMARY KEY (`ccolegio`),
   ADD UNIQUE KEY `nit_UNIQUE` (`nit`),
-  ADD KEY `fk_colegio_ciudades1_idx` (`cciud`),
-  ADD KEY `fk_colegio_user1_idx` (`rector`),
-  ADD KEY `fk_colegio_user2_idx` (`auxad`);
+  ADD KEY `fk_colegio_ciudades1_idx` (`ciud`);
 
 --
 -- Indices de la tabla `contratos`
 --
 ALTER TABLE `contratos`
-  ADD PRIMARY KEY (`ccontra`);
+  ADD PRIMARY KEY (`ccontra`),
+  ADD KEY `fk_contratos_datos_basicos1_idx` (`cdatos`),
+  ADD KEY `fk_contratos_tipocontratos1_idx` (`cticontrato`);
 
 --
 -- Indices de la tabla `contrato_articulo_detalle`
@@ -2016,7 +2038,7 @@ ALTER TABLE `contratos`
 ALTER TABLE `contrato_articulo_detalle`
   ADD PRIMARY KEY (`idcontrato_articulo_detalle`),
   ADD KEY `fk_contrato_suministro_has_suministros_suministros1_idx` (`carti`),
-  ADD KEY `fk_contrato_articulo_detalle_datos1_idx` (`cdatos`);
+  ADD KEY `fk_contrato_articulo_detalle_contratos1_idx` (`ccontra`);
 
 --
 -- Indices de la tabla `cuentas_bancos`
@@ -2082,13 +2104,6 @@ ALTER TABLE `impuestos`
 --
 ALTER TABLE `migrations`
   ADD PRIMARY KEY (`id`);
-
---
--- Indices de la tabla `persona`
---
-ALTER TABLE `persona`
-  ADD PRIMARY KEY (`cpersona`),
-  ADD KEY `fk_persona_cargo1_idx` (`ccargo`);
 
 --
 -- Indices de la tabla `presupuesto`
@@ -2169,6 +2184,12 @@ ALTER TABLE `terceros`
   ADD KEY `fk_terceros_ciudades1_idx` (`cciud`);
 
 --
+-- Indices de la tabla `tipo_contrato`
+--
+ALTER TABLE `tipo_contrato`
+  ADD PRIMARY KEY (`cticontrato`);
+
+--
 -- Indices de la tabla `tipo_documento`
 --
 ALTER TABLE `tipo_documento`
@@ -2187,21 +2208,14 @@ ALTER TABLE `unidades`
   ADD PRIMARY KEY (`cunidad`);
 
 --
--- Indices de la tabla `user`
---
-ALTER TABLE `user`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `username_UNIQUE` (`username`),
-  ADD UNIQUE KEY `email_UNIQUE` (`email`),
-  ADD KEY `fk_user_persona1_idx` (`cpersona`),
-  ADD KEY `fk_user_tiusuario1_idx` (`ctiusuario`);
-
---
 -- Indices de la tabla `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `users_email_unique` (`email`);
+  ADD UNIQUE KEY `username_UNIQUE` (`username`),
+  ADD UNIQUE KEY `email_UNIQUE` (`email`),
+  ADD KEY `fk_user_tiusuario1_idx` (`ctiusuario`),
+  ADD KEY `fk_users_cargo1_idx` (`ccargo`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -2216,7 +2230,7 @@ ALTER TABLE `articulos`
 -- AUTO_INCREMENT de la tabla `bancos`
 --
 ALTER TABLE `bancos`
-  MODIFY `cbanco` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `cbanco` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT de la tabla `cargo`
 --
@@ -2226,7 +2240,7 @@ ALTER TABLE `cargo`
 -- AUTO_INCREMENT de la tabla `cheques`
 --
 ALTER TABLE `cheques`
-  MODIFY `idcheque` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idcheque` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT de la tabla `colegio`
 --
@@ -2238,30 +2252,35 @@ ALTER TABLE `colegio`
 ALTER TABLE `contratos`
   MODIFY `ccontra` int(11) NOT NULL AUTO_INCREMENT;
 --
+-- AUTO_INCREMENT de la tabla `contrato_articulo_detalle`
+--
+ALTER TABLE `contrato_articulo_detalle`
+  MODIFY `idcontrato_articulo_detalle` int(11) NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT de la tabla `cuentas_bancos`
 --
 ALTER TABLE `cuentas_bancos`
-  MODIFY `idcuentas_bancos` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idcuentas_bancos` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT de la tabla `datos_basicos`
 --
 ALTER TABLE `datos_basicos`
-  MODIFY `cdatos` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `cdatos` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 --
 -- AUTO_INCREMENT de la tabla `datos_cuentas`
 --
 ALTER TABLE `datos_cuentas`
-  MODIFY `iddatos_cuentas` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `iddatos_cuentas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT de la tabla `datos_impuestos`
 --
 ALTER TABLE `datos_impuestos`
-  MODIFY `idDatos_Impuesto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+  MODIFY `idDatos_Impuesto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
 --
 -- AUTO_INCREMENT de la tabla `datos_presupuesto`
 --
 ALTER TABLE `datos_presupuesto`
-  MODIFY `iddatos_presupuesto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `iddatos_presupuesto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 --
 -- AUTO_INCREMENT de la tabla `estados`
 --
@@ -2278,11 +2297,6 @@ ALTER TABLE `impuestos`
 ALTER TABLE `migrations`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
--- AUTO_INCREMENT de la tabla `persona`
---
-ALTER TABLE `persona`
-  MODIFY `cpersona` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
---
 -- AUTO_INCREMENT de la tabla `reporte_certificado_precio`
 --
 ALTER TABLE `reporte_certificado_precio`
@@ -2291,7 +2305,7 @@ ALTER TABLE `reporte_certificado_precio`
 -- AUTO_INCREMENT de la tabla `reporte_comprobante_egreso`
 --
 ALTER TABLE `reporte_comprobante_egreso`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 --
 -- AUTO_INCREMENT de la tabla `reporte_contrato_prestacion_servicio`
 --
@@ -2326,7 +2340,12 @@ ALTER TABLE `reporte_registro_presupuestal`
 -- AUTO_INCREMENT de la tabla `terceros`
 --
 ALTER TABLE `terceros`
-  MODIFY `cterce` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `cterce` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+--
+-- AUTO_INCREMENT de la tabla `tipo_contrato`
+--
+ALTER TABLE `tipo_contrato`
+  MODIFY `cticontrato` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT de la tabla `tipo_documento`
 --
@@ -2343,15 +2362,10 @@ ALTER TABLE `tiusuario`
 ALTER TABLE `unidades`
   MODIFY `cunidad` int(11) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT de la tabla `user`
---
-ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
---
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- Restricciones para tablas volcadas
 --
@@ -2379,15 +2393,20 @@ ALTER TABLE `ciudades`
 -- Filtros para la tabla `colegio`
 --
 ALTER TABLE `colegio`
-  ADD CONSTRAINT `fk_colegio_ciudades1` FOREIGN KEY (`cciud`) REFERENCES `ciudades` (`cciud`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_colegio_user1` FOREIGN KEY (`rector`) REFERENCES `user` (`username`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_colegio_user2` FOREIGN KEY (`auxad`) REFERENCES `user` (`username`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_colegio_ciudades1` FOREIGN KEY (`ciud`) REFERENCES `ciudades` (`cciud`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `contratos`
+--
+ALTER TABLE `contratos`
+  ADD CONSTRAINT `fk_contratos_datos_basicos1` FOREIGN KEY (`cdatos`) REFERENCES `datos_basicos` (`cdatos`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_contratos_tipocontratos1` FOREIGN KEY (`cticontrato`) REFERENCES `tipo_contrato` (`cticontrato`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `contrato_articulo_detalle`
 --
 ALTER TABLE `contrato_articulo_detalle`
-  ADD CONSTRAINT `fk_contrato_articulo_detalle_datos1` FOREIGN KEY (`cdatos`) REFERENCES `datos_basicos` (`cdatos`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_contrato_articulo_detalle_contratos1` FOREIGN KEY (`ccontra`) REFERENCES `contratos` (`ccontra`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_contrato_suministro_has_suministros_suministros1` FOREIGN KEY (`carti`) REFERENCES `articulos` (`carti`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
@@ -2424,12 +2443,6 @@ ALTER TABLE `datos_impuestos`
 ALTER TABLE `datos_presupuesto`
   ADD CONSTRAINT `fk_presupuesto_has_datos_datos1` FOREIGN KEY (`cdatos`) REFERENCES `datos_basicos` (`cdatos`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_presupuesto_has_datos_presupuesto1` FOREIGN KEY (`crubro`) REFERENCES `presupuesto` (`crubro`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Filtros para la tabla `persona`
---
-ALTER TABLE `persona`
-  ADD CONSTRAINT `fk_persona_cargo1` FOREIGN KEY (`ccargo`) REFERENCES `cargo` (`ccargo`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `reporte_certificado_precio`
@@ -2486,11 +2499,11 @@ ALTER TABLE `terceros`
   ADD CONSTRAINT `fk_terceros_ciudades1` FOREIGN KEY (`cciud`) REFERENCES `ciudades` (`cciud`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Filtros para la tabla `user`
+-- Filtros para la tabla `users`
 --
-ALTER TABLE `user`
-  ADD CONSTRAINT `fk_user_persona1` FOREIGN KEY (`cpersona`) REFERENCES `persona` (`cpersona`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_user_tiusuario1` FOREIGN KEY (`ctiusuario`) REFERENCES `tiusuario` (`ctiusuario`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `users`
+  ADD CONSTRAINT `fk_user_tiusuario1` FOREIGN KEY (`ctiusuario`) REFERENCES `tiusuario` (`ctiusuario`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_users_cargo1` FOREIGN KEY (`ccargo`) REFERENCES `cargo` (`ccargo`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
