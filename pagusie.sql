@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 12-10-2017 a las 00:46:48
+-- Tiempo de generación: 19-10-2017 a las 00:57:00
 -- Versión del servidor: 10.1.24-MariaDB
 -- Versión de PHP: 7.1.6
 
@@ -30,11 +30,19 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `articulos` (
   `carti` int(11) NOT NULL,
-  `idunidad` int(11) NOT NULL,
+  `cunidad` int(11) NOT NULL,
   `narticulo` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `articulos`
+--
+
+INSERT INTO `articulos` (`carti`, `cunidad`, `narticulo`, `created_at`, `updated_at`) VALUES
+(1, 1, 'Carne', NULL, NULL),
+(2, 1, 'Pollo', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1273,8 +1281,18 @@ CREATE TABLE `contratos` (
   `cticontrato` int(11) NOT NULL,
   `fecha` date NOT NULL,
   `texto` text NOT NULL,
-  `vttotal` double(10,2) NOT NULL
+  `vttotal` double(10,2) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `contratos`
+--
+
+INSERT INTO `contratos` (`ccontra`, `cdatos`, `cticontrato`, `fecha`, `texto`, `vttotal`, `created_at`, `updated_at`) VALUES
+(1, 9, 2, '2017-10-17', 'prueba de guardado texto suministros 3.0', 650000.00, '2017-10-17 14:25:14', '2017-10-17 19:44:13'),
+(2, 12, 1, '2017-10-31', '0101001', 254141.00, '2017-10-17 19:50:10', '2017-10-17 20:50:58');
 
 -- --------------------------------------------------------
 
@@ -1461,8 +1479,6 @@ CREATE TABLE `datos_presupuesto` (
 INSERT INTO `datos_presupuesto` (`iddatos_presupuesto`, `crubro`, `cdatos`, `valor`, `created_at`, `updated_at`) VALUES
 (1, '1.3', 5, 432.00, '2017-08-14 20:12:08', '2017-08-14 20:12:08'),
 (2, '2.1.2.2.6.1', 5, 20000.00, '2017-08-14 20:12:08', '2017-08-14 20:12:08'),
-(3, '2.1.2.2.6.1', 12, 10000.00, '2017-08-14 20:20:56', '2017-08-14 20:20:56'),
-(4, '1.3', 12, 10000.00, '2017-08-14 20:20:56', '2017-08-14 20:20:56'),
 (5, '1.3', 13, 0.00, '2017-08-16 21:26:33', '2017-08-16 21:26:33'),
 (6, '2.1.2.2.6.1', 13, 25000.00, '2017-08-16 21:26:33', '2017-08-16 21:26:33'),
 (9, '1.3', 16, 50000.00, '2017-09-07 22:21:26', '2017-09-07 22:21:26'),
@@ -1481,7 +1497,9 @@ INSERT INTO `datos_presupuesto` (`iddatos_presupuesto`, `crubro`, `cdatos`, `val
 (30, '2.1.2.2.6.1', 9, 2500.00, '2017-09-27 19:32:41', '2017-09-27 19:32:41'),
 (31, '1.3', 27, 330000.00, '2017-10-01 18:23:47', '2017-10-01 18:23:47'),
 (32, '2.1.2.2.6.1', 27, 200000.00, '2017-10-01 18:23:48', '2017-10-01 18:23:48'),
-(33, '2.1.2.2.6.1', 28, 80000.00, '2017-10-11 21:01:18', '2017-10-11 21:01:18');
+(33, '2.1.2.2.6.1', 28, 80000.00, '2017-10-11 21:01:18', '2017-10-11 21:01:18'),
+(34, '2.1.2.2.6.1', 12, 10000.00, '2017-10-17 22:45:21', '2017-10-17 22:45:21'),
+(35, '1.3', 12, 10000.00, '2017-10-17 22:45:22', '2017-10-17 22:45:22');
 
 -- --------------------------------------------------------
 
@@ -1881,16 +1899,18 @@ INSERT INTO `terceros` (`cterce`, `cciud`, `nit`, `dv`, `nombre`, `telefono`, `d
 
 CREATE TABLE `tipo_contrato` (
   `cticontrato` int(11) NOT NULL,
-  `nticontratos` varchar(45) NOT NULL
+  `nticontratos` varchar(45) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `tipo_contrato`
 --
 
-INSERT INTO `tipo_contrato` (`cticontrato`, `nticontratos`) VALUES
-(1, 'Prestación de servicios'),
-(2, 'Suministros');
+INSERT INTO `tipo_contrato` (`cticontrato`, `nticontratos`, `created_at`, `updated_at`) VALUES
+(1, 'Prestación de servicios', NULL, NULL),
+(2, 'Suministros', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1915,10 +1935,10 @@ INSERT INTO `tipo_documento` (`ctidocumento`, `ntidocumento`, `created_at`, `upd
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `tiusuario`
+-- Estructura de tabla para la tabla `tipo_usuario`
 --
 
-CREATE TABLE `tiusuario` (
+CREATE TABLE `tipo_usuario` (
   `ctiusuario` int(11) NOT NULL,
   `ntipo` varchar(45) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -1926,10 +1946,10 @@ CREATE TABLE `tiusuario` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcado de datos para la tabla `tiusuario`
+-- Volcado de datos para la tabla `tipo_usuario`
 --
 
-INSERT INTO `tiusuario` (`ctiusuario`, `ntipo`, `created_at`, `updated_at`) VALUES
+INSERT INTO `tipo_usuario` (`ctiusuario`, `ntipo`, `created_at`, `updated_at`) VALUES
 (1, 'registrados', NULL, NULL),
 (2, 'administrador', NULL, NULL),
 (3, 'super admin', NULL, NULL);
@@ -1946,6 +1966,14 @@ CREATE TABLE `unidades` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `unidades`
+--
+
+INSERT INTO `unidades` (`cunidad`, `nunidad`, `created_at`, `updated_at`) VALUES
+(1, 'Kilogramos', NULL, NULL),
+(2, 'Toneladas', '2017-10-18 22:54:49', '2017-10-18 22:54:49');
 
 -- --------------------------------------------------------
 
@@ -1987,7 +2015,7 @@ INSERT INTO `users` (`id`, `ctiusuario`, `ccargo`, `identificacion`, `nombres`, 
 --
 ALTER TABLE `articulos`
   ADD PRIMARY KEY (`carti`),
-  ADD KEY `fk_articulos_unidades1_idx` (`idunidad`);
+  ADD KEY `fk_articulos_unidades1_idx` (`cunidad`);
 
 --
 -- Indices de la tabla `bancos`
@@ -2029,6 +2057,7 @@ ALTER TABLE `colegio`
 --
 ALTER TABLE `contratos`
   ADD PRIMARY KEY (`ccontra`),
+  ADD UNIQUE KEY `cdatos` (`cdatos`),
   ADD KEY `fk_contratos_datos_basicos1_idx` (`cdatos`),
   ADD KEY `fk_contratos_tipocontratos1_idx` (`cticontrato`);
 
@@ -2196,9 +2225,9 @@ ALTER TABLE `tipo_documento`
   ADD PRIMARY KEY (`ctidocumento`);
 
 --
--- Indices de la tabla `tiusuario`
+-- Indices de la tabla `tipo_usuario`
 --
-ALTER TABLE `tiusuario`
+ALTER TABLE `tipo_usuario`
   ADD PRIMARY KEY (`ctiusuario`);
 
 --
@@ -2214,8 +2243,8 @@ ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `username_UNIQUE` (`username`),
   ADD UNIQUE KEY `email_UNIQUE` (`email`),
-  ADD KEY `fk_user_tiusuario1_idx` (`ctiusuario`),
-  ADD KEY `fk_users_cargo1_idx` (`ccargo`);
+  ADD KEY `fk_users_cargo1_idx` (`ccargo`),
+  ADD KEY `fk_user_tipo_usuario1_idx` (`ctiusuario`) USING BTREE;
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -2225,7 +2254,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de la tabla `articulos`
 --
 ALTER TABLE `articulos`
-  MODIFY `carti` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `carti` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT de la tabla `bancos`
 --
@@ -2250,7 +2279,7 @@ ALTER TABLE `colegio`
 -- AUTO_INCREMENT de la tabla `contratos`
 --
 ALTER TABLE `contratos`
-  MODIFY `ccontra` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ccontra` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT de la tabla `contrato_articulo_detalle`
 --
@@ -2280,7 +2309,7 @@ ALTER TABLE `datos_impuestos`
 -- AUTO_INCREMENT de la tabla `datos_presupuesto`
 --
 ALTER TABLE `datos_presupuesto`
-  MODIFY `iddatos_presupuesto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `iddatos_presupuesto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 --
 -- AUTO_INCREMENT de la tabla `estados`
 --
@@ -2352,15 +2381,15 @@ ALTER TABLE `tipo_contrato`
 ALTER TABLE `tipo_documento`
   MODIFY `ctidocumento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
--- AUTO_INCREMENT de la tabla `tiusuario`
+-- AUTO_INCREMENT de la tabla `tipo_usuario`
 --
-ALTER TABLE `tiusuario`
+ALTER TABLE `tipo_usuario`
   MODIFY `ctiusuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT de la tabla `unidades`
 --
 ALTER TABLE `unidades`
-  MODIFY `cunidad` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `cunidad` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT de la tabla `users`
 --
@@ -2374,7 +2403,7 @@ ALTER TABLE `users`
 -- Filtros para la tabla `articulos`
 --
 ALTER TABLE `articulos`
-  ADD CONSTRAINT `fk_articulos_unidades1` FOREIGN KEY (`idunidad`) REFERENCES `unidades` (`cunidad`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_articulos_unidades1` FOREIGN KEY (`cunidad`) REFERENCES `unidades` (`cunidad`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `cheques`
@@ -2502,7 +2531,7 @@ ALTER TABLE `terceros`
 -- Filtros para la tabla `users`
 --
 ALTER TABLE `users`
-  ADD CONSTRAINT `fk_user_tiusuario1` FOREIGN KEY (`ctiusuario`) REFERENCES `tiusuario` (`ctiusuario`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_user_tiusuario1` FOREIGN KEY (`ctiusuario`) REFERENCES `tipo_usuario` (`ctiusuario`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_users_cargo1` FOREIGN KEY (`ccargo`) REFERENCES `cargo` (`ccargo`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 COMMIT;
 

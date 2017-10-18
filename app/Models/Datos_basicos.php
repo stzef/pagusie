@@ -5,11 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * @property integer $cdatos
- * @property integer $cestado
- * @property integer $ctidocumento
- * @property integer $cterce
- * @property integer $vigencia
+ * @property int $cdatos
+ * @property int $cterce
+ * @property int $ctidocumento
+ * @property int $cestado
+ * @property int $vigencia
+ * @property string $convocatoria
  * @property string $fpago
  * @property string $ffactu
  * @property string $nfactu
@@ -23,14 +24,22 @@ use Illuminate\Database\Eloquent\Model;
  * @property float $viva
  * @property float $vtotal
  * @property string $created_at
- * @property string $update_at
+ * @property string $updated_at
  * @property Estado $estado
  * @property TipoDocumento $tipoDocumento
  * @property Tercero $tercero
- * @property ContratoArticuloDetalle[] $contratoArticuloDetalles
+ * @property Contrato $contrato
  * @property DatosCuenta[] $datosCuentas
  * @property DatosImpuesto[] $datosImpuestos
  * @property DatosPresupuesto[] $datosPresupuestos
+ * @property ReporteCertificadoPrecio $reporteCertificadoPrecio
+ * @property ReporteComprobanteEgreso $reporteComprobanteEgreso
+ * @property ReporteContratoPrestacionServicio $reporteContratoPrestacionServicio
+ * @property ReporteContratoSuministro $reporteContratoSuministro
+ * @property ReporteDisponibilidadPresupuestal $reporteDisponibilidadPresupuestal
+ * @property ReporteDocumentoEquivalente $reporteDocumentoEquivalente
+ * @property ReporteReciboSatisfaccion $reporteReciboSatisfaccion
+ * @property ReporteRegistroPresupuestal $reporteRegistroPresupuestal
  */
 class Datos_basicos extends Model
 {
@@ -44,7 +53,7 @@ class Datos_basicos extends Model
      */
     public function estado()
     {
-        return $this->belongsTo('App\Estado', 'cestado', 'cestado');
+        return $this->belongsTo('App\Models\Estado', 'cestado', 'cestado');
     }
 
     /**
@@ -52,7 +61,7 @@ class Datos_basicos extends Model
      */
     public function tipoDocumento()
     {
-        return $this->belongsTo('App\TipoDocumento', 'ctidocumento', 'ctidocumento');
+        return $this->belongsTo('App\Models\Tipo_documento', 'ctidocumento', 'ctidocumento');
     }
 
     /**
@@ -66,9 +75,9 @@ class Datos_basicos extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function contratoArticuloDetalles()
+     public function contrato()
     {
-        return $this->hasMany('App\Models\ContratoArticuloDetalle', 'cdatos', 'cdatos');
+        return $this->hasOne('App\Models\Contratos', 'cdatos', 'cdatos');
     }
 
     /**
@@ -93,5 +102,65 @@ class Datos_basicos extends Model
     public function datosPresupuestos()
     {
         return $this->hasMany('App\Models\Datos_presupuesto', 'cdatos', 'cdatos');
+    }
+     public function reporteCertificadoPrecio()
+    {
+        return $this->hasOne('App\Models\ReporteCertificadoPrecio', 'cdatos', 'cdatos');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function reporteComprobanteEgreso()
+    {
+        return $this->hasOne('App\Models\ReporteComprobanteEgreso', 'cdatos', 'cdatos');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function reporteContratoPrestacionServicio()
+    {
+        return $this->hasOne('App\Models\ReporteContratoPrestacionServicio', 'cdatos', 'cdatos');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function reporteContratoSuministro()
+    {
+        return $this->hasOne('App\Models\ReporteContratoSuministro', 'cdatos', 'cdatos');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function reporteDisponibilidadPresupuestal()
+    {
+        return $this->hasOne('App\Models\ReporteDisponibilidadPresupuestal', 'cdatos', 'cdatos');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function reporteDocumentoEquivalente()
+    {
+        return $this->hasOne('App\Models\ReporteDocumentoEquivalente', 'cdatos', 'cdatos');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function reporteReciboSatisfaccion()
+    {
+        return $this->hasOne('App\Models\ReporteReciboSatisfaccion', 'cdatos', 'cdatos');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function reporteRegistroPresupuestal()
+    {
+        return $this->hasOne('App\Models\ReporteRegistroPresupuestal', 'cdatos', 'cdatos');
     }
 }

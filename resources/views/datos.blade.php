@@ -16,8 +16,8 @@
 			<label for="tercero">Tercero</label>
 			<div class=form-inline>
 				<input @blur.prevent="searchTercero()" type="text" class="form-control" id="nittercero" aria-describedby="nittercero" placeholder="Ingrese el número del nit" v-model="terceros.nit" required style="width: 35%">
-				<button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#searchtercero"><div class="fa fa-search" aria-hidden="true"></div></button>
-				<button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#addtercero" >+</button>
+				<button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#searchtercero"><span class="glyphicon glyphicon-search"></span></button>
+				<button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#addtercero" ><span class="glyphicon glyphicon-plus"></button>
 				<input  type="text" class="form-control" id="nombretercero" aria-describedby="nombretercero" v-model="terceros.nombre" required style="width: 50%" disabled >
 			</div>
 				<!--<template>
@@ -50,7 +50,7 @@
 					<div class=form-inline>
 						<label for="convocatoria"> Convocatoria Nº</label>
 						<input type="text" class="form-control" id="convocatoria" aria-describedby="convocatoria" v-model="datos.convocatoria" required>
-						<button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#searchconvocatoria"><div class="fa fa-search" aria-hidden="true"></div></button>
+						<button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#searchconvocatoria"><span class="glyphicon glyphicon-search"></span></button>
 					</div>
 				</div>
 			</div>

@@ -51,7 +51,7 @@ static function convocatoriaFormat($data){
         if (!$validator->fails()) {
             $length=4-strlen($data['convocatoria']);
             $pre='CVT-'.$data['vigencia'].'-';
-            $convocatoria= str_pad($pre, $length+5, "0").$data['convocatoria'];
+            $convocatoria= str_pad($pre, $length+9, "0").$data['convocatoria'];
             return $convocatoria;
         }else{
             $messages = $validator->messages();
@@ -69,7 +69,7 @@ static function convocatoriaSimpleFormat($data){
     if ($data['convocatoria']!=null) {
             $length=4-strlen($data['convocatoria']);
             $pre='CVT-'.$data['vigencia'].'-';
-            $convocatoria= str_pad($pre, $length+5, "0").$data['convocatoria'];
+            $convocatoria= str_pad($pre, $length+9, "0").$data['convocatoria'];
             return $convocatoria;
     }else{
      return null;

@@ -50,3 +50,9 @@ Route::group(['prefix' => 'datosupdate'], function(){
 Route::group(['prefix' => 'getconvocatoria'], function(){
 	Route::get('/', "APIController@getListConvocatoria")->name("api.getListConvocatoria.index");
 });
+Route::group(['prefix' => 'getarticulos'], function(){
+	Route::get('/', "APIController@getArticulos")->name("api.getArticulos.index");
+});
+Route::group(['prefix' => 'getunidades'], function(){
+	Route::get('/', "APIController@getUnidades")->name("api.getUnidades.index");
+});

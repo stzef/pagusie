@@ -15,6 +15,8 @@ use App\Models\Datos_impuestos;
 use App\Models\Datos_cuentas;
 use App\Models\Bancos;
 use App\Models\Cuentas_bancos;
+use App\Models\Articulos;
+use App\Models\Unidades;
 use App\Helper\Helper;
 use Illuminate\Support\Facades\Auth;
 use stdClass;
@@ -148,6 +150,7 @@ public function datosUpdate(Request $request){
 	$datos->presupuesto=$presupuesto;
 	$datos->impuesto=$impuesto;
 	$datos->cuenta=$cuenta;
+	$datos->contrato=$datos->contrato;
 	return response()->json($datos->toArray());
 }
 public function getListConvocatoria(Request $request){
@@ -176,6 +179,16 @@ public function getListConvocatoria(Request $request){
 	}
 	return response()->json($array);
 }
-
+public function getArticulos(Request $request){
+	$articulos=Articulos::all();
+	foreach ($articulos as $key => $articulo) {
+		$articulos->unidades=$articulo->unidad;
+	}
+	return response()->json($articulos);
+}
+public function getUnidades(Request $request){
+	$unidades=Unidades::all();
+	return response()->json($unidades);
+}
 }
 

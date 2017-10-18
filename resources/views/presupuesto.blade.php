@@ -10,7 +10,7 @@
 <form @submit.prevent="addRubro" accept-charset="utf-8">
 	<div class="row">
 
-		<div class="form-group col-md-6">
+		<div class="form-group col-md-5">
 			<label for="rubro">Rubro</label>
 				<!--<template>
 					<div>
@@ -27,7 +27,7 @@
 				</template>-->
 				<div class="form-inline">
 					<input @blur.prevent="searchPresupuesto()" type="text" class="form-control" id="crubro" aria-describedby="crubro" placeholder="Ingrese código del rubro" v-model="presupuesto.crubro" required style="width: 40%">
-					<button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#searchrubro" @click = "list('table-presupuestos')"><div class="fa fa-search" aria-hidden="true"></div></button>
+					<button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#searchrubro" @click = "list('table-presupuestos')"><span class="glyphicon glyphicon-search"></span></button>
 					<input  type="text" class="form-control" id="nrubro" aria-describedby="nrubro" v-model="presupuesto.nrubro" required style="width: 40%" disabled >
 
 				</div>
@@ -35,11 +35,11 @@
 			<div class="form-group col-md-2">
 				<label for="vrubro">Valor</label>
 				
-				<input type="text" class="form-control input-currency" id="vrubro" aria-describedby="vrubro" placeholder="Ingrese el valor"  required >
+				<input type="text" class="form-control input-currency" id="vrubro" aria-describedby="vrubro" placeholder="Ingrese el valor" required >
 				
 			</div>
 			<div class="form-group col-md-2">
-				<button type="submit" class="btn btn-success " style="margin-top: 25px;">+</button>
+				<button type="submit" class="btn btn-success btn-xs" style="margin-top: 30px;"> <span class="glyphicon glyphicon-plus"></span></button>
 			</div>
 
 		</div>
@@ -51,7 +51,7 @@
 				<td><strong>Rubro</strong></td>
 				<td><strong>Nombre</strong></td>
 				<td><strong>Valor</strong></td>
-				<td><strong>Eliminar</strong></td>
+				<td><strong></strong></td>
 			</tr>
 		</thead>
 		<tbody>
@@ -60,7 +60,7 @@
 					<td>[[rubro.crubro]]</td>
 					<td>[[rubro.nrubro]]</td>
 					<td align="right">[[rubro.valor]]</td>
-					<td ><button @click.prevent="removeRubro(index)" class="btn btn-danger " >-</button></td>
+					<td ><button @click.prevent="removeRubro(index)" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></button></td>
 				</tr>
 			</template>
 			<tr style="background-color: #f2f2f2;">

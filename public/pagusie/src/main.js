@@ -112,7 +112,19 @@ var app=new Vue({
 			field: 'numcuenta',
 		},
 		],
-		date: moment().locale('es').format('YYYY-MM-DDThh:mm:00.000Z'),
+		columnsArticulos: [
+		{
+			label: 'Nombre',
+			field: 'narticulo',
+		},
+		{
+			label: 'Unidad',
+			field: 'unidad.nunidad',
+		},
+		],
+
+		//date: moment().locale('es').format('YYYY-MM-DDThh:mm:00.000Z'),
+		date: moment().format('YYYY-MM-DD, h:mm:ss a'),
 		tidocumento:[],
 		valueTdocu: {},
 		departamentos:[],
@@ -125,14 +137,18 @@ var app=new Vue({
 		valueTercero: {},
 		rubros:[],
 		valueRubros: {},
+		unidades:[],
+		valueUnidades: {},
 		impuestos:[],
 		bancos:[],
+		articulos:[],
 		datosEdit:[],
 		convocatorias:[],
 		valueImpuesto: {},
 		terceroSelected:{},
 		textoBoton:'Guardar',
 		convocatoriaSelected:undefined,
+		cticontratoSelected:undefined,
 		datos:{
 			'cdatos':undefined,
 			'cterce':'',
@@ -198,6 +214,39 @@ var app=new Vue({
 			concepto:undefined,
 			valor:undefined,
 		},
+		contrato:{
+			ccontra:undefined,
+			cticontrato:undefined,
+			fechase:undefined,
+			textose:undefined,
+			vttotalse:undefined,
+			fechasu:undefined,
+			textosu:undefined,
+			vttotalsu:undefined,
+		},
+		suministros:{
+			carti:undefined,
+			narticulo:undefined,
+			cunidad:undefined,
+			nunidad:undefined,
+			cantidad:undefined,
+			vunita:undefined,
+			vtotal:undefined,
+			create:{
+				nunidad:undefined,
+				show:false,
+				message:undefined,
+				
+			},
+		},
+		/*contratosu:{
+			ccontra:undefined,
+			cticontrato:undefined,
+			fecha:undefined,
+			texto:undefined,
+			vttotal:undefined,
+		},*/
+		
 	},
 	methods:{
 		currencyFormat,
@@ -286,6 +335,14 @@ var app=new Vue({
 			var vm = this
 			//vm.presupuesto.crubro = vm.valueRubros.crubro
 			return `${crubro} — ${nrubro}`
+		},
+		showUnidades ({nunidad }) {
+			var vm = this
+			console.log("show",vm.valueUnidades)
+			if (vm.valueUnidades!=null) {
+				vm.suministros.cunidad = vm.valueUnidades.cunidad
+			}
+			return `${nunidad}`
 		},
 		showTerceros ({nit, nombre }) {
 			var vm = this
@@ -431,6 +488,8 @@ var app=new Vue({
 					this.GetTercero(response.obj.cterce, response.obj.vtotal)
 					document.querySelector("#valorBase").value=this.datos.vsiva
 					document.querySelector("#vrubro").value=this.datos.vtotal
+					document.querySelector("#valorTotalCSE").value=this.datos.vtotal
+					document.querySelector("#valorTotalCSU").value=this.datos.vtotal
 					//document.querySelector("#vcheque").value=this.datos.vtotal
 					this.estado="guardar";
 					//this.terceroSelected=selected
@@ -490,6 +549,34 @@ var app=new Vue({
 				vm.valueRubros = rubros[0]
 			});
 		},
+		GetArticulos: function(){
+			var vm = this
+			fetch("api/getarticulos",{ //ruta
+				credentials: 'include',
+				type : "GET",
+			})
+			.then(response => {
+				return response.json()
+			}).then(articulos => {
+				vm.articulos =articulos
+			});
+		},
+		GetUnidades: function(){
+			var vm = this
+			fetch("api/getunidades",{ //ruta
+				credentials: 'include',
+				type : "GET",
+			})
+			.then(response => {
+				return response.json()
+			}).then(unidades => {
+				vm.unidades =unidades
+				vm.valueUnidades =unidades[0]
+				vm.suministros.create.show=false
+				vm.suministros.create.nunidad=undefined
+				this.suministros.create.message=undefined
+			});
+		},
 		GetImpuestos: function(){
 			var vm = this
 		fetch("api/impuestos",{ //ruta
@@ -504,41 +591,10 @@ var app=new Vue({
 		});
 
 	},
-	list(table){
-		console.log(table)
-		$('.'+table).DataTable().destroy();
-		$('.'+table).DataTable( {
-			"language": {
-				"sProcessing":     "Procesando...",
-				"sLengthMenu":     "Mostrar _MENU_ registros",
-				"sZeroRecords":    "No se encontraron resultados",
-				"sEmptyTable":     "Ningún dato disponible en esta tabla",
-				"sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-				"sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
-				"sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
-				"sInfoPostFix":    "",
-				"sSearch":         "Buscar:",
-				"sUrl":            "",
-				"sInfoThousands":  ",",
-				"sLoadingRecords": "Cargando...",
-				"oPaginate": {
-					"sFirst":    "Primero",
-					"sLast":     "Último",
-					"sNext":     "Siguiente",
-					"sPrevious": "Anterior"
-				},
-				"oAria": {
-					"sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
-					"sSortDescending": ": Activar para ordenar la columna de manera descendente"
-				}
-			}
-		} );
-	},
 	openReport(name,cdatos){
 		window.open(name+"?cdatos="+cdatos);
 	},
 	openEdit(){
-		console.log("jhonan")
 		window.location.replace("localhost");
 	},
 	createPresupuesto(){
@@ -737,6 +793,13 @@ var app=new Vue({
 			this.terceros.nit=index.nit
 			this.terceros.nombre=index.nombre
 			jQuery('#searchtercero').modal('hide')
+		},
+		selectArticulo(index){
+			this.suministros.carti =index.carti
+			this.suministros.narticulo =index.narticulo
+			this.suministros.cunidad =index.unidad.cunidad
+			this.suministros.nunidad =index.unidad.nunidad
+			jQuery('#searcharticulo').modal('hide')
 		},
 		searchTercero(){
 			var nit=this.terceros.nit
@@ -1012,6 +1075,7 @@ var app=new Vue({
 						var cdatos =this.getUrlParameter('cdatos')
 						console.log("else",cdatos)
 						this.GetDatosUpdate(cdatos)
+						
 					}
 				},
 				GetDatosUpdate(cdatos){
@@ -1031,6 +1095,8 @@ var app=new Vue({
 						document.querySelector("#valorSinIva").value=this.datos.viva
 						document.querySelector("#valorIva").value=this.datos.vsiva
 						document.querySelector("#valorTotal").value=this.datos.vtotal
+						document.querySelector("#valorBase").value=this.datos.vsiva
+						document.querySelector("#vrubro").value=this.datos.vtotal
 						this.terceros=this.datos.tercero
 						this.terceroSelected=this.terceros
 						this.terceroSelected.vtotal=this.datos.vtotal
@@ -1092,15 +1158,36 @@ var app=new Vue({
 						}else{
 							document.querySelector("#vcheque").value=this.cheque.valor
 						}
-						this.GetConvocatorias()
+						console.log("contrato",datosUpdate.contrato)
+						if (datosUpdate.contrato!=null) {
+							if (datosUpdate.contrato.cticontrato==1) {
+								this.contrato.ccontra=datosUpdate.contrato.ccontra
+								this.contrato.fechase=datosUpdate.contrato.fecha
+								this.contrato.textose=datosUpdate.contrato.texto
+								this.contrato.cticontrato=datosUpdate.contrato.cticontrato
+								this.cticontratoSelected=datosUpdate.contrato.cticontrato
+								this.contrato.vttotalse=currencyFormat.format(datosUpdate.contrato.vttotal)
+								document.querySelector("#valorTotalCSE").value=this.contrato.vttotalse
+							}else{
+								this.contrato.ccontra=datosUpdate.contrato.ccontra
+								this.contrato.fechasu=datosUpdate.contrato.fecha
+								this.contrato.textosu=datosUpdate.contrato.texto
+								this.contrato.cticontrato=datosUpdate.contrato.cticontrato
+								this.cticontratoSelected=datosUpdate.contrato.cticontrato
+								this.contrato.vttotalsu=currencyFormat.format(datosUpdate.contrato.vttotal)
+								document.querySelector("#valorTotalCSU").value=this.contrato.vttotalsu
+							}
+						}
+						//this.GetConvocatorias()
 					})
-					.catch(function(error) {
-						console.warn(error)
-						alertify.error('No se encuentra data')
-					})
-				},
-				GetDatosDuplicar(cdatos){
-					this.textoBoton="Guardar Duplicado"
+
+.catch(function(error) {
+	console.warn(error)
+	alertify.error('No se encuentra data')
+})
+},
+GetDatosDuplicar(cdatos){
+	this.textoBoton="Guardar Duplicado"
 					fetch("api/datosupdate?cdatos="+cdatos,{ //ruta
 						credentials: 'include',
 						type : "GET",
@@ -1202,11 +1289,156 @@ var app=new Vue({
 			 }).then(response => {
 			 	return response.json()
 			 }).then(convocatorias => {
-			 	console.log(convocatorias)
+			 	console.log("convocatoria",convocatorias)
 			 	vm.convocatorias = convocatorias
 			 });
 
-			}
+			},
+			CreateContrato(opc){
+				this._token = $('form').find("input").val()
+				var contrato=Object.assign({})
+				contrato.ccontra=this.contrato.ccontra
+				if (opc==1) {
+					this.contrato.vttotalse=document.querySelector("#valorTotalCSE").value
+					this.contrato.cticontrato=1
+					contrato.fecha=moment(this.contrato.fechase, 'YYYY-MM-DD').format('YYYY-MM-DD')
+					contrato.vttotal=this.contrato.vttotalse
+					contrato.texto=this.contrato.textose
+				}else if (opc==2) {
+					this.contrato.vttotalsu=document.querySelector("#valorTotalCSU").value
+					this.contrato.cticontrato=2
+					contrato.fecha=moment(this.contrato.fechasu, 'YYYY-MM-DD').format('YYYY-MM-DD')
+					contrato.vttotal=this.contrato.vttotalsu
+					contrato.texto=this.contrato.textosu
+				}
+				contrato.cticontrato=this.contrato.cticontrato
+				contrato.vttotal=currencyFormat.sToN(contrato.vttotal)
+				contrato.cdatos=this.datos.cdatos
+				var dato = $.param(contrato)
+				if(this.contrato.ccontra==undefined){
+					console.log("create")
+					fetch("/contrato/create",{
+						credentials: 'include',
+						method : "POST",
+						type: "POST",
+						headers: {
+							'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+							'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+							'X-CSRF-TOKEN' : this._token,
+						},
+						body: dato,
+					})
+					.then(response => {
+						console.info(response)
+						return response.json();
+					})
+					.then(response => {
+						console.log(response["message"])
+						if(response.status == 400){
+							alertify.error(response["message"])
+						}else{
+							alertify.success('Creación Exitosa De Contrato')
+							console.log(response)
+							this.cticontratoSelected=response.obj.cticontrato
+							this.contrato.ccontra=response.obj.id
+						}
+					})
+					.catch(function(error) {
+						console.warn(error)
+						alertify.error('Error al crear el contrato')
+					})
+				}else {
+					var deci=true
+					if (contrato.cticontrato!=this.cticontratoSelected) {
+						var statusConfirm = confirm("¿Realmente desea reemplazar el contrato?"); 
+						if (opc==1) {
+							if (statusConfirm == false){
+								deci=false
+							}else{
+								this.contrato.fechasu=this.date
+								this.contrato.vttotalsu=undefined
+								document.querySelector("#valorTotalCSU").value="$ 0"
+								this.contrato.textosu=undefined
+							} 
+						}else{
+							if (statusConfirm == false){
+								deci=false
+							}else{
+								this.contrato.fechase=this.date
+								this.contrato.vttotalse=undefined
+								this.contrato.textose=undefined
+								document.querySelector("#valorTotalCSE").value="$ 0"
+							}
+						}
+					}
+					if (deci) {
+						console.log(dato)
+						fetch("/contrato/update",{
+							credentials: 'include',
+							method : "POST",
+							type: "POST",
+							headers: {
+								'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+								'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+								'X-CSRF-TOKEN' : this._token,
+							},
+							body: dato,
+						})
+						.then(response => {
+							console.info(response)
+							return response.json();
+						})
+						.then(response => {
+							console.log(response["message"])
+							if(response.status == 400){
+								alertify.error(response["message"])
+							}else{
+								alertify.success('Contrato Guardado Nuevamente')
+								console.log(response)
+								this.cticontratoSelected=this.contrato.cticontrato
+
+							}
+						})
+						.catch(function(error) {
+							console.warn(error)
+							alertify.error('Error Al Guardar Nuevamente El Contrato')
+						})
+					}
+				}
+			},
+			CreateUnidad:function(){
+				this._token = $('form').find("input").val()
+				var dato = $.param(this.suministros.create)
+				fetch("/suministros/create/unidad",{
+					credentials: 'include',
+					method : "POST",
+					type: "POST",
+					headers: {
+						'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+						'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+						'X-CSRF-TOKEN' : this._token,
+					},
+					body: dato,
+				})
+				.then(response => {
+				//console.info(response)
+				return response.json();
+			})
+				.then(response => {
+					if(response.status == 400){
+						this.suministros.create.message=response["message"]
+					}else{
+						this.GetUnidades()
+						this.valueUnidades=unidades[unidades.length]
+					}
+				})
+				.catch(function(error) {
+					console.warn(error)
+					this.suministros.create.message='Error al crear el tercero'
+				})
+
+			//this.datos.cterce=this.terceros[this.terceros.length].cterce
+		},
 	},// end methods
 	delimiters : ["[[","]]"],
 	mounted (){
@@ -1217,7 +1449,10 @@ var app=new Vue({
 		vm.datos.festcomp=vm.date
 		vm.datos.fdispo=vm.date
 		vm.datos.fregis=vm.date
+		vm.contrato.fechase=vm.date
+		vm.contrato.fechasu=vm.date
 		vm.datos.vigencia=moment().locale('es').format('YYYY'),
+		vm.GetArticulos()
 		vm.GetRubros()
 		vm.GetImpuestos()
 		vm.GetTercero()
@@ -1225,7 +1460,6 @@ var app=new Vue({
 		vm.GetDatosEdit()
 		vm.checkQueryString()
 		vm.GetConvocatorias();
-
 		//vm.GetTercero(1,300)
 	    fetch("api/departamentos/",{ //ruta
 	    	credentials: 'include',
@@ -1238,10 +1472,7 @@ var app=new Vue({
 	    	//vm.terceros.cdepar="29"
 	    	vm.valueDepartamento=departamentos[28]
 	    	this.GetCiudades()
-
 	    });
-
-
 	      fetch("api/tipo_documento",{ //ruta
 	      	credentials: 'include',
 	      	type : "GET",

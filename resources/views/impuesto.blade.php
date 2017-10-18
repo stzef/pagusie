@@ -35,7 +35,7 @@
 			<input type="text" class="form-control input-currency" id="valorImpuesto" aria-describedby="valorImpuesto" placeholder="Ingrese el valor"  required>
 		</div>
 
-		<button type="submit" class="btn btn-success " style="margin-top:25px ">+</button>
+		<button type="submit" class="btn btn-success btn-xs" style="margin-top:30px "> <span class="glyphicon glyphicon-plus"></span></button>
 		
 	</div>
 </form>
@@ -47,7 +47,7 @@
 			<td><strong>Valor Base</strong></td>
 			<td><strong>Porcentaje</strong></td>
 			<td><strong>Valor Impuesto</strong></td>
-			<td><strong>Eliminar</strong></td>
+			<td><strong></strong></td>
 		</tr>
 	</thead>
 	<tbody>
@@ -57,7 +57,8 @@
 				<td align="right">[[impuesto.vbase]]</td>
 				<td>[[impuesto.porcentaje_Impuesto]]%</td>
 				<td align="right">[[impuesto.vimpuesto]]</td>
-				<td><button @click.prevent="removeImpuesto(index)" class="btn btn-danger " >-</button></td>
+				<td>
+					<button @click.prevent="removeImpuesto(index)" class="btn btn-danger " > <span class="glyphicon glyphicon-remove"></span></button></td>
 			</tr>
 		</template>
 		<tr style="background-color: #f2f2f2;">

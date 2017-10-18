@@ -27,8 +27,11 @@
 		width: 16%;
 		text-align:center;
 	}
-
-</style>
+	.subtab-width{
+		width: 25%;
+		text-align:center;
+	}
+	</style>
 </head>
 <body>
 	<div id="app-vue">
@@ -123,18 +126,7 @@
 <script src="{{ asset('bower_components/alertifyjs/dist/js/alertify.js') }}"></script>
 <script src="{{ URL::asset('bower_components/datatables.net/js/jquery.dataTables.js') }}" ></script>
 
-<script>
-	$( function() {
-		var tabs = $( "#tabs" ).tabs();
-		var tabs = $( "#tabsContrato" ).tabs();
-		/*tabs.find( ".ui-tabs-nav" ).sortable({
-			axis: "x",
-			stop: function() {
-				tabs.tabs( "refresh" );
-			}
-		});*/
-	});
-</script>
+
 <script>
 	var symbol_currency = "$"
 	function CurrencyFormat(){
@@ -186,6 +178,17 @@
 	$(".input-currency").inputCurrency();
 
 </script>
-
+<script>
+	$( function() {
+		var tabs = $( "#tabs" ).tabs();
+		var tabs = $( "#tabsContrato" ).tabs();
+		/*tabs.find( ".ui-tabs-nav" ).sortable({
+			axis: "x",
+			stop: function() {
+				tabs.tabs( "refresh" );
+			}
+		});*/
+	});
+</script>
 </body>
 </html>

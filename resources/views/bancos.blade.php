@@ -14,8 +14,8 @@
 			<div class="form-inline">
 				<input type="text" class="form-control" id="nbanco" aria-describedby="nbanco" placeholder="Nombre del banco" v-model="banco.nbanco" required  disabled>
 				<input  type="text" class="form-control" id="numcuenta" aria-describedby="numcuenta" v-model="banco.numcuenta" required disabled placeholder="Número de cuenta">
-				<button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#searchbanco"><div class="fa fa-search" aria-hidden="true"></div></button>
-				<button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#addbanco" >+</button>
+				<button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#searchbanco"><span class="glyphicon glyphicon-search"></span></button>
+				<button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#addbanco" ><span class="glyphicon glyphicon-plus"></button>
 			</div>
 		</div>
 	</div>

@@ -53,6 +53,14 @@ Route::group(['prefix'=>'datoscuentas'], function(){
 Route::group(['prefix'=>'banco'], function(){
 	Route::post('/create','BancoController@create')->name('datoscuentas.create');
 });
+Route::group(['prefix'=>'contrato'], function(){
+	Route::post('/create','ContratoController@create')->name('contrato.create');
+	Route::post('/update','ContratoController@update')->name('contrato.update');
+});
+Route::group(['prefix'=>'suministros'], function(){
+	Route::post('/create/unidad','SuministrosController@createUnidad')->name('suministros.createUnidad');
+	//Route::post('/update','SuministrosController@update')->name('contrato.update');
+});
 
 /*Route::get('pdf', function(){
 	$pdf = PDF::loadView('pdf.documento_equivalente');
