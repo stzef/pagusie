@@ -27,9 +27,8 @@
 				</template>-->
 				<div class="form-inline">
 					<input @blur.prevent="searchPresupuesto()" type="text" class="form-control" id="crubro" aria-describedby="crubro" placeholder="Ingrese código del rubro" v-model="presupuesto.crubro" required style="width: 40%">
-					<button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#searchrubro" @click = "list('table-presupuestos')"><span class="glyphicon glyphicon-search"></span></button>
+					<button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#searchrubro"><span class="glyphicon glyphicon-search"></span></button>
 					<input  type="text" class="form-control" id="nrubro" aria-describedby="nrubro" v-model="presupuesto.nrubro" required style="width: 40%" disabled >
-
 				</div>
 			</div>
 			<div class="form-group col-md-2">
@@ -39,7 +38,7 @@
 				
 			</div>
 			<div class="form-group col-md-2">
-				<button type="submit" class="btn btn-success btn-xs" style="margin-top: 30px;"> <span class="glyphicon glyphicon-plus"></span></button>
+				<button type="submit" class="btn btn-success btn-xs" style="margin-top: 30px;"> <strong></strong></button>
 			</div>
 
 		</div>
@@ -73,7 +72,7 @@
 		</tbody>
 	</table>
 	<form @submit.prevent="createPresupuesto" accept-charset="utf-8">
-		<div class="form-group text-center">
+		<div class="form-group text-center" v-if="presupuesto.rubrosSeleccionados.length!=0">
 			<div class="col-md-4 col-md-offset-4">
 				<button type="submit" class="btn btn-primary">
 					[[textoBoton]]

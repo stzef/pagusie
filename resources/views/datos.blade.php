@@ -46,13 +46,11 @@
 					<label for="numfactura">Número de factura</label>
 					<input type="text" class="form-control" id="numfactura" aria-describedby="numfactura" placeholder="Ingrese el número de factura" v-model="datos.nfactu" required>
 				</div>
-				<div class="form-group col-md-3" v-if="estado=='editar'">
 					<div class=form-inline>
 						<label for="convocatoria"> Convocatoria Nº</label>
-						<input type="text" class="form-control" id="convocatoria" aria-describedby="convocatoria" v-model="datos.convocatoria" required>
+						<input type="text" class="form-control" id="convocatoria" aria-describedby="convocatoria" v-model="datos.convocatoria">
 						<button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#searchconvocatoria"><span class="glyphicon glyphicon-search"></span></button>
 					</div>
-				</div>
 			</div>
 			<div class="row">
 

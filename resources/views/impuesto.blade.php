@@ -78,7 +78,7 @@
 
 </table>
 <form @submit.prevent="createImpuesto" accept-charset="utf-8">
-	<div class="form-group text-center">
+	<div class="form-group text-center" v-if="impuesto.impuestosSeleccionados.length!=0">
 		<div class="col-md-4 col-md-offset-4">
 			<button type="submit" class="btn btn-primary">
 				[[textoBoton]]

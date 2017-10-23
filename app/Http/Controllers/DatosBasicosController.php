@@ -33,7 +33,7 @@ public function validar($data){
     'vsiva'=>'required|numeric',
     'viva'=>'required|numeric',
     'vtotal'=>'required|numeric',
-    'convocatoria'=> 'nullable|max:9|unique:Datos_basicos,convocatoria,'.$data['cdatos'].',cdatos',
+    'convocatoria'=> 'nullable|max:13|unique:Datos_basicos,convocatoria,'.$data['cdatos'].',cdatos',
     ],
     [
     'vigencia.integer'=> 'La VIGENCIA debe ser numérica',
@@ -44,6 +44,7 @@ public function validar($data){
     'cegre.integer'=>'El CÓDIGO COMPROBANTE EGRESO deber ser numérico',
     'cegre.unique'=>'Ya existe un registro con este CÓDIGO COMPROBANTE EGRESO',
     'nfactu.unique'=>'Ya existe un registro con este NÚMERO DE FACTURA',
+    'nfactu.integer'=>'NÚMERO DE FACTURA debe ser un número ',
     'vsiva.numeric'=> 'El VALOR SIN IVA debe ser un valor monetario',
     'viva.numeric'=> 'El VALOR CON IVA debe ser un valor monetario',
     'vtotal.numeric'=> 'El VALOR TOTAL debe ser un valor monetario',

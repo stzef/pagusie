@@ -44,9 +44,6 @@
 					<li class="col-md-1 col-lg-1 col-xs-10 subtab-width"><a href="#tabs-1">Prestación De Servicios &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
 					<li class="col-md-1 col-lg-1 col-xs-10 subtab-width"><a href="#tabs-2">Suministros &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
 					<li class="col-md-1 col-lg-1 col-xs-10 subtab-width"><a href="#tabs-3">Suministros de contrato &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
-					
-
-					
 				</ul>
 
 				<div id="tabs-1">
@@ -66,12 +63,12 @@
 								<label for="concepto">Texto</label>
 								<textarea class="form-control" id="concepto" rows="10" v-model="contrato.textose" required></textarea>
 							</div>
-						</div>
-						<div class="form-group text-center">
-							<div class="col-md-4 col-md-offset-4">
-								<button type="submit" class="btn btn-primary">
-									Guardar
-								</button>
+							<div class="form-group text-center">
+								<div class="col-md-4 col-md-offset-4">
+									<button type="submit" class="btn btn-primary">
+										Guardar
+									</button>
+								</div>
 							</div>
 						</div>
 					</form>
@@ -93,12 +90,12 @@
 								<label for="concepto">Texto</label>
 								<textarea class="form-control" id="concepto" rows="10" v-model="contrato.textosu" required></textarea>
 							</div>
-						</div>
-						<div class="form-group text-center">
-							<div class="col-md-4 col-md-offset-4">
-								<button type="submit" class="btn btn-primary">
-									Guardar
-								</button>
+							<div class="form-group text-center">
+								<div class="col-md-4 col-md-offset-4">
+									<button type="submit" class="btn btn-primary">
+										Guardar
+									</button>
+								</div>
 							</div>
 						</div>
 					</form>
@@ -107,13 +104,13 @@
 					@include('listasuministros')
 				</div>
 			</div>
-		</div>
-
-		<div id="tabs-6">
-			@include("reportes")
-		</div>
+		</div> 
 
 	</div>
+	<div id="tabs-6">
+		@include("reportes")
+	</div>
+</div>
 </div>
 @endsection
 

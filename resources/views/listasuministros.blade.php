@@ -1,3 +1,5 @@
+
+<div v-if="contrato.cticontrato==2">
 <form @submit.prevent="addSuminstro" accept-charset="utf-8">
 	<div class="row">
 		<div class="form-group col-md-5">
@@ -12,64 +14,76 @@
 				<button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#searcharticulo"><span class="glyphicon glyphicon-search"></span></button>
 				<button @click.prevent="GetUnidades" type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#addarticulo" ><span class="glyphicon glyphicon-plus"></button>
 				</div>
-			</div>
 		</div>
+	</div>
 		<div class="row">
 			<div class="form-group col-md-2">
 				<label for="cantidad">Cantidad</label>
-				<input type="text" class="form-control" id="cantidad" aria-describedby="cantidad" placeholder="Ingrese Cantidad" v-model="suministros.cantidad" required>
+				<input @blur.prevent="operacionAritmetica(['cantidad','vunita'],'*','vtotalsumi')" type="text" class="form-control" id="cantidad" aria-describedby="cantidad" placeholder="Ingrese Cantidad" v-model="suministros.cantidad" required>
 			</div>
 			<div class="form-group col-md-2">
 				<label for="vunita">Vr. Unitario</label>
-				<input type="text" class="form-control input-currency" id="vunita" aria-describedby="vunita" placeholder="Ingrese Valor Unitario" required>
+				<input @blur.prevent="operacionAritmetica(['cantidad','vunita'],'*','vtotalsumi')" type="text" class="form-control input-currency" id="vunita" aria-describedby="vunita" placeholder="Ingrese Valor Unitario" required>
 			</div>
 			<div class="form-group col-md-2">
 				<label for="vtotal">Vr. Total</label>
-				<input type="text" class="form-control input-currency" id="vtotal" aria-describedby="vtotal" placeholder="Ingrese Valor Total" required>
+				<input type="text" class="form-control input-currency" id="vtotalsumi" aria-describedby="vtotalsumi" placeholder="Ingrese Valor Total" required>
+			</div>
+			<div class="form-group col-md-2">
+				<button type="submit" class="btn btn-success btn-xs" style="margin-top: 30px;"> <strong>Agregar</strong></button>
 			</div>
 		</div>
-	</form>
-</div>
-<hr>
-<table v-if="presupuesto.rubrosSeleccionados.length!=0" class="table-striped table-bordered text-center" width="100%" cellspacing="0">
-	<thead>
-		<tr style="background-color: #f2f2f2;" align="center">
-			<td><strong>N°</strong></td>
-			<td><strong>Nombre Y Especificación De Articulos</strong></td>
-			<td><strong>Grupo Inventario</strong></td>
-			<td><strong>UND. Medida</strong></td>
-			<td><strong>Cantidad</strong></td>
-			<td><strong>Vr. Unitario</strong></td>
-			<td><strong>Vr. Total</strong></td>
-		</tr>
-	</thead>
-	<tbody>
-		<template v-for="(rubro,index) in presupuesto.rubrosSeleccionados">
-			<tr>
-				<td>[[rubro.crubro]]</td>
-				<td>[[rubro.nrubro]]</td>
-				<td align="right">[[rubro.valor]]</td>
-				<td ><button @click.prevent="removeRubro(index)" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></button></td>
-				</tr>
-			</template>
-			<tr style="background-color: #f2f2f2;">
-				<td colspan="2" v-if="presupuesto.rubrosSeleccionados.length!=0" align="center"><strong>Total</strong></td>
-				<td v-if="presupuesto.rubrosSeleccionados.length!=0" align="right">
-					<strong> [[presupuesto.sumaRubros]]</strong>
-				</td>
+</form>
 
-			</tr>
-		</tbody>
-	</table>
-	<form @submit.prevent="createPresupuesto" accept-charset="utf-8">
-		<div class="form-group text-center">
+<hr>
+		<table v-if="suministros.suministrosSeleccionados.length!=0" class="table-striped table-bordered text-center" width="100%" cellspacing="0">
+			<thead>
+				<tr style="background-color: #f2f2f2;" align="center">
+					<td><strong>N°</strong></td>
+					<td><strong>Nombre Y Especificación De Articulos</strong></td>
+					<td><strong>Grupo Inventario</strong></td>
+					<td><strong>UND. Medida</strong></td>
+					<td><strong>Cantidad</strong></td>
+					<td><strong>Vr. Unitario</strong></td>
+					<td><strong>Vr. Total</strong></td>
+					<td><strong></strong></td>
+				</tr>
+			</thead>
+			<tbody>
+				<template v-for="(suministro,index) in suministros.suministrosSeleccionados">
+					<tr>
+						<td>[[index+1]]</td>
+						<td>[[suministro.narticulo]]</td>
+						<td>[[suministro.grupo]]</td>
+						<td>[[suministro.nunidad]]</td>
+						<td>[[suministro.cantidad]]</td>
+						<td align="right">[[suministro.vunita]]</td>
+						<td align="right">[[suministro.vtotal]]</td>
+						<td >
+							<button @click.prevent="removeSuministro(index)" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span></button>
+							<button @click.prevent="editSuministro(index)" class="btn btn-info btn-xs"> <span class="glyphicon glyphicon-edit"></span></button>
+						</td>
+					</tr>
+				</template>
+				<tr style="background-color: #f2f2f2;">
+					<td colspan="6" v-if="suministros.suministrosSeleccionados.length!=0" align="center"><strong>Total</strong></td>
+					<td v-if="suministros.suministrosSeleccionados.length!=0" align="right">
+						<strong> [[suministros.sumaSuministros]]</strong>
+					</td>
+
+				</tr>
+			</tbody>
+		</table>
+<form @submit.prevent="createPresupuesto" accept-charset="utf-8">
+
+		<div class="form-group text-center" v-if="suministros.suministrosSeleccionados.length!=0">
 			<div class="col-md-4 col-md-offset-4">
 				<button type="submit" class="btn btn-primary">
-					[[textoBoton]]
+					Guardar
 				</button>
 			</div>
 		</div>
-	</form>
+</form>
 
 	<div id="searcharticulo" class="modal fade" role="dialog">
 		<div class="modal-dialog" style="width: 800px">
@@ -176,5 +190,5 @@
 				</div>
 			</div>
 		</div>
-
+</div>
 

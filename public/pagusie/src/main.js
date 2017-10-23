@@ -232,6 +232,9 @@ var app=new Vue({
 			cantidad:undefined,
 			vunita:undefined,
 			vtotal:undefined,
+			grupo:0,
+			suministrosSeleccionados:[],
+			sumaSuministros:undefined,
 			create:{
 				nunidad:undefined,
 				show:false,
@@ -274,6 +277,50 @@ var app=new Vue({
 			vm.presupuesto.rubrosSeleccionados.splice(index,1);
 			alertify.success("Rubro Removido")
 			vm.sumarValorLista(this.presupuesto.rubrosSeleccionados,"valor","presupuesto.sumaRubros")
+		},
+		addSuminstro () {
+			var vm = this
+			if (vm.suministros.carti==undefined) {
+				alertify.error("Seleccione un articulo")
+			}else{
+				var suministros = new Object();
+				suministros.carti=vm.suministros.carti
+				suministros.narticulo=vm.suministros.narticulo
+				suministros.cunidad=vm.suministros.cunidad
+				suministros.nunidad=vm.suministros.nunidad
+				suministros.cantidad=vm.suministros.cantidad
+				suministros.grupo=vm.suministros.grupo
+				suministros.vunita=document.querySelector("#vunita").value
+				suministros.vtotal=document.querySelector("#vtotalsumi").value
+				if (vm.suministros.suministrosSeleccionados.some( (object) => object.carti == suministros.carti )){
+					alertify.error("No se puede repetir el articulo")
+				}else{
+					vm.suministros.suministrosSeleccionados.push(suministros)
+					alertify.success("Articulo Agregado")
+					vm.sumarValorLista(vm.suministros.suministrosSeleccionados,"vtotal","suministros.sumaSuministros")
+				}
+			}
+		},
+		removeSuministro(index){
+			var vm = this
+			vm.suministros.suministrosSeleccionados.splice(index,1);
+			alertify.success("Articulo Removido")
+			vm.sumarValorLista(this.suministros.suministrosSeleccionados,"vtotal","suministros.sumaSuministros")
+		},
+		editSuministro(index){
+			var vm = this
+			console.log("sumi",vm.suministros.suministrosSeleccionados[index])
+			vm.suministros.carti=vm.suministros.suministrosSeleccionados[index].carti
+			vm.suministros.narticulo=vm.suministros.suministrosSeleccionados[index].narticulo
+			vm.suministros.cunidad=vm.suministros.suministrosSeleccionados[index].cunidad
+			vm.suministros.nunidad=vm.suministros.suministrosSeleccionados[index].nunidad
+			vm.suministros.cantidad=vm.suministros.suministrosSeleccionados[index].cantidad
+			document.querySelector("#vunita").value=vm.suministros.suministrosSeleccionados[index].vunita
+			document.querySelector("#vtotalsumi").value=vm.suministros.suministrosSeleccionados[index].vtotal
+			vm.grupo=vm.suministros.suministrosSeleccionados[index].grupo
+			vm.suministros.suministrosSeleccionados.splice(index,1);
+			alertify.success("Articulo Seleccionado Para Editar")
+			vm.sumarValorLista(this.suministros.suministrosSeleccionados,"vtotal","suministros.sumaSuministros")
 		},
 		addImpuesto () {
 			var vm = this
@@ -382,6 +429,7 @@ var app=new Vue({
 		GetTercero(cterce,vtotal){
 			var vm = this
 			if(cterce==undefined){
+				console.log("tercero no cterce",cterce)
 				 fetch("api/terceros",{ //ruta
 				 	credentials: 'include',
 				 	type : "GET",
@@ -392,6 +440,7 @@ var app=new Vue({
 				 	vm.tercero = terceros
 				 });
 				}else{
+					console.log("tercero cterce",cterce)
 				fetch("api/terceros?cterce="+cterce,{ //ruta
 					credentials: 'include',
 					type : "GET",
@@ -449,41 +498,42 @@ var app=new Vue({
 		},
 		CreateDatos:function(){
 			this._token = $('form').find("input").val()
-			this.SetFormatDate()
-			this.datos.vsiva=document.querySelector("#valorSinIva").value
-			this.datos.viva=document.querySelector("#valorIva").value
-			this.datos.vtotal=document.querySelector("#valorTotal").value
-			var copydatos=Object.assign({},this.datos)
-			copydatos.vsiva=currencyFormat.sToN(copydatos.vsiva)
-			copydatos.viva=currencyFormat.sToN(copydatos.viva)
-			copydatos.vtotal=currencyFormat.sToN(copydatos.vtotal)
-			console.log("copydatos")
-			var dato = $.param(copydatos)
-			console.log(dato)
-			if(this.datos.cdatos==undefined){
-				fetch("/datos/create",{
-					credentials: 'include',
-					method : "POST",
-					type: "POST",
-					headers: {
-						'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
-						'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
-						'X-CSRF-TOKEN' : this._token,
-					},
-					body: dato,
-				})
-				.then(response => {
-					console.info(response)
-					return response.json();
-				})
-				.then(response => {
-					console.log(response["message"])
-					if(response.status == 400){
-						alertify.error(response["message"])
-					}else{
-						alertify.success('Creación Exitosa')
-						this.datos.cdatos=response.obj.id
-						console.log(response.obj.cterce)
+			if (this.datos.cterce!='') {
+				this.SetFormatDate()
+				this.datos.vsiva=document.querySelector("#valorSinIva").value
+				this.datos.viva=document.querySelector("#valorIva").value
+				this.datos.vtotal=document.querySelector("#valorTotal").value
+				var copydatos=Object.assign({},this.datos)
+				copydatos.vsiva=currencyFormat.sToN(copydatos.vsiva)
+				copydatos.viva=currencyFormat.sToN(copydatos.viva)
+				copydatos.vtotal=currencyFormat.sToN(copydatos.vtotal)
+				console.log("copydatos")
+				var dato = $.param(copydatos)
+				console.log(dato)
+				if(this.datos.cdatos==undefined){
+					fetch("/datos/create",{
+						credentials: 'include',
+						method : "POST",
+						type: "POST",
+						headers: {
+							'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+							'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+							'X-CSRF-TOKEN' : this._token,
+						},
+						body: dato,
+					})
+					.then(response => {
+						console.info(response)
+						return response.json();
+					})
+					.then(response => {
+						console.log(response["message"])
+						if(response.status == 400){
+							alertify.error(response["message"])
+						}else{
+							alertify.success('Creación Exitosa')
+							this.datos.cdatos=response.obj.id
+							console.log(response.obj.cterce)
 					//var selected=Object.assign({},this.GetTercero(response.obj.cterce))
 					this.GetTercero(response.obj.cterce, response.obj.vtotal)
 					document.querySelector("#valorBase").value=this.datos.vsiva
@@ -496,42 +546,48 @@ var app=new Vue({
 					//alertify.success(this.datos.cdatos)
 				}
 			})
-				.catch(function(error) {
-					console.warn(error)
-					alertify.error('Error al crear los datos basicos')
-				})
+					.catch(function(error) {
+						console.warn(error)
+						alertify.error('Error al crear los datos basicos')
+					})
+				}else{
+					fetch("/datos/update",{
+						credentials: 'include',
+						method : "POST",
+						type: "POST",
+						headers: {
+							'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+							'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+							'X-CSRF-TOKEN' : this._token,
+						},
+						body: dato,
+					})
+					.then(response => {
+						console.info(response)
+						return response.json();
+					})
+					.then(response => {
+						console.log(response["message"])
+						if(response.status == 400){
+							alertify.error(response["message"])
+						}else{
+							alertify.success('Datos Guardados Nuevamente')
+							console.log("terceros",this.valueTercero.cterce)
+							this.GetTercero(this.datos.cterce, currencyFormat.sToN(this.datos.vtotal))
+							document.querySelector("#valorBase").value=this.datos.vsiva
+							document.querySelector("#vrubro").value=this.datos.vtotal
+							document.querySelector("#valorTotalCSE").value=this.datos.vtotal
+							document.querySelector("#valorTotalCSU").value=this.datos.vtotal
+						}
+					})
+					.catch(function(error) {
+						console.warn(error)
+						alertify.error('Error al guardar los datos basicos nuevamente')
+					})
+				}
 			}else{
-				fetch("/datos/update",{
-					credentials: 'include',
-					method : "POST",
-					type: "POST",
-					headers: {
-						'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
-						'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
-						'X-CSRF-TOKEN' : this._token,
-					},
-					body: dato,
-				})
-				.then(response => {
-					console.info(response)
-					return response.json();
-				})
-				.then(response => {
-					console.log(response["message"])
-					if(response.status == 400){
-						alertify.error(response["message"])
-					}else{
-						alertify.success('Datos Guardados Nuevamente')
-						console.log("terceros",this.valueTercero.cterce)
-						this.GetTercero(this.valueTercero.cterce, currencyFormat.sToN(this.datos.vtotal))
-						document.querySelector("#valorBase").value=this.datos.vsiva
-						document.querySelector("#vrubro").value=this.datos.vtotal
-					}
-				})
-				.catch(function(error) {
-					console.warn(error)
-					alertify.error('Error al guardar los datos basicos nuevamente')
-				})
+				alertify.error('Seleccione un tercero valido')
+
 			}
 			this.cheque.concepto=this.datos.concepto
 			this.GetConvocatorias()
@@ -697,6 +753,14 @@ var app=new Vue({
 			campos.forEach(function (item, index, array) {
 				if(operacion=='+'){
 					total=total+currencyFormat.sToN(document.querySelector("#"+item).value)
+				}
+				if(operacion=='*'){
+					console.log(total)
+					if (index==0) {
+						total=currencyFormat.sToN(document.querySelector("#"+item).value)
+					}else{
+						total=total*currencyFormat.sToN(document.querySelector("#"+item).value)
+					}
 				}
 				if(operacion=='%'){
 					if(index==0){
@@ -1177,6 +1241,9 @@ var app=new Vue({
 								this.contrato.vttotalsu=currencyFormat.format(datosUpdate.contrato.vttotal)
 								document.querySelector("#valorTotalCSU").value=this.contrato.vttotalsu
 							}
+						}else{
+							document.querySelector("#valorTotalCSE").value=this.datos.vtotal
+							document.querySelector("#valorTotalCSU").value=this.datos.vtotal
 						}
 						//this.GetConvocatorias()
 					})
@@ -1295,85 +1362,30 @@ GetDatosDuplicar(cdatos){
 
 			},
 			CreateContrato(opc){
-				this._token = $('form').find("input").val()
-				var contrato=Object.assign({})
-				contrato.ccontra=this.contrato.ccontra
-				if (opc==1) {
-					this.contrato.vttotalse=document.querySelector("#valorTotalCSE").value
-					this.contrato.cticontrato=1
-					contrato.fecha=moment(this.contrato.fechase, 'YYYY-MM-DD').format('YYYY-MM-DD')
-					contrato.vttotal=this.contrato.vttotalse
-					contrato.texto=this.contrato.textose
-				}else if (opc==2) {
-					this.contrato.vttotalsu=document.querySelector("#valorTotalCSU").value
-					this.contrato.cticontrato=2
-					contrato.fecha=moment(this.contrato.fechasu, 'YYYY-MM-DD').format('YYYY-MM-DD')
-					contrato.vttotal=this.contrato.vttotalsu
-					contrato.texto=this.contrato.textosu
-				}
-				contrato.cticontrato=this.contrato.cticontrato
-				contrato.vttotal=currencyFormat.sToN(contrato.vttotal)
-				contrato.cdatos=this.datos.cdatos
-				var dato = $.param(contrato)
-				if(this.contrato.ccontra==undefined){
-					console.log("create")
-					fetch("/contrato/create",{
-						credentials: 'include',
-						method : "POST",
-						type: "POST",
-						headers: {
-							'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
-							'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
-							'X-CSRF-TOKEN' : this._token,
-						},
-						body: dato,
-					})
-					.then(response => {
-						console.info(response)
-						return response.json();
-					})
-					.then(response => {
-						console.log(response["message"])
-						if(response.status == 400){
-							alertify.error(response["message"])
-						}else{
-							alertify.success('Creación Exitosa De Contrato')
-							console.log(response)
-							this.cticontratoSelected=response.obj.cticontrato
-							this.contrato.ccontra=response.obj.id
-						}
-					})
-					.catch(function(error) {
-						console.warn(error)
-						alertify.error('Error al crear el contrato')
-					})
-				}else {
-					var deci=true
-					if (contrato.cticontrato!=this.cticontratoSelected) {
-						var statusConfirm = confirm("¿Realmente desea reemplazar el contrato?"); 
-						if (opc==1) {
-							if (statusConfirm == false){
-								deci=false
-							}else{
-								this.contrato.fechasu=this.date
-								this.contrato.vttotalsu=undefined
-								document.querySelector("#valorTotalCSU").value="$ 0"
-								this.contrato.textosu=undefined
-							} 
-						}else{
-							if (statusConfirm == false){
-								deci=false
-							}else{
-								this.contrato.fechase=this.date
-								this.contrato.vttotalse=undefined
-								this.contrato.textose=undefined
-								document.querySelector("#valorTotalCSE").value="$ 0"
-							}
-						}
+				if(this.datos.cdatos!=undefined){
+					this._token = $('form').find("input").val()
+					var contrato=Object.assign({})
+					contrato.ccontra=this.contrato.ccontra
+					if (opc==1) {
+						this.contrato.vttotalse=document.querySelector("#valorTotalCSE").value
+						this.contrato.cticontrato=1
+						contrato.fecha=moment(this.contrato.fechase, 'YYYY-MM-DD').format('YYYY-MM-DD')
+						contrato.vttotal=this.contrato.vttotalse
+						contrato.texto=this.contrato.textose
+					}else if (opc==2) {
+						this.contrato.vttotalsu=document.querySelector("#valorTotalCSU").value
+						this.contrato.cticontrato=2
+						contrato.fecha=moment(this.contrato.fechasu, 'YYYY-MM-DD').format('YYYY-MM-DD')
+						contrato.vttotal=this.contrato.vttotalsu
+						contrato.texto=this.contrato.textosu
 					}
-					if (deci) {
-						console.log(dato)
-						fetch("/contrato/update",{
+					contrato.cticontrato=this.contrato.cticontrato
+					contrato.vttotal=currencyFormat.sToN(contrato.vttotal)
+					contrato.cdatos=this.datos.cdatos
+					var dato = $.param(contrato)
+					if(this.contrato.ccontra==undefined){
+						console.log("create")
+						fetch("/contrato/create",{
 							credentials: 'include',
 							method : "POST",
 							type: "POST",
@@ -1393,17 +1405,76 @@ GetDatosDuplicar(cdatos){
 							if(response.status == 400){
 								alertify.error(response["message"])
 							}else{
-								alertify.success('Contrato Guardado Nuevamente')
+								alertify.success('Creación Exitosa De Contrato')
 								console.log(response)
-								this.cticontratoSelected=this.contrato.cticontrato
-
+								this.cticontratoSelected=response.obj.cticontrato
+								this.contrato.ccontra=response.obj.id
 							}
 						})
 						.catch(function(error) {
 							console.warn(error)
-							alertify.error('Error Al Guardar Nuevamente El Contrato')
+							alertify.error('Error al crear el contrato')
 						})
+					}else {
+						var deci=true
+						if (contrato.cticontrato!=this.cticontratoSelected) {
+							var statusConfirm = confirm("¿Realmente desea reemplazar el contrato?"); 
+							if (opc==1) {
+								if (statusConfirm == false){
+									deci=false
+								}else{
+									this.contrato.fechasu=this.date
+									this.contrato.vttotalsu=undefined
+									document.querySelector("#valorTotalCSU").value="$ 0"
+									this.contrato.textosu=undefined
+								} 
+							}else{
+								if (statusConfirm == false){
+									deci=false
+								}else{
+									this.contrato.fechase=this.date
+									this.contrato.vttotalse=undefined
+									this.contrato.textose=undefined
+									document.querySelector("#valorTotalCSE").value="$ 0"
+								}
+							}
+						}
+						if (deci) {
+							console.log(dato)
+							fetch("/contrato/update",{
+								credentials: 'include',
+								method : "POST",
+								type: "POST",
+								headers: {
+									'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+									'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+									'X-CSRF-TOKEN' : this._token,
+								},
+								body: dato,
+							})
+							.then(response => {
+								console.info(response)
+								return response.json();
+							})
+							.then(response => {
+								console.log(response["message"])
+								if(response.status == 400){
+									alertify.error(response["message"])
+								}else{
+									alertify.success('Contrato Guardado Nuevamente')
+									console.log(response)
+									this.cticontratoSelected=this.contrato.cticontrato
+
+								}
+							})
+							.catch(function(error) {
+								console.warn(error)
+								alertify.error('Error Al Guardar Nuevamente El Contrato')
+							})
+						}
 					}
+				}else{
+					alertify.error('Los DATOS deben de estar creados')
 				}
 			},
 			CreateUnidad:function(){

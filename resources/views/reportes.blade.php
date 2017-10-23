@@ -1,14 +1,3 @@
-<form @submit.prevent="CreateDatos" accept-charset="utf-8">
-	<div class="row" v-if="estado=='guardar'">
-		<div class="form-inline col-md-12 col-lg-12 text-center">
-			<label> Convocatoria Nº</label>
-			<input type="text" class="form-control" id="convocatoria" aria-describedby="convocatoria" v-model="datos.convocatoria" required style="width: 5%">
-			<button type="submit" class="btn btn-primary">
-				[[textoBoton]]
-			</button>
-		</div>
-	</div>
-</form>
 <div class="row">
 	<div class="col-md-12 col-lg-12 text-center">
 		<h1>REPORTES</h1>
@@ -125,3 +114,14 @@
 		</tr>
 	</tbody>
 </table>
+<!--<form @submit.prevent="CreateDatos" accept-charset="utf-8">
+	<div class="row" v-if="estado=='guardar'">
+		<div class="form-inline col-md-12 col-lg-12 text-center">
+			<label> Convocatoria Nº</label>
+			<input type="text" class="form-control" id="convocatoria" aria-describedby="convocatoria" v-model="datos.convocatoria" required style="width: 5%">
+			<button type="submit" class="btn btn-primary">
+				[[textoBoton]]
+			</button>
+		</div>
+	</div>
+</form>-->
