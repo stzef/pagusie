@@ -38,7 +38,7 @@
 				
 			</div>
 			<div class="form-group col-md-2">
-				<button type="submit" class="btn btn-success btn-xs" style="margin-top: 30px;"> <strong></strong></button>
+				<button type="submit" class="btn btn-success btn-xs" style="margin-top: 30px;"> <strong>Agregar</strong></button>
 			</div>
 
 		</div>

@@ -35,7 +35,7 @@
 			<input type="text" class="form-control input-currency" id="valorImpuesto" aria-describedby="valorImpuesto" placeholder="Ingrese el valor"  required>
 		</div>
 
-		<button type="submit" class="btn btn-success btn-xs" style="margin-top:30px "> <span class="glyphicon glyphicon-plus"></span></button>
+		<button type="submit" class="btn btn-success btn-xs" style="margin-top:30px "> <strong>Agregar</strong></button>
 		
 	</div>
 </form>

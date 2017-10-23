@@ -18,6 +18,7 @@ use App\Models\Cuentas_bancos;
 use App\Models\Articulos;
 use App\Models\Unidades;
 use App\Helper\Helper;
+use App\Models\Contrato_articulo_detalle;
 use Illuminate\Support\Facades\Auth;
 use stdClass;
 use ArrayObject;
@@ -151,6 +152,9 @@ public function datosUpdate(Request $request){
 	$datos->impuesto=$impuesto;
 	$datos->cuenta=$cuenta;
 	$datos->contrato=$datos->contrato;
+	if ($datos->contrato->cticontrato==2) {
+		$datos->suministros=$datos->contrato->contratoArticuloDetalles;
+	}
 	return response()->json($datos->toArray());
 }
 public function getListConvocatoria(Request $request){
@@ -189,6 +193,16 @@ public function getArticulos(Request $request){
 public function getUnidades(Request $request){
 	$unidades=Unidades::all();
 	return response()->json($unidades);
+}
+public function getNextCentrada(Request $request){
+	$centrada=Contrato_articulo_detalle::all()->max(['centrada']);
+	$max=Helper::convocatoriaToN($centrada);
+	if ($max==NUll) {
+		$centrada=1;
+	}else{
+		$max+=1;
+	}
+	return response()->json($max);
 }
 }
 

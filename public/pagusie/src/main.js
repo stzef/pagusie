@@ -229,7 +229,7 @@ var app=new Vue({
 			narticulo:undefined,
 			cunidad:undefined,
 			nunidad:undefined,
-			cantidad:undefined,
+			canti:undefined,
 			vunita:undefined,
 			vtotal:undefined,
 			grupo:0,
@@ -288,7 +288,7 @@ var app=new Vue({
 				suministros.narticulo=vm.suministros.narticulo
 				suministros.cunidad=vm.suministros.cunidad
 				suministros.nunidad=vm.suministros.nunidad
-				suministros.cantidad=vm.suministros.cantidad
+				suministros.canti=vm.suministros.canti
 				suministros.grupo=vm.suministros.grupo
 				suministros.vunita=document.querySelector("#vunita").value
 				suministros.vtotal=document.querySelector("#vtotalsumi").value
@@ -314,7 +314,7 @@ var app=new Vue({
 			vm.suministros.narticulo=vm.suministros.suministrosSeleccionados[index].narticulo
 			vm.suministros.cunidad=vm.suministros.suministrosSeleccionados[index].cunidad
 			vm.suministros.nunidad=vm.suministros.suministrosSeleccionados[index].nunidad
-			vm.suministros.cantidad=vm.suministros.suministrosSeleccionados[index].cantidad
+			vm.suministros.canti=vm.suministros.suministrosSeleccionados[index].canti
 			document.querySelector("#vunita").value=vm.suministros.suministrosSeleccionados[index].vunita
 			document.querySelector("#vtotalsumi").value=vm.suministros.suministrosSeleccionados[index].vtotal
 			vm.grupo=vm.suministros.suministrosSeleccionados[index].grupo
@@ -1510,6 +1510,166 @@ GetDatosDuplicar(cdatos){
 
 			//this.datos.cterce=this.terceros[this.terceros.length].cterce
 		},
+		createPresupuesto(){
+		var vm = this
+		vm._token = $('form').find("input").val()
+		var cdatos=vm.datos.cdatos
+		var presupuestoArray =vm.presupuesto.rubrosSeleccionados
+		if (presupuestoArray.length == 0){
+			alertify.error("Seleccione un rubro")
+		}
+		if(currencyFormat.sToN(this.presupuesto.sumaRubros)>currencyFormat.sToN(this.datos.vtotal)){
+			alertify.error("El presupuesto no pueden sobrepasar al valor total")
+		}else{
+			presupuestoArray.forEach(function (item, index, array) {
+				var itemCopy = Object.assign({},item);
+				itemCopy.valor=currencyFormat.sToN(itemCopy.valor)
+				var presupuesto = $.param(itemCopy)
+				presupuesto=presupuesto+"&cdatos="+cdatos+"&index="+index
+				fetch("/datospresupuesto/create",{
+					credentials: 'include',
+					method : "POST",
+					type: "POST",
+					headers: {
+						'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+						'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+						'X-CSRF-TOKEN' : vm._token,
+					},
+					body: presupuesto
+				})
+				.then(response => {
+					console.log(response)
+					return response.json();
+				})
+				.then(response => {
+					console.log(response["message"])
+					if(response.status == 400){
+						alertify.error(response["message"])
+					}else{
+						alertify.success('Creación Exitosa')
+					}
+				})
+				.catch(function(error) {
+					console.warn(error)
+					alertify.error('Error al agregar el presupuesto '+item.nrubro)
+				})
+			});}
+		},
+		createSuministros(){
+			var vm = this
+			vm._token = $('form').find("input").val()
+			var cdatos=vm.datos.cdatos
+			var impuestoArray =vm.impuesto.impuestosSeleccionados
+			if (impuestoArray.length == 0){
+				alertify.error("Seleccione un impuesto")
+			}
+			if(currencyFormat.sToN(this.impuesto.sumaImpuestos)>currencyFormat.sToN(this.datos.vtotal)){
+				alertify.error("Los impuestos no pueden sobrepasar al valor total")
+			}else{
+				impuestoArray.forEach(function (item, index, array) {
+					var itemCopy = Object.assign({},item);
+					itemCopy.vbase=currencyFormat.sToN(itemCopy.vbase)
+					itemCopy.vimpuesto=currencyFormat.sToN(itemCopy.vimpuesto)
+					var impuesto = $.param(itemCopy)
+					impuesto=impuesto+"&cdatos="+cdatos+"&index="+index
+					fetch("/datosimpuesto/create",{
+						credentials: 'include',
+						method : "POST",
+						type: "POST",
+						headers: {
+							'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+							'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+							'X-CSRF-TOKEN' : vm._token,
+						},
+						body: impuesto
+					})
+					.then(response => {
+						console.log(response)
+						return response.json();
+					})
+					.then(response => {
+						console.log(response["message"])
+						if(response.status == 400){
+							alertify.error(response["message"])
+						}else{
+							alertify.success('Creación Exitosa Impuesto '+item.nimpuesto)
+							
+						}
+					})
+					.catch(function(error) {
+						console.warn(error)
+						alertify.error('Error al agregar el impuesto '+item.nimpuesto)
+					})
+				});
+				console.log(this.impuesto.netopagar)
+				document.querySelector("#vcheque").value=this.impuesto.netopagar
+			}
+		},
+		operacionAritmetica(campos,operacion,final){
+			var total=0
+			campos.forEach(function (item, index, array) {
+				if(operacion=='+'){
+					total=total+currencyFormat.sToN(document.querySelector("#"+item).value)
+				}
+				if(operacion=='*'){
+					console.log(total)
+					if (index==0) {
+						total=currencyFormat.sToN(document.querySelector("#"+item).value)
+					}else{
+						total=total*currencyFormat.sToN(document.querySelector("#"+item).value)
+					}
+				}
+				if(operacion=='%'){
+					if(index==0){
+						total=currencyFormat.sToN(document.querySelector("#"+item).value)
+					}else{
+						var porcet=currencyFormat.sToN(document.querySelector("#"+item).value)/100
+						total=total*porcet
+						total=Math.round(total)
+					}
+				}
+			});
+			document.querySelector("#"+final).value=currencyFormat.format(total)
+		},
+		sumarValorLista(campos,campo,final){
+			var total=0
+			campos.forEach(function (item, index, array) {
+				eval("total=total+currencyFormat.sToN(item."+campo+")");
+			});
+			eval("this."+final+"=currencyFormat.format(total)")
+			if(final="impuesto.sumaImpuestos"){
+				if(currencyFormat.sToN(this.impuesto.sumaImpuestos)>=currencyFormat.sToN(this.datos.vtotal)){
+					alertify.error("Los impuestos no pueden sobrepasar al valor total")
+				}
+				this.impuesto.netopagar=currencyFormat.format(currencyFormat.sToN(this.datos.vtotal)-currencyFormat.sToN(this.impuesto.sumaImpuestos))
+			}
+		},
+		existsComprobanteEgreso(){
+			var cegre=this.datos.cegre
+		fetch("api/comprobanteegreso/?cegre="+cegre,{ //ruta
+			credentials: 'include',
+			type : "GET",
+		})
+		.then(response => {
+			return response.json()
+		}).then(comprobanteegreso => {
+			console.log(comprobanteegreso)
+			if(comprobanteegreso){
+				alertify.error("Codigo comprobante egreso ya esta registrado")
+			}
+		});
+		getCentrada(){
+			fetch("api/getcentrada",{ //ruta
+				 	credentials: 'include',
+				 	type : "GET",
+				 }).then(response => {
+				 	return response.json()
+				 }).then(centrada => {
+				 	console.log(centrada)
+				 	vm.suministros.centrada = centrada
+				 });
+		}
+	},
 	},// end methods
 	delimiters : ["[[","]]"],
 	mounted (){

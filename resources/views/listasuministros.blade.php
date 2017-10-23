@@ -74,8 +74,8 @@
 				</tr>
 			</tbody>
 		</table>
-<form @submit.prevent="createPresupuesto" accept-charset="utf-8">
-    
+<form @submit.prevent="createSuministros" accept-charset="utf-8">
+
 		<div class="form-group text-center" v-if="suministros.suministrosSeleccionados.length!=0">
 			<div class="col-md-4 col-md-offset-4">
 				<button type="submit" class="btn btn-primary">

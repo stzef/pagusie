@@ -56,3 +56,6 @@ Route::group(['prefix' => 'getarticulos'], function(){
 Route::group(['prefix' => 'getunidades'], function(){
 	Route::get('/', "APIController@getUnidades")->name("api.getUnidades.index");
 });
+Route::group(['prefix' => 'getcentrada'], function(){
+	Route::get('/', "APIController@getNextCentrada")->name("api.getNextCentrada.index");
+});

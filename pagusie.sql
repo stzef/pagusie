@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 19-10-2017 a las 00:57:00
+-- Tiempo de generación: 23-10-2017 a las 18:57:50
 -- Versión del servidor: 10.1.24-MariaDB
 -- Versión de PHP: 7.1.6
 
@@ -1292,7 +1292,8 @@ CREATE TABLE `contratos` (
 
 INSERT INTO `contratos` (`ccontra`, `cdatos`, `cticontrato`, `fecha`, `texto`, `vttotal`, `created_at`, `updated_at`) VALUES
 (1, 9, 2, '2017-10-17', 'prueba de guardado texto suministros 3.0', 650000.00, '2017-10-17 14:25:14', '2017-10-17 19:44:13'),
-(2, 12, 1, '2017-10-31', '0101001', 254141.00, '2017-10-17 19:50:10', '2017-10-17 20:50:58');
+(2, 12, 1, '2017-10-31', '0101001', 254141.00, '2017-10-17 19:50:10', '2017-10-17 20:50:58'),
+(3, 25, 2, '2017-10-23', 'prueba recambio', 780000.00, '2017-10-23 14:18:46', '2017-10-23 14:33:20');
 
 -- --------------------------------------------------------
 
@@ -1311,6 +1312,13 @@ CREATE TABLE `contrato_articulo_detalle` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `contrato_articulo_detalle`
+--
+
+INSERT INTO `contrato_articulo_detalle` (`idcontrato_articulo_detalle`, `ccontra`, `carti`, `canti`, `vunita`, `vtotal`, `centrada`, `created_at`, `updated_at`) VALUES
+(1, 3, 1, 1, 2000.00, 200.00, 'ENT-2017-0001', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1391,7 +1399,10 @@ INSERT INTO `datos_basicos` (`cdatos`, `cterce`, `ctidocumento`, `cestado`, `vig
 (25, 30, 1, 1, 2017, 'CVT-2017-0050', '2017-09-25', '2017-09-25', '360', 'prueba nueva correciones', 'no aplica', '4 días', '2017-09-25', '2017-09-25', '2017-09-25', 400000.00, 360000.00, 780000.00, '2017-09-25 15:59:42', '2017-09-25 16:51:45'),
 (26, 22, 1, 1, 2017, NULL, '2017-09-25', '2017-09-25', '240', 'prueba suma presupuesto', 'no aplica', '4 días', '2017-09-25', '2017-09-25', '2017-09-25', 25000.00, 50000.00, 75000.00, '2017-09-25 16:54:05', '2017-09-25 16:54:05'),
 (27, 1, 1, 1, 2017, 'CVT-2017-0045', '2017-10-01', '2017-10-01', '12', 'prueba concepto', '1212', '4 días', '2017-10-01', '2017-10-01', '2017-10-01', 1212.00, 1211.00, 2423.00, '2017-10-01 18:20:50', '2017-10-01 21:31:23'),
-(28, 4, 1, 1, 2017, NULL, '2017-10-11', '2017-10-11', '1425414', 'pago mes de septiembre', 'no aplica', '3 días', '2017-10-11', '2017-10-11', '2017-10-11', 35000.00, 45000.00, 80000.00, '2017-10-11 21:00:43', '2017-10-11 21:00:43');
+(28, 4, 1, 1, 2017, NULL, '2017-10-11', '2017-10-11', '1425414', 'pago mes de septiembre', 'no aplica', '3 días', '2017-10-11', '2017-10-11', '2017-10-11', 35000.00, 45000.00, 80000.00, '2017-10-11 21:00:43', '2017-10-11 21:00:43'),
+(29, 16, 1, 1, 2017, 'CVT-2017-0002', '2017-10-23', '2017-10-23', '999', '14', '414', '4 días', '2017-10-23', '2017-10-23', '2017-10-23', 280000.00, 300000.00, 580000.00, '2017-10-23 14:00:49', '2017-10-23 14:05:31'),
+(30, 21, 1, 1, 2017, NULL, '2017-10-23', '2017-10-23', '144', '4141', '41', '4 días', '2017-10-23', '2017-10-23', '2017-10-23', 5000.00, 5000.00, 10000.00, '2017-10-23 14:07:27', '2017-10-23 14:07:54'),
+(31, 22, 1, 1, 2017, NULL, '2017-10-23', '2017-10-23', '14515', 'ok', 'ok', '4 días', '2017-10-23', '2017-10-23', '2017-10-23', 45000.00, 50000.00, 95000.00, '2017-10-23 14:10:47', '2017-10-23 14:11:40');
 
 -- --------------------------------------------------------
 
@@ -2279,12 +2290,12 @@ ALTER TABLE `colegio`
 -- AUTO_INCREMENT de la tabla `contratos`
 --
 ALTER TABLE `contratos`
-  MODIFY `ccontra` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `ccontra` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT de la tabla `contrato_articulo_detalle`
 --
 ALTER TABLE `contrato_articulo_detalle`
-  MODIFY `idcontrato_articulo_detalle` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idcontrato_articulo_detalle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT de la tabla `cuentas_bancos`
 --
@@ -2294,7 +2305,7 @@ ALTER TABLE `cuentas_bancos`
 -- AUTO_INCREMENT de la tabla `datos_basicos`
 --
 ALTER TABLE `datos_basicos`
-  MODIFY `cdatos` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `cdatos` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 --
 -- AUTO_INCREMENT de la tabla `datos_cuentas`
 --
