@@ -18,8 +18,8 @@
 				<input @blur.prevent="searchTercero()" type="text" class="form-control" id="nittercero" aria-describedby="nittercero" placeholder="Ingrese el número del nit" v-model="terceros.nit" required style="width: 35%">
 				<button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#searchtercero"><span class="glyphicon glyphicon-search"></span></button>
 				<button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#addtercero" ><span class="glyphicon glyphicon-plus"></button>
-				<input  type="text" class="form-control" id="nombretercero" aria-describedby="nombretercero" v-model="terceros.nombre" required style="width: 50%" disabled >
-			</div>
+					<input  type="text" class="form-control" id="nombretercero" aria-describedby="nombretercero" v-model="terceros.nombre" required style="width: 50%" disabled >
+				</div>
 				<!--<template>
 						<multiselect v-model="valueTercero" :options="tercero" placeholder="Select one" label="nit" track-by="nit" :custom-label="showTerceros" ></multiselect>
 					</template>-->
@@ -46,11 +46,14 @@
 					<label for="numfactura">Número de factura</label>
 					<input type="text" class="form-control" id="numfactura" aria-describedby="numfactura" placeholder="Ingrese el número de factura" v-model="datos.nfactu" required>
 				</div>
+				<div class="form-group col-md-3">
+
+					<label for="convocatoria"> Convocatoria Nº</label>
 					<div class=form-inline>
-						<label for="convocatoria"> Convocatoria Nº</label>
 						<input type="text" class="form-control" id="convocatoria" aria-describedby="convocatoria" v-model="datos.convocatoria">
 						<button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#searchconvocatoria"><span class="glyphicon glyphicon-search"></span></button>
 					</div>
+				</div>
 			</div>
 			<div class="row">
 

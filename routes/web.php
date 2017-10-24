@@ -59,6 +59,7 @@ Route::group(['prefix'=>'contrato'], function(){
 });
 Route::group(['prefix'=>'suministros'], function(){
 	Route::post('/create/unidad','SuministrosController@createUnidad')->name('suministros.createUnidad');
+	Route::post('/create','SuministrosController@create')->name('suministros.create');
 	//Route::post('/update','SuministrosController@update')->name('contrato.update');
 });
 
