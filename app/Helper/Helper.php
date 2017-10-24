@@ -83,12 +83,12 @@ class Helper
 			'convocatoria.digits_between'=> 'El CÓDIGO DE ENTRADA debe de tener de :min a :max dígitos',
 		]
 	);
-		if ($data['convocatoria']!=null) {
+		if ($data['centrada']!=null) {
 			if (!$validator->fails()) {
-				$length=4-strlen($data['convocatoria']);
+				$length=4-strlen($data['centrada']);
 				$pre='ENT-'.$data['vigencia'].'-';
-				$convocatoria= str_pad($pre, $length+9, "0").$data['convocatoria'];
-				return $convocatoria;
+				$centrada= str_pad($pre, $length+9, "0").$data['centrada'];
+				return $centrada;
 			}else{
 				$messages = $validator->messages();
 				$message="";

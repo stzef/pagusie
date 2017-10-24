@@ -46,7 +46,6 @@ class DatosPresupuestoController extends Controller
      */
     public function create(Request $request){
     	$data = $request->all();
-        
             //var_dump($validator);
         if ($data['index']==0) {
             # code...
@@ -56,7 +55,6 @@ class DatosPresupuestoController extends Controller
                 return response()->json(array("message"=>"El rubro ".$presupuesto->presupuesto->nrubro." ya se encuentra gurdado ","status"=>400),400);
             }*/
                 $DatosPresupuesto[$key]->delete();
-
         }
         }
         $validator = $this->validar($data);

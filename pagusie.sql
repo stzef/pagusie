@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 23-10-2017 a las 18:57:50
+-- Tiempo de generación: 25-10-2017 a las 00:52:46
 -- Versión del servidor: 10.1.24-MariaDB
 -- Versión de PHP: 7.1.6
 
@@ -1251,7 +1251,7 @@ INSERT INTO `ciudades` (`cciud`, `cdepar`, `nciudad`) VALUES
 
 CREATE TABLE `colegio` (
   `ccolegio` int(11) NOT NULL,
-  `ciud` int(11) NOT NULL,
+  `cciud` int(11) NOT NULL,
   `nombre` varchar(255) NOT NULL,
   `nit` int(11) NOT NULL,
   `dv` int(1) NOT NULL,
@@ -1266,8 +1266,8 @@ CREATE TABLE `colegio` (
 -- Volcado de datos para la tabla `colegio`
 --
 
-INSERT INTO `colegio` (`ccolegio`, `ciud`, `nombre`, `nit`, `dv`, `direccion`, `nrector`, `nauxadmin`, `created_at`, `updated_at`) VALUES
-(1, 1042, 'INSTITUCION EDUCATIVA TECNICA SUMAPAZ', 800029382, 7, 'CARRERA 25 Nº 5-43', 'RICARDO ELIAS MORALES RODRIGUEZ', 'JAIME AUGUSTO SALGADO DAZA', NULL, NULL);
+INSERT INTO `colegio` (`ccolegio`, `cciud`, `nombre`, `nit`, `dv`, `direccion`, `nrector`, `nauxadmin`, `created_at`, `updated_at`) VALUES
+(1, 1042, 'INSTITUCION EDUCATIVA TECNICA SUMAPAZ', 800029382, 7, 'CARRERA 25 Nº 5-43', 'RICARDO ELIAS MORALES RODRIGUEZ', 'JAIME AUGUSTO SALGADO DAZA', NULL, '2017-10-24 21:29:19');
 
 -- --------------------------------------------------------
 
@@ -1318,7 +1318,8 @@ CREATE TABLE `contrato_articulo_detalle` (
 --
 
 INSERT INTO `contrato_articulo_detalle` (`idcontrato_articulo_detalle`, `ccontra`, `carti`, `canti`, `vunita`, `vtotal`, `centrada`, `created_at`, `updated_at`) VALUES
-(1, 3, 1, 1, 2000.00, 200.00, 'ENT-2017-0001', NULL, NULL);
+(1, 3, 1, 1, 2000.00, 200.00, 'ENT-2017-0001', NULL, NULL),
+(4, 1, 2, 130, 5000.00, 650000.00, 'ENT-2017-0002', '2017-10-24 12:48:50', '2017-10-24 12:48:50');
 
 -- --------------------------------------------------------
 
@@ -1629,6 +1630,32 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (2, '2017_07_12_085806_create_ciudades_table', 0),
 (3, '2017_07_12_085807_add_foreign_keys_to_ciudades_table', 0),
 (4, '2014_10_12_000000_create_users_table', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `parametros`
+--
+
+CREATE TABLE `parametros` (
+  `id` int(11) NOT NULL,
+  `cparam` varchar(2) CHARACTER SET utf8 NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `type` char(4) NOT NULL,
+  `value_text` text,
+  `value_bool` tinyint(1) DEFAULT NULL,
+  `value_int` int(11) DEFAULT NULL,
+  `row` int(11) DEFAULT '1' COMMENT 'filas del text area',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `parametros`
+--
+
+INSERT INTO `parametros` (`id`, `cparam`, `name`, `type`, `value_text`, `value_bool`, `value_int`, `row`, `created_at`, `updated_at`) VALUES
+(1, 'TC', 'Texto Contrato', 'TEXT', '1.  Se compromete a prestar servicios consistentes en :\r\n2. Presentar informe de actividades. 3. Las demás que sean necesarias para el cumplimiento del objeto contractual. 4. Cumplir con el pago de aportes al sistema de seguridad social y parafiscal, cuando a ello hubiere lugar.\r\nSEGUNDA: INHABILIDADES E INCOMPATIBILIDADES: EL CONTRATISTA manifiesta no estar incurso en ninguna causal de inhabilidad e incompatibilidad prevista en la Constitución y/o en la Ley, ni en prohibiciones o restricción alguna, que le impida suscribir el presente contrato.\r\nTERCERA: MULTAS Y CLAUSULA PENAL: En caso de incumplimiento parcial de las obligaciones, por parte del CONTRATISTA, esta faculta a la Entidad para que se le impongan multas sucesivas equivalentes a 1% del valor total del contrato hasta un monto total del 10% del valor total de la misma, dependiendo de la gravedad del incumplimiento, si éste es total, EL CONTRATISTA pagará a la Institución Educativa San Isidro a título de pena la suma equivalente al 20% del valor del contrato atendiendo lo dispuesto en el artículo 17 de la ley 1150 de 2007.\r\nCUARTA: LIQUIDACIÓN: Terminada la ejecución del contrato de Prestación de Servicios, se procederá a su liquidación en los términos y plazos previstos en el artículo 11 de la Ley 1150 de 2007. \r\nQUINTA: SUPERVISIÓN Y VIGILANCIA: El control y vigilancia de la ejecución del objeto contratado la realizará el Rector de la Institución Educativa o quien este delegue mediante resolución.\r\nSEXTA: PERFECCIONAMIENTO Y REQUISITOS DE EJECUCIÓN: EL presente contrato, se perfecciona con el acuerdo de voluntades que se da con la firma del presente escrito que lo contiene.', NULL, NULL, 5, NULL, '2017-10-24 21:27:45');
 
 -- --------------------------------------------------------
 
@@ -2015,7 +2042,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `ctiusuario`, `ccargo`, `identificacion`, `nombres`, `apellidos`, `direccion`, `telefono`, `username`, `email`, `password`, `active`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 2, 2, 1106896645, 'Jhonan', 'Vargas', 'Cra 29 # 11-95', '313832414', 'nano', 'nano@gmail.com', '$2y$10$QCv5ZDfS3pOitOEymIcr9u9ECeDJGqD1YgLXhLPzJxqwzQcq1RCAa', 1, 'CBETM1oiGbGvkG7F8u0oQfWsAMzhLQ2X8dT2RMGGTJKieXZRZisJlBQeUK6c', '2017-10-11 05:00:00', NULL);
+(1, 2, 2, 1106896645, 'Jhonan', 'Vargas', 'Cra 29 # 11-95', '313832414', 'nano', 'nano@gmail.com', '$2y$10$QCv5ZDfS3pOitOEymIcr9u9ECeDJGqD1YgLXhLPzJxqwzQcq1RCAa', 1, 'FeLZGT7NG0trNGAVREYGevn75pqNvhhtyPnmAyi1ZegdWKSzHbrP3Ph9dgM2', '2017-10-11 05:00:00', NULL);
 
 --
 -- Índices para tablas volcadas
@@ -2061,7 +2088,7 @@ ALTER TABLE `ciudades`
 ALTER TABLE `colegio`
   ADD PRIMARY KEY (`ccolegio`),
   ADD UNIQUE KEY `nit_UNIQUE` (`nit`),
-  ADD KEY `fk_colegio_ciudades1_idx` (`ciud`);
+  ADD KEY `fk_colegio_ciudades1_idx` (`cciud`);
 
 --
 -- Indices de la tabla `contratos`
@@ -2144,6 +2171,13 @@ ALTER TABLE `impuestos`
 --
 ALTER TABLE `migrations`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `parametros`
+--
+ALTER TABLE `parametros`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `cparam` (`cparam`);
 
 --
 -- Indices de la tabla `presupuesto`
@@ -2295,7 +2329,7 @@ ALTER TABLE `contratos`
 -- AUTO_INCREMENT de la tabla `contrato_articulo_detalle`
 --
 ALTER TABLE `contrato_articulo_detalle`
-  MODIFY `idcontrato_articulo_detalle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idcontrato_articulo_detalle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT de la tabla `cuentas_bancos`
 --
@@ -2336,6 +2370,11 @@ ALTER TABLE `impuestos`
 --
 ALTER TABLE `migrations`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT de la tabla `parametros`
+--
+ALTER TABLE `parametros`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT de la tabla `reporte_certificado_precio`
 --
@@ -2433,7 +2472,7 @@ ALTER TABLE `ciudades`
 -- Filtros para la tabla `colegio`
 --
 ALTER TABLE `colegio`
-  ADD CONSTRAINT `fk_colegio_ciudades1` FOREIGN KEY (`ciud`) REFERENCES `ciudades` (`cciud`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_colegio_ciudades1` FOREIGN KEY (`cciud`) REFERENCES `ciudades` (`cciud`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `contratos`

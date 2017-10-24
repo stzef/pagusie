@@ -59,3 +59,7 @@ Route::group(['prefix' => 'getunidades'], function(){
 Route::group(['prefix' => 'getcentrada'], function(){
 	Route::get('/', "APIController@getNextCentrada")->name("api.getNextCentrada.index");
 });
+Route::group(['prefix' => 'parametros'], function(){
+	Route::get('/get', "APIController@getParametros")->name("api.getParametros.index");
+	Route::post('/save', "APIController@saveParams")->name("api.saveParams.index");
+});

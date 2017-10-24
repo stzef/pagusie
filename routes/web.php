@@ -20,6 +20,11 @@ Route::get('/', 'HomeController@index')->name("index");
 Route::get('edit', function(){
 	return view('edit');
 })->middleware('auth')->name("edit");
+
+Route::get('/parametros',function(){
+	return view('parametros');
+})->middleware('auth')->name('parametros');
+
 Route::group(['prefix'=>'datos'], function(){
 	Route::post('/create','DatosBasicosController@create')->name('datos.create');
 	Route::post('/update','DatosBasicosController@update')->name('datos.update');
@@ -60,7 +65,6 @@ Route::group(['prefix'=>'contrato'], function(){
 Route::group(['prefix'=>'suministros'], function(){
 	Route::post('/create/unidad','SuministrosController@createUnidad')->name('suministros.createUnidad');
 	Route::post('/create','SuministrosController@create')->name('suministros.create');
-	//Route::post('/update','SuministrosController@update')->name('contrato.update');
 });
 
 /*Route::get('pdf', function(){

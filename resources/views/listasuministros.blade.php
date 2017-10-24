@@ -19,7 +19,7 @@
 		<div class="row">
 			<div class="form-group col-md-2">
 				<label for="cantidad">Cantidad</label>
-				<input @blur.prevent="operacionAritmetica(['cantidad','vunita'],'*','vtotalsumi')" type="text" class="form-control" id="cantidad" aria-describedby="cantidad" placeholder="Ingrese Cantidad" v-model="suministros.cantidad" required>
+				<input @blur.prevent="operacionAritmetica(['cantidad','vunita'],'*','vtotalsumi')" type="text" class="form-control" id="cantidad" aria-describedby="cantidad" placeholder="Ingrese Cantidad" v-model="suministros.canti" required>
 			</div>
 			<div class="form-group col-md-2">
 				<label for="vunita">Vr. Unitario</label>
@@ -56,7 +56,7 @@
 						<td>[[suministro.narticulo]]</td>
 						<td>[[suministro.grupo]]</td>
 						<td>[[suministro.nunidad]]</td>
-						<td>[[suministro.cantidad]]</td>
+						<td>[[suministro.canti]]</td>
 						<td align="right">[[suministro.vunita]]</td>
 						<td align="right">[[suministro.vtotal]]</td>
 						<td >

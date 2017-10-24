@@ -9,6 +9,7 @@ use App\Models\Datos_presupuesto;
 use PDF;
 use App\Helper\Helper;
 use App\Helper\NumeroALetras;
+use App\Models\Contrato_articulo_detalle;
 //use App\Models\Reports\Reporte_contrato_prestacion_servicio;
 
 class ContratoSuministroController extends Controller
@@ -28,13 +29,17 @@ class ContratoSuministroController extends Controller
 		$datos->fregis=Helper::formatDate($datos->fregis,0);
 		$tercero=$datos->tercero;
 		$rubros=Datos_presupuesto::where('cdatos',$cdatos)->get();
+		$contrato=$datos->contrato;
+		$suministros=$contrato->contratoArticuloDetalles->all();
+
+		
 		/*if (!Reporte_contrato_prestacion_servicio::where("cdatos",$cdatos)->first()){
 			$reporteCS=Reporte_contrato_prestacion_servicio::create(["cdatos"=>$datos->cdatos]);
 		}else{
 			$reporteCS=Reporte_contrato_prestacion_servicio::where("cdatos",$cdatos)->first();
 		}
 		$data = array("datos" => $datos,"tercero" => $tercero,"colegio"=>$colegio,"rubros"=>$rubros,"reporte"=>$reporteCS);*/
-		$data = array("datos" => $datos,"tercero" => $tercero,"colegio"=>$colegio,"rubros"=>$rubros,);
+		$data = array("datos" => $datos,"tercero" => $tercero,"colegio"=>$colegio,"rubros"=>$rubros,"suministros"=>$suministros,);
 		PDF::setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif','defaultSize'=> '12',]);
 		$pdf = PDF::loadView('pdf.contrato_suministros', $data);
 		return $pdf->setPaper('a4')->stream();

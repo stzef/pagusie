@@ -8,14 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * @property int $ccolegio
  * @property int $ciud
- * @property string $rector
- * @property string $auxad
  * @property string $nombre
- * @property string $nit
+ * @property int $nit
+ * @property int $dv
  * @property string $direccion
+ * @property string $nrector
+ * @property string $nauxadmin
+ * @property string $created_at
+ * @property string $updated_at
  * @property Ciudades $ciudad
- * @property User $user
- * @property User $user
  */
 class Colegio extends Model
 {
@@ -36,7 +37,7 @@ class Colegio extends Model
     /**
      * @var array
      */
-    protected $fillable = ['cciud', 'rector', 'auxad', 'nombre', 'nit','dv', 'direccion'];
+    protected $fillable = ['ciud', 'nombre', 'nit', 'dv', 'direccion', 'nrector', 'nauxadmin', 'created_at', 'updated_at'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -45,20 +46,4 @@ class Colegio extends Model
     {
         return $this->belongsTo('App\Models\Ciudades', 'cciud', 'cciud');
     }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    /*public function user()
-    {
-        return $this->belongsTo('App\User', 'rector', 'username');
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-   /* public function user()
-    {
-        return $this->belongsTo('App\User', 'auxad', 'username');
-    }*/
 }

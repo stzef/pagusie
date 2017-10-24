@@ -76,7 +76,7 @@
 							</a>
 							<ul class="dropdown-menu" role="menu">
 								<li>
-									<a href="" >Parametros</a>
+									<a href="{{route('parametros')}}" >Parametros</a>
 								</li>
 							</ul>
 						</li>

@@ -122,9 +122,8 @@ var app=new Vue({
 			field: 'unidad.nunidad',
 		},
 		],
-
-		//date: moment().locale('es').format('YYYY-MM-DDThh:mm:00.000Z'),
 		date: moment().format('YYYY-MM-DD, h:mm:ss a'),
+		pathname:undefined,
 		tidocumento:[],
 		valueTdocu: {},
 		departamentos:[],
@@ -243,13 +242,16 @@ var app=new Vue({
 
 			},
 		},
-		/*contratosu:{
-			ccontra:undefined,
-			cticontrato:undefined,
-			fecha:undefined,
-			texto:undefined,
-			vttotal:undefined,
-		},*/
+		parametros:{
+			colegio:{
+				direccion:undefined,
+				cdepar:undefined,
+				cciud:undefined,
+				nrector:undefined,
+				nauxadmin:undefined,
+			},
+			extras:[],
+		},
 
 	},
 	methods:{
@@ -285,6 +287,8 @@ var app=new Vue({
 				alertify.error("Seleccione un articulo")
 			}else{
 				var suministros = new Object();
+				suministros.vigencia=vm.datos.vigencia
+				suministros.ccontra=vm.contrato.ccontra
 				suministros.carti=vm.suministros.carti
 				suministros.narticulo=vm.suministros.narticulo
 				suministros.cunidad=vm.suministros.cunidad
@@ -359,6 +363,7 @@ var app=new Vue({
 		var vm = this
 		if(vm.valueDepartamento!=null){
 			vm.terceros.cdepar= vm.valueDepartamento.cdepar
+			vm.parametros.colegio.cdepar= vm.valueDepartamento.cdepar
 		}
 		return `${ndepartamento}`
 	},
@@ -366,6 +371,7 @@ var app=new Vue({
 		var vm = this
 		if(vm.valueCiudad!=null){
 			vm.terceros.cciud= vm.valueCiudad.cciud
+			vm.parametros.colegio.cciud= vm.valueCiudad.cciud
 		}
 		return `${nciudad}`
 	},
@@ -417,9 +423,8 @@ var app=new Vue({
 			.then(response => {
 				return response.json()
 			}).then(ciudades => {
-
+				console.log("municipios",cdepar)
 				vm.ciudades =ciudades
-				console.log(vm.valueDepartamento.cdepar==29)
 				if (vm.valueDepartamento.cdepar==29) {
 					vm.valueCiudad = vm.ciudades[26]
 				}else{
@@ -1131,7 +1136,7 @@ var app=new Vue({
 				},
 				checkQueryString(){
 					var query = new URLSearchParams(window.location.search);
-					console.log("query",query.has('dupli'))
+					console.log("query",query.has('/parametros'))
 					if (query.has('cdatos') && query.has('dupli')) {
 						var cdatos =this.getUrlParameter('cdatos')
 						var dupli =this.getUrlParameter('dupli')
@@ -1246,8 +1251,26 @@ var app=new Vue({
 								document.querySelector("#valorTotalCSU").value=this.contrato.vttotalsu
 								if (datosUpdate.suministros.length!=0) {
 									this.suministros.centrada=datosUpdate.suministros[0].centrada
+									var arraySuministros=[]
+									this.datos.suministros.forEach(function (item, index, array) {
+										var suministros = new Object()
+										suministros.canti=item.canti
+										suministros.carti=item.carti
+										suministros.ccontra=item.ccontra
+										suministros.centrada=item.centrada
+										suministros.cunidad=item.articulo.cunidad
+										suministros.grupo=0
+										suministros.narticulo=item.articulo.narticulo
+										suministros.nunidad=item.articulo.unidad.nunidad
+										suministros.vigencia=datosUpdate.vigencia
+										suministros.vunita=currencyFormat.format(item.vunita)
+										suministros.vtotal=currencyFormat.format(item.vtotal)
+										arraySuministros.push(suministros)
+									})
+									this.suministros.suministrosSeleccionados=arraySuministros
+									this.sumarValorLista(this.suministros.suministrosSeleccionados,"vtotal","suministros.sumaSuministros")
 								}else{
-								this.getCentrada()
+									this.getCentrada()
 
 								}
 							}
@@ -1257,7 +1280,7 @@ var app=new Vue({
 							this.getCentrada()
 
 						}
-							this.GetConvocatorias()
+						this.GetConvocatorias()
 					})
 
 .catch(function(error) {
@@ -1571,18 +1594,19 @@ GetDatosDuplicar(cdatos){
 				var vm = this
 				vm._token = $('form').find("input").val()
 				var cdatos=vm.datos.cdatos
-				var suministroArray =vm.impuesto.impuestosSeleccionados
+				var suministroArray =vm.suministros.suministrosSeleccionados
 				if (suministroArray.length == 0){
 					alertify.error("Seleccione Un Articulo")
 				}
-				if(currencyFormat.sToN(this.impuesto.sumaImpuestos)>currencyFormat.sToN(this.datos.vtotal)){
-					alertify.error("Los impuestos no pueden sobrepasar al valor total")
+				if(currencyFormat.sToN(vm.suministros.sumaSuministros)!=currencyFormat.sToN(vm.datos.vtotal)){
+					alertify.error("La suma de los articulo debe ser igual al valor total")
 				}else{
 					suministroArray.forEach(function (item, index, array) {
 						var itemCopy = Object.assign({},item);
 						itemCopy.vunita=currencyFormat.sToN(itemCopy.vunita)
 						itemCopy.vtotal=currencyFormat.sToN(itemCopy.vtotal)
 						var suministro = $.param(itemCopy)
+						suministro=suministro+"&index="+index
 						fetch("/suministros/create",{
 							credentials: 'include',
 							method : "POST",
@@ -1592,7 +1616,7 @@ GetDatosDuplicar(cdatos){
 								'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
 								'X-CSRF-TOKEN' : vm._token,
 							},
-							body: suministros
+							body: suministro
 						})
 						.then(response => {
 							console.log(response)
@@ -1679,60 +1703,148 @@ GetDatosDuplicar(cdatos){
 				this.suministros.centrada = centrada
 			});
 		},
+		GetParametros(){
+			fetch("api/parametros/get",{ //ruta
+				credentials: 'include',
+				type : "GET",
+			}).then(response => {
+				return response.json()
+			}).then(parametros => {
+				console.log(parametros.colegio)
+				this.parametros.colegio.cciud = parametros.colegio.cciud
+				this.parametros.colegio.nrector = parametros.colegio.nrector
+				this.parametros.colegio.nauxadmin = parametros.colegio.nauxadmin
+				this.parametros.colegio.direccion = parametros.colegio.direccion
+				//this.valueCiudad=parametros.ciudad
+				/*var array=this.ciudades
+				console.log('aca',this.ciudades)
+				for (var i = array.length - 1; i >= 0; i--) {
+					alertify.success( array[i])
+				}
+				array.forEach(function (item, index, array) {
+					if (item.cciud==parametros.cciud) {
+						this.valueCiudad=item
+					}
+				})*/
+				if (parametros.extras!=undefined) {
+					this.parametros.extras=parametros.extras
+					if (this.pathname=='/') {
+						var index= undefined
+						for (var i = this.parametros.extras.length - 1; i >= 0; i--) {
+							if (this.parametros.extras[i].cparam=='TC'){
+								index=i
+							}
+						}
+						console.log("papapa",this.parametros.extras)
+						this.contrato.textose=this.parametros.extras[index].value_text
+						this.contrato.textosu=this.parametros.extras[index].value_text
+					}
+				}
+
+			});
+		},
+		GetDepartamento(){
+			var vm = this
+			fetch("api/departamentos/",{ //ruta
+				credentials: 'include',
+				type : "GET",
+			})
+			.then(response => {
+				return response.json()
+			}).then(departamentos => {
+				vm.departamentos = departamentos
+				vm.valueDepartamento=departamentos[28]
+				console.log("departamentos")
+				this.GetCiudades()
+			});
+		},
+		saveParams(){
+			this._token = $('form').find("input").val()
+			var colegio = this.parametros.colegio
+			var params = $.param(colegio)
+			params =params+'&'+$('form').serialize()
+			console.log(params)
+			fetch("/api/parametros/save",{
+				credentials: 'include',
+				method : "POST",
+				type: "POST",
+				headers: {
+					'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+					'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+					'X-CSRF-TOKEN' : this._token,
+				},
+				body: params,
+			})
+			.then(response => {
+				return response.json();
+			})
+			.then(response => {
+				alertify.success('Guardado Exitoso')
+				this.GetParametros()
+			})
+			.catch(function(error) {
+				alertify.error('Error al guardar los parametros')
+			})
+		},
+		GetTiDocumento(){
+			 fetch("api/tipo_documento",{ //ruta
+			 	credentials: 'include',
+			 	type : "GET",
+			 }).then(response => {
+			 	return response.json()
+			 }).then(tidocumentos => {
+			 	console.log(tidocumentos)
+			 	this.tidocumento = tidocumentos
+			 	this.valueTdocu=tidocumentos[0]
+			 });
+			},
+			checkURL(){
+				var pathname = window.location.pathname
+				console.log(pathname)
+				this.pathname=pathname
+				if (pathname=='/parametros') {
+					this.GetDepartamento()
+					this.GetParametros()
+				}else if(pathname=='/'){
+					this.GetParametros()
+					this.datos.fpago=this.date
+					this.datos.ffactu=this.date
+					this.datos.festcomp=this.date
+					this.datos.fdispo=this.date
+					this.datos.fregis=this.date
+					this.contrato.fechase=this.date
+					this.contrato.fechasu=this.date
+					this.datos.vigencia=moment().locale('es').format('YYYY'),
+					this.checkQueryString()
+					this.GetDepartamento()
+					this.GetArticulos()
+					this.GetRubros()
+					this.GetImpuestos()
+					this.GetTercero()
+					this.GetBancos()
+					this.GetConvocatorias()
+					this.GetTiDocumento()
+					
+				}else if (pathname=='/edit') {
+					this.GetDatosEdit()
+				}
+			},
 	},// end methods
 	delimiters : ["[[","]]"],
 	mounted (){
-		$("#table").DataTable();
+		//$("#table").DataTable();
 		var vm = this
-		vm.datos.fpago=vm.date
-		vm.datos.ffactu=vm.date
-		vm.datos.festcomp=vm.date
-		vm.datos.fdispo=vm.date
-		vm.datos.fregis=vm.date
-		vm.contrato.fechase=vm.date
-		vm.contrato.fechasu=vm.date
-		vm.datos.vigencia=moment().locale('es').format('YYYY'),
-		vm.GetArticulos()
-		vm.GetRubros()
-		vm.GetImpuestos()
-		vm.GetTercero()
-		vm.GetBancos()
-		vm.GetDatosEdit()
-		vm.checkQueryString()
-		vm.GetConvocatorias();
-		//vm.GetTercero(1,300)
-	    fetch("api/departamentos/",{ //ruta
-	    	credentials: 'include',
-	    	type : "GET",
-	    })
-	    .then(response => {
-	    	return response.json()
-	    }).then(departamentos => {
-	    	vm.departamentos = departamentos
-	    	//vm.terceros.cdepar="29"
-	    	vm.valueDepartamento=departamentos[28]
-	    	this.GetCiudades()
-	    });
-	      fetch("api/tipo_documento",{ //ruta
-	      	credentials: 'include',
-	      	type : "GET",
-	      }).then(response => {
-	      	return response.json()
-	      }).then(tidocumentos => {
-	      	console.log(tidocumentos)
-	      	vm.tidocumento = tidocumentos
-	      	vm.valueTdocu=tidocumentos[0]
-	      });
-	      //aca
-	      var inputs = $(':input').keypress(function(e){
-	      	if (e.which == 13) {
-	      		e.preventDefault();
-	      		var nextInput = inputs.get(inputs.index(this) + 1);
-	      		if (nextInput) {
-	      			nextInput.focus();
-	      		}
-	      	}
-	      });
+		console.log("HP")
+		vm.checkURL()
+		var inputs = $(':input').keypress(function(e){
+			if (e.which == 13) {
+				e.preventDefault();
+				var nextInput = inputs.get(inputs.index(this) + 1);
+				if (nextInput) {
+					nextInput.focus();
+				}
+			}
+		});
 	      //aca
 
 	  }

@@ -3,7 +3,7 @@
 <div class="row">
 	<div class="col-xs-5">
 		<strong>
-		CONTRATO DE SUMINISTROS Nº &nbsp;&nbsp;&nbsp; 360
+			CONTRATO DE SUMINISTROS Nº &nbsp;&nbsp;&nbsp; 360
 		</strong>
 	</div>
 	<div class="col-xs-5">
@@ -17,52 +17,52 @@
 	</div>
 </div>
 <table WIDTH="100%" border="2">
-			<tr>
-				<td width="20%"><strong>CIUDAD:</strong></td>
-				<td colspan="2"><strong>{{ $tercero->ciudad->nciudad }}</strong></td>
-			</tr>
-			<tr>
-				<td><strong>CONTRATISTA:</strong></td>
-				<td colspan="2" ><strong>{{strtoupper($tercero->nombre)}}</strong></td>
-			</tr>
-			<tr>
-				<td><strong>C.C Nº:</strong></td>
-				<td colspan="2" ><strong>{{number_format($tercero->nit)}}</strong></td>
-			</tr>
-			<tr>
-				<td><strong>PLAZO:</strong></td>
-				<td colspan="2"><strong>{{$datos->plazo}}</strong></td>
-			</tr>
-			<tr>
-				<td ROWSPAN="2"><strong>VALOR CONTRATADO:</strong></td>
-				<td colspan="2"><strong>{{number_format($datos->vtotal,2)}}</strong></td>
-			</tr>
-			<tr>
-				<td colspan="2"><strong>{{$datos->vtotal_letras}}</strong></td>
-			</tr>
-			<tr>
-				<td ROWSPAN="{{count($rubros)}}">
-					<strong>IMPUTACIÓN PRESUPUESTAL:</strong>
-				</td>
-				@foreach($rubros as $key=>$rubro)
-				@if($key==0)
-				<td align="center">
-					<strong>{{$rubro->crubro}}</strong>
-				</td>
-				<td align="center"><strong>{{$rubro->presupuesto->nrubro}}</strong>
-				</td>
-			</tr>
-			@else
-			<tr align="center">
-				<td >
-					<strong>{{$rubro->crubro}}</strong>
-				</td>
-				<td >
-					<strong>{{$rubro->presupuesto->nrubro}}</strong>
-				</td>
-			</tr>
-			@endif
-			@endforeach
+	<tr>
+		<td width="20%"><strong>CIUDAD:</strong></td>
+		<td colspan="2"><strong>{{ $tercero->ciudad->nciudad }}</strong></td>
+	</tr>
+	<tr>
+		<td><strong>CONTRATISTA:</strong></td>
+		<td colspan="2" ><strong>{{strtoupper($tercero->nombre)}}</strong></td>
+	</tr>
+	<tr>
+		<td><strong>C.C Nº:</strong></td>
+		<td colspan="2" ><strong>{{number_format($tercero->nit)}}</strong></td>
+	</tr>
+	<tr>
+		<td><strong>PLAZO:</strong></td>
+		<td colspan="2"><strong>{{$datos->plazo}}</strong></td>
+	</tr>
+	<tr>
+		<td ROWSPAN="2"><strong>VALOR CONTRATADO:</strong></td>
+		<td colspan="2"><strong>{{number_format($datos->vtotal,2)}}</strong></td>
+	</tr>
+	<tr>
+		<td colspan="2"><strong>{{$datos->vtotal_letras}}</strong></td>
+	</tr>
+	<tr>
+		<td ROWSPAN="{{count($rubros)}}">
+			<strong>IMPUTACIÓN PRESUPUESTAL:</strong>
+		</td>
+		@foreach($rubros as $key=>$rubro)
+		@if($key==0)
+		<td align="center">
+			<strong>{{$rubro->crubro}}</strong>
+		</td>
+		<td align="center"><strong>{{$rubro->presupuesto->nrubro}}</strong>
+		</td>
+	</tr>
+	@else
+	<tr align="center">
+		<td >
+			<strong>{{$rubro->crubro}}</strong>
+		</td>
+		<td >
+			<strong>{{$rubro->presupuesto->nrubro}}</strong>
+		</td>
+	</tr>
+	@endif
+	@endforeach
 </table>
 <div class="text-center">
 	<strong>CONDICIONES DE CONTRATACIÓN:</strong>
@@ -72,22 +72,33 @@ PRIMERA - OBLIGACIONES:&nbsp;&nbsp; 1. Se compromete a suministrar los siguiente
 	<thead>
 		<tr>
 			<th>Nº</th>
-		
+
 			<th>NOMBRE Y ESPECIFICACIÓN DE ARTICULO</th>
-		
+
 			<th>GRUPO INVENTARIO</th>
-		
+
 			<th>UNIDAD MEDIDA</th>
-		
+
 			<th>CANTIDAD</th>
-		
+
 			<th>VALOR UNITARIO</th>
-		
+
 			<th>VALOR TOTAL</th>
 		</tr>
 	</thead>
 	<tbody>
-		
+		@foreach($suministros as $key=>$suministro)
+		<tr>
+			<td align="center"> {{$key+1}}</td>
+			<td align="center"> {{$suministro->articulo->narticulo}}</td>
+			<td align="center"> 0</td>
+			<td align="center"> {{$suministro->articulo->unidad->nunidad}}</td>
+			<td align="center"> {{$suministro->canti}}</td>
+			<td align="right"> $ {{number_format($suministro->vunita,2)}}</td>
+			<td align="right"> $ {{number_format($suministro->vtotal,2)}}</td>
+
+		</tr>
+		@endforeach
 		
 	</tbody>
 	
@@ -107,7 +118,7 @@ PRIMERA - OBLIGACIONES:&nbsp;&nbsp; 1. Se compromete a suministrar los siguiente
 		<u><strong>QUINTA: SUPERVISIÓN Y VIGILANCIA:</strong></u> El control y vigilancia de la ejecución del objeto contratado la realizará el Rector de la Institución Educativa o quien este delegue mediante resolución.
 		<u><strong>SEXTA: PERFECCIONAMIENTO Y REQUISITOS DE EJECUCIÓN: </strong></u>EL presente contrato, se perfecciona con el acuerdo de voluntades que se da con la firma del presente escrito que lo contiene.
 	</div>
-<br><br><br><br><br><br><br><br>
+	<br><br><br><br><br><br><br><br>
 	<div class="col-xs-6">
 		<strong>RICARDO ELIAS MORALES RODRIGUEZ</strong><br>RECTOR
 	</div>

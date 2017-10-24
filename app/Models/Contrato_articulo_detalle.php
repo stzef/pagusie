@@ -52,6 +52,6 @@ class Contrato_articulo_detalle extends Model
      */
     public function articulo()
     {
-        return $this->belongsTo('App\Models\Articulo', 'carti', 'carti');
+        return $this->belongsTo('App\Models\Articulos', 'carti', 'carti');
     }
 }

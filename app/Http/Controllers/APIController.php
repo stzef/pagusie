@@ -19,13 +19,15 @@ use App\Models\Articulos;
 use App\Models\Unidades;
 use App\Helper\Helper;
 use App\Models\Contrato_articulo_detalle;
+use App\Models\Colegio;
+use App\Models\Parametros;
 use Illuminate\Support\Facades\Auth;
 use stdClass;
 use ArrayObject;
 class APIController extends Controller
 {
 /*
-public function __construct(){
+ public function __construct(){
     $this->middleware('auth');
 }*/
 public function tipo_documento(){
@@ -147,14 +149,20 @@ public function datosUpdate(Request $request){
 		$cuenta->cuentabanco=$cuen->cheque->cuentasbanco;
 		$cuenta->bancos=$cuen->cheque->cuentasbanco->banco;
 	}
-	//var_dump($cuenta->bancos);exit();
+	if ($datos->contrato!=null) {
+		if ($datos->contrato->cticontrato==2) {
+			$suministros=$datos->contrato->contratoArticuloDetalles;
+			foreach ($suministros as $key => $sumi) {
+				$suministros->articulos=$sumi->articulo;
+				$suministros->unidad=$sumi->articulo->unidad;
+			}
+			$datos->suministros=$suministros;
+		}
+	}
 	$datos->presupuesto=$presupuesto;
 	$datos->impuesto=$impuesto;
 	$datos->cuenta=$cuenta;
 	$datos->contrato=$datos->contrato;
-	if ($datos->contrato->cticontrato==2) {
-		$datos->suministros=$datos->contrato->contratoArticuloDetalles;
-	}
 	return response()->json($datos->toArray());
 }
 public function getListConvocatoria(Request $request){
@@ -204,5 +212,33 @@ public function getNextCentrada(Request $request){
 	}
 	return response()->json($max);
 }
+public function getParametros(){
+	$colegio=Colegio::all()->first();
+	$colegio->ciudad=$colegio->ciudad;
+	$extras= Parametros::all();
+	$param= new stdClass;
+	$param->colegio=$colegio;
+	$param->extras=$extras;
+	return response()->json($param);
+}
+
+public function saveParams(request $request){
+	$dataBody = $request->all();
+	$colegio= Colegio::all()->first();
+	$colegio->direccion=$dataBody['direccion'];
+	$colegio->cciud=$dataBody['cciud'];
+	$colegio->nrector=$dataBody['nrector'];
+	$colegio->nauxadmin=$dataBody['nauxadmin'];
+	$colegio->save();
+	foreach ($dataBody as $key => $value) {
+		$parametro = Parametros::where('id',$key)->first();
+		if($parametro){
+			$parametro->value_text = $value;
+			$parametro->save();
+		}
+	}
+	return response()->json(array("obj" => $dataBody));
+}
+
 }
 

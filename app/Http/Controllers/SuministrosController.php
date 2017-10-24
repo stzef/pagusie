@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Articulo;
+use App\Models\Articulos;
 use App\Models\Unidades;
 use App\Models\Contratos;
 use App\Models\Contrato_articulo_detalle;
+use App\Helper\Helper;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 
@@ -15,7 +16,7 @@ class SuministrosController extends Controller
 		$validator=Validator::make($data,
 			[
 				'ccontra'=>'required|exists:Contratos,ccontra',
-				'carti'=>'required|integer|exists:Articulo,carti',
+				'carti'=>'required|integer|exists:Articulos,carti',
 				'canti'=>'required|integer',
 				'vunita'=>'required|numeric',
 				'vtotal'=>'required|numeric',
@@ -43,14 +44,29 @@ class SuministrosController extends Controller
      */
     public function create(Request $request)
     {
-    	$$data = $request->all();
-		$centrada=Contrato_articulo_detalle::all()->max(['centrada']);
-    	var_dump($centrada);exit();
-
+    	$data = $request->all();
     	$data['centrada']=Helper::centradaFormat($data);
-    	if (gettype($data['convocatoria'])=="object") {
-    		return $data['convocatoria'];
+    	if (gettype($data['centrada'])=="object") {
+    		return $data['centrada'];
     	}
+    	if ($data['index']==0) {
+    		$Suministros=Contrato_articulo_detalle::where('ccontra',$data['ccontra'])->get();
+    		foreach ($Suministros as $key => $Suministro) {
+    			$Suministros[$key]->delete();
+    		}
+    	}
+    	$validator = $this->validar($data);
+    	if ($validator->fails()){
+    		$messages = $validator->messages();
+    		$message="";
+    		foreach ($messages->all() as $key) {
+    			$message.=" ".$key;
+    		}
+    		return response()->json(array("message"=>$message,"status"=>400),400);
+    	}else{
+    		$suministro = Contrato_articulo_detalle::create($data);
+    	}
+    	return response()->json(array("obj" => $suministro->toArray()));
     }
     public function createUnidad(Request $request)
     {

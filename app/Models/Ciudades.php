@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer $cciud
  * @property integer $cdepar
  * @property string $nciudad
- * @property Departamento $departamento
- * @property Colegio[] $colegios
+ * @property Departamentos $departamento
+ * @property Colegio[] $colegio
  * @property Tercero[] $terceros
  */
 class Ciudades extends Model
@@ -24,15 +24,15 @@ class Ciudades extends Model
      */
     public function departamento()
     {
-        return $this->belongsTo('App\Models\Departamento', 'cdepar', 'cdepar');
+        return $this->belongsTo('App\Models\Departamentos', 'cdepar', 'cdepar');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function colegios()
+    public function colegio()
     {
-        return $this->hasMany('App\Models\Colegio', 'ciud', 'cciud');
+        return $this->hasMany('App\Models\Colegio', 'cciud', 'cciud');
     }
 
     /**
@@ -40,6 +40,6 @@ class Ciudades extends Model
      */
     public function terceros()
     {
-        return $this->hasMany('App\Models\Tercero', 'cciud', 'cciud');
+        return $this->hasMany('App\Models\Terceros', 'cciud', 'cciud');
     }
 }
