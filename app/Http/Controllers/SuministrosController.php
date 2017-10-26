@@ -30,7 +30,7 @@ class SuministrosController extends Controller
 				'vunita.numeric'=>'El VALOR UNITARIO debe ser un valor monetario',
 				'vtotal.required'=>'El VALOR TOTAL es obligatorio',
 				'vtotal.numeric'=>'El VALOR TOTAL debe ser un valor monetario',
-				'convocatoria.max'=> 'El CÓDIGO DE ENTRADA no cumple con los parametros',
+				'centrada.max'=> 'El CÓDIGO DE ENTRADA no cumple con los parametros',
 				
 			]
 		);
@@ -45,7 +45,7 @@ class SuministrosController extends Controller
     public function create(Request $request)
     {
     	$data = $request->all();
-    	$data['centrada']=Helper::centradaFormat($data);
+        $data['centrada']=Helper::centradaFormat($data);
     	if (gettype($data['centrada'])=="object") {
     		return $data['centrada'];
     	}

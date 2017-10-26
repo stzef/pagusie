@@ -3,7 +3,7 @@
 <div class="row">
 	<div class="col-xs-5">
 		<strong>
-			CONTRATO DE SUMINISTROS Nº &nbsp;&nbsp;&nbsp; 360
+			CONTRATO DE SUMINISTROS Nº &nbsp;&nbsp;&nbsp; {{$reporte->id}}
 		</strong>
 	</div>
 	<div class="col-xs-5">
@@ -35,7 +35,7 @@
 	</tr>
 	<tr>
 		<td ROWSPAN="2"><strong>VALOR CONTRATADO:</strong></td>
-		<td colspan="2"><strong>{{number_format($datos->vtotal,2)}}</strong></td>
+		<td colspan="2"><strong>$ {{number_format($datos->vtotal,2)}}</strong></td>
 	</tr>
 	<tr>
 		<td colspan="2"><strong>{{$datos->vtotal_letras}}</strong></td>
@@ -44,6 +44,9 @@
 		<td ROWSPAN="{{count($rubros)}}">
 			<strong>IMPUTACIÓN PRESUPUESTAL:</strong>
 		</td>
+		@if(count($rubros)==0)
+			<td colspan="2">
+		@else
 		@foreach($rubros as $key=>$rubro)
 		@if($key==0)
 		<td align="center">
@@ -63,6 +66,7 @@
 	</tr>
 	@endif
 	@endforeach
+	@endif
 </table>
 <div class="text-center">
 	<strong>CONDICIONES DE CONTRATACIÓN:</strong>
@@ -71,19 +75,19 @@ PRIMERA - OBLIGACIONES:&nbsp;&nbsp; 1. Se compromete a suministrar los siguiente
 <table border="2">
 	<thead>
 		<tr>
-			<th>Nº</th>
+			<td align="center"><strong>Nº</strong></td>
 
-			<th>NOMBRE Y ESPECIFICACIÓN DE ARTICULO</th>
+			<td align="center"><strong>NOMBRE Y ESPECIFICACIÓN DE ARTICULO</strong></td>
 
-			<th>GRUPO INVENTARIO</th>
+			<td align="center"><strong>GRUPO INVENTARIO</strong></td>
 
-			<th>UNIDAD MEDIDA</th>
+			<td align="center"><strong>UNIDAD MEDIDA</strong></td>
 
-			<th>CANTIDAD</th>
+			<td align="center"><strong>CANTIDAD</strong></td>
 
-			<th>VALOR UNITARIO</th>
+			<td align="center"><strong>VALOR UNITARIO</strong></td>
 
-			<th>VALOR TOTAL</th>
+			<td align="center"><strong>VALOR TOTAL</strong></td>
 		</tr>
 	</thead>
 	<tbody>
@@ -104,9 +108,8 @@ PRIMERA - OBLIGACIONES:&nbsp;&nbsp; 1. Se compromete a suministrar los siguiente
 	
 	<tr>
 		<th colspan="6" class="text-center">TOTAL</th>
-		<th>suma</th>
+		<td align="right"><strong>$ {{number_format($datos->vtotalsumi,2)}}</strong></td>
 	</tr>
-	
 </table>
 
 <div class="row container">

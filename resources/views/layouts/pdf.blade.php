@@ -51,7 +51,7 @@
         <div class="container">
                     <img src="img/footer.jpg"  width="95%"></img>
                 <p>
-                    Cra.25 No.6-43 Sede principal - TEL: 2452305-2450966 Melgar Tol, E-mail: ricardomorales@yahoo.es
+                    {{$colegio->direccion}} - TEL: {{$colegio->telefono1}}@if(count($colegio)>0)-{{$colegio->telefono2}}@endif {{ucwords(strtolower($colegio->ciudad->nciudad))}} {{ucwords(strtolower(substr($colegio->ciudad->departamento->ndepartamento,0,3)))}}, E-mail: {{$colegio->email}}
                 </p>
             <!--<p>
               <center><em>UNA INSTITUCION EDUCATIVA COMPROMETIDA CON EXCELENCIA Y CALIDAD POR EL DESARROLLO  DE  MELGAR.<em></center> Cra.25 No.6-43 Sede principal - TEL: 2452305-2450966 Melgar Tol, E-mail: ricardomorales@yahoo.es

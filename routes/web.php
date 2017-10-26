@@ -81,8 +81,8 @@ Route::get('disponibilidadpresupuestal','DisponibilidadPresupuestalController@pd
 Route::get('registropresupuestal','RegistroPresupuestalController@pdf')->name("report.registropresupuestal.generate");
 Route::get('certificadopreciosmercado','CertificadoPrecioController@pdf')->name("report.certificadopreciosmercado.generate");
 Route::get('contratosuministro','ContratoSuministroController@pdf')->name("report.contratosuministro.generate");
-Route::get('comprobanteentradaalmacen','ComprobanteEntradaAlmacenController@pdf')->name("report.comprobanteentradaalmacen.generate");
-Route::get('comprobantesalidaalmacen','ComprobanteSalidaAlmacenController@pdf')->name("report.comprobantesalidaalmacen.generate");
+Route::get('comprobanteentradaalmacen','ComprobanteAlmacenController@pdfEntrada')->name("report.comprobanteentradaalmacen.generate");
+Route::get('comprobantesalidaalmacen','ComprobanteAlmacenController@pdfSalida')->name("report.comprobantesalidaalmacen.generate");
 
 
 Route::get('pdfv', function(){

@@ -102,7 +102,7 @@
 			<div class="form-group text-center">
 				<div class="col-md-4 col-md-offset-4">
 					<button type="submit" class="btn btn-primary">
-						[[textoBoton]]
+						Guardar
 					</button>
 				</div>
 			</div>

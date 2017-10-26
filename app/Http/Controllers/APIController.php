@@ -155,6 +155,7 @@ public function datosUpdate(Request $request){
 			foreach ($suministros as $key => $sumi) {
 				$suministros->articulos=$sumi->articulo;
 				$suministros->unidad=$sumi->articulo->unidad;
+				$suministros[$key]->centrada=Helper::convocatoriaToN($sumi->centrada);
 			}
 			$datos->suministros=$suministros;
 		}

@@ -3,7 +3,7 @@
 <div class="row container">
 	<div class="col-xs-12">
 		<strong>
-		COMPROBANTE DE SALIDA DE ALMACEN Nº &nbsp;&nbsp;&nbsp; 360
+		COMPROBANTE DE SALIDA DE ALMACEN Nº &nbsp;&nbsp;&nbsp; {{$reporte->id}}
 		</strong>
 	</div>
 </div>
@@ -45,34 +45,35 @@
 </div>
 <br>
 
-<table border="2" width="100%">
+<table border="2">
 	<thead>
 		<tr>
-			<th>Nº</th>
-		
-			<th>NOMBRE Y ESPECIFICACIÓN DE ARTICULO</th>
-		
-			<th>GRUPO INVENTARIO</th>
-		
-			<th>UNIDAD MEDIDA</th>
-		
-			<th>CANTIDAD</th>
-		
-			<th>VALOR UNITARIO</th>
-		
-			<th>VALOR TOTAL</th>
+			<td align="center"><strong>Nº</strong></td>
+			<td align="center"><strong>NOMBRE Y ESPECIFICACIÓN DE ARTICULO</strong></td>
+			<td align="center"><strong>GRUPO INVENTARIO</strong></td>
+			<td align="center"><strong>UNIDAD MEDIDA</strong></td>
+			<td align="center"><strong>CANTIDAD</strong></td>
+			<td align="center"><strong>VALOR UNITARIO</strong></td>
+			<td align="center"><strong>VALOR TOTAL</strong></td>
 		</tr>
 	</thead>
 	<tbody>
-		
-		
+		@foreach($suministros as $key=>$suministro)
+		<tr>
+			<td align="center"> {{$key+1}}</td>
+			<td align="center"> {{$suministro->articulo->narticulo}}</td>
+			<td align="center"> 0</td>
+			<td align="center"> {{$suministro->articulo->unidad->nunidad}}</td>
+			<td align="center"> {{$suministro->canti}}</td>
+			<td align="right"> $ {{number_format($suministro->vunita,2)}}</td>
+			<td align="right"> $ {{number_format($suministro->vtotal,2)}}</td>
+		</tr>
+		@endforeach
 	</tbody>
-	
 	<tr>
 		<th colspan="6" class="text-center">TOTAL</th>
-		<th>suma</th>
+		<td align="right"><strong>$ {{number_format($datos->vtotalsumi,2)}}</strong></td>
 	</tr>
-	
 </table>
 
 <div class="row container">

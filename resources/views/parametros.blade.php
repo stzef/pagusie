@@ -75,8 +75,18 @@
 						<label for="direccion" class="form-label">Dirección</label>
 						<input type="text" class="form-control" id="direccion" aria-describedby="direccion" placeholder="Ingrese la dirección del colegio" v-model="parametros.colegio.direccion" required>
 					</div>
-
-
+					<div class="form-group col-md-12">
+						<label for="telefono1" class="form-label">Teléfono</label>
+						<input type="text" class="form-control" id="telefono1" aria-describedby="telefono1" placeholder="Ingrese el Teléfono del colegio" v-model="parametros.colegio.telefono1" required>
+					</div>
+					<div class="form-group col-md-12">
+						<label for="telefono2" class="form-label">Teléfono</label>
+						<input type="text" class="form-control" id="telefono2" aria-describedby="telefono2" placeholder="Ingrese el Teléfono del colegio" v-model="parametros.colegio.telefono2">
+					</div>
+					<div class="form-group col-md-12 col-lg-12">
+						<label for="email" class="form-label">Email</label>
+						<input type="email" class="form-control" id="email" aria-describedby="email" placeholder="Ingrese Email" v-model="parametros.colegio.email">
+					</div>
 					<div class="form-group col-md-12">
 						<label for="rector" class="form-label">Rector</label>
 						<input type="text" class="form-control" id="rector" aria-describedby="rector" placeholder="Ingrese el nombre del rector" v-model="parametros.colegio.nrector" required>

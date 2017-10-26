@@ -10,11 +10,11 @@ use PDF;
 use App\Helper\Helper;
 use App\Helper\NumeroALetras;
 use App\Models\Contrato_articulo_detalle;
-//use App\Models\Reports\Reporte_contrato_prestacion_servicio;
+use App\Models\Reports\Reporte_contrato_suministro;
 
 class ContratoSuministroController extends Controller
 {
-    public function pdf(Request $request ){
+	public function pdf(Request $request ){
 		$cdatos = $request->input('cdatos');
 		if ( !$cdatos ) return view('errors/generic',array('title' => 'Error PDF.', 'message' => "El registro $cdatos no existe" ));
 		$datos=Datos_basicos::where('cdatos',$cdatos)->first();
@@ -30,16 +30,23 @@ class ContratoSuministroController extends Controller
 		$tercero=$datos->tercero;
 		$rubros=Datos_presupuesto::where('cdatos',$cdatos)->get();
 		$contrato=$datos->contrato;
-		$suministros=$contrato->contratoArticuloDetalles->all();
-
-		
-		/*if (!Reporte_contrato_prestacion_servicio::where("cdatos",$cdatos)->first()){
-			$reporteCS=Reporte_contrato_prestacion_servicio::create(["cdatos"=>$datos->cdatos]);
+		$vtotalsumi=0;
+		if ($contrato!=null) {
+			$suministros=$contrato->contratoArticuloDetalles->all();
+			foreach ($suministros as $key => $suministro) {
+				$vtotalsumi+=$suministro->vtotal;
+			}
 		}else{
-			$reporteCS=Reporte_contrato_prestacion_servicio::where("cdatos",$cdatos)->first();
+			$suministros=[];
 		}
-		$data = array("datos" => $datos,"tercero" => $tercero,"colegio"=>$colegio,"rubros"=>$rubros,"reporte"=>$reporteCS);*/
-		$data = array("datos" => $datos,"tercero" => $tercero,"colegio"=>$colegio,"rubros"=>$rubros,"suministros"=>$suministros,);
+		$datos->vtotalsumi=$vtotalsumi;
+		if (!Reporte_contrato_suministro::where("cdatos",$cdatos)->first()){
+			$reporteCSU=Reporte_contrato_suministro::create(["cdatos"=>$datos->cdatos]);
+		}else{
+			$reporteCSU=Reporte_contrato_suministro::where("cdatos",$cdatos)->first();
+		}
+		$data = array("datos" => $datos,"tercero" => $tercero,"colegio"=>$colegio,"rubros"=>$rubros,"reporte"=>$reporteCSU,"suministros"=>$suministros,);
+		//$data = array("datos" => $datos,"tercero" => $tercero,"colegio"=>$colegio,"rubros"=>$rubros,"suministros"=>$suministros,);
 		PDF::setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif','defaultSize'=> '12',]);
 		$pdf = PDF::loadView('pdf.contrato_suministros', $data);
 		return $pdf->setPaper('a4')->stream();

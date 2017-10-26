@@ -5,9 +5,11 @@ import Multiselect from 'vue-multiselect';
 import calcularDigitoVerificacion from './../../calcularDigitoVerificacion'
 import currencyFormat from './../../currencyFormat'
 import $ from 'jquery';
-import 'datatables.net'
+//import 'datatables.net'
+import TableRubro from './TableRubro.vue';
 import VueGoodTable from 'vue-good-table';
 Vue.use(VueGoodTable);
+
 //window.$ = $;
 
 var app=new Vue({
@@ -15,6 +17,7 @@ var app=new Vue({
 	components:{
 		Datepicker,
 		Multiselect,
+		TableRubro,
 	},
 
 	data : {
@@ -249,6 +252,9 @@ var app=new Vue({
 				cciud:undefined,
 				nrector:undefined,
 				nauxadmin:undefined,
+				telefono1:undefined,
+				telefono2:undefined,
+				email:undefined,
 			},
 			extras:[],
 		},
@@ -1164,11 +1170,6 @@ var app=new Vue({
 						console.log('update',datosUpdate)
 						this.convocatoriaSelected=datosUpdate.convocatoria
 						this.datos=datosUpdate
-						document.querySelector("#valorSinIva").value=this.datos.viva
-						document.querySelector("#valorIva").value=this.datos.vsiva
-						document.querySelector("#valorTotal").value=this.datos.vtotal
-						document.querySelector("#valorBase").value=this.datos.vsiva
-						document.querySelector("#vrubro").value=this.datos.vtotal
 						this.terceros=this.datos.tercero
 						this.terceroSelected=this.terceros
 						this.terceroSelected.vtotal=this.datos.vtotal
@@ -1281,6 +1282,11 @@ var app=new Vue({
 
 						}
 						this.GetConvocatorias()
+						document.querySelector("#valorSinIva").value=this.datos.viva
+						document.querySelector("#valorIva").value=this.datos.vsiva
+						document.querySelector("#valorTotal").value=this.datos.vtotal
+						document.querySelector("#valorBase").value=this.datos.vsiva
+						$("#vrubro").val(this.datos.vtotal)
 					})
 
 .catch(function(error) {
@@ -1711,10 +1717,7 @@ GetDatosDuplicar(cdatos){
 				return response.json()
 			}).then(parametros => {
 				console.log(parametros.colegio)
-				this.parametros.colegio.cciud = parametros.colegio.cciud
-				this.parametros.colegio.nrector = parametros.colegio.nrector
-				this.parametros.colegio.nauxadmin = parametros.colegio.nauxadmin
-				this.parametros.colegio.direccion = parametros.colegio.direccion
+				this.parametros.colegio = parametros.colegio
 				//this.valueCiudad=parametros.ciudad
 				/*var array=this.ciudades
 				console.log('aca',this.ciudades)

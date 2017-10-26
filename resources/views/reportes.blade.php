@@ -83,7 +83,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td>Contrato De Suministros <small><strong>FALTA</strong></small></td>
+			<td>Contrato De Suministros </td>
 			<td>
 				<form @submit.prevent="openReport('contratosuministro',[[datos.cdatos]])" accept-charset="utf-8">
 					<button type="submit" class="btn btn-primary">
@@ -93,7 +93,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td>Comprobante De Entrada De Almacen <small><strong>FALTA</strong></small></td>
+			<td>Comprobante De Entrada De Almacen </td>
 			<td>
 				<form @submit.prevent="openReport('comprobanteentradaalmacen',[[datos.cdatos]])" accept-charset="utf-8">
 					<button type="submit" class="btn btn-primary">
@@ -103,7 +103,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td>Comprobante De Salida De Almacen <small><strong>FALTA</strong></small></td>
+			<td>Comprobante De Salida De Almacen </td>
 			<td>
 				<form @submit.prevent="openReport('comprobantesalidaalmacen',[[datos.cdatos]])" accept-charset="utf-8">
 					<button type="submit" class="btn btn-primary">
@@ -120,7 +120,7 @@
 			<label> Convocatoria Nº</label>
 			<input type="text" class="form-control" id="convocatoria" aria-describedby="convocatoria" v-model="datos.convocatoria" required style="width: 5%">
 			<button type="submit" class="btn btn-primary">
-				[[textoBoton]]
+				Guardar
 			</button>
 		</div>
 	</div>
