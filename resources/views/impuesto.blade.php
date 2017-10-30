@@ -40,7 +40,7 @@
 	</div>
 </form>
 <hr>
-<table v-if="impuesto.impuestosSeleccionados.length!=0" class="table-striped table-bordered text-center" width="100%" cellspacing="0">
+<!--<table v-if="impuesto.impuestosSeleccionados.length!=0" class="table-striped table-bordered text-center" width="100%" cellspacing="0">
 	<thead>
 		<tr style="background-color: #f2f2f2;" align="center">
 			<td><strong>Nombre</strong></td>
@@ -76,7 +76,10 @@
 
 	</tbody>
 
-</table>
+</table>-->
+
+		<table-impuesto :netopagar="impuesto.netopagar" :sumaimpuestos="impuesto.sumaImpuestos" :impuesto="impuesto.impuestosSeleccionados"  v-on:eventimpuesto="removeImpuesto" >
+		</table-impuesto>
 <form @submit.prevent="createImpuesto" accept-charset="utf-8">
 	<div class="form-group text-center" v-if="impuesto.impuestosSeleccionados.length!=0">
 		<div class="col-md-4 col-md-offset-4">

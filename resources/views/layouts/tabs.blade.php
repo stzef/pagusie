@@ -41,12 +41,12 @@
 			
 			<div id="tabsContrato" class="row">
 				<ul>
-					<li class="col-md-1 col-lg-1 col-xs-10 subtab-width"><a href="#tabs-1">Prestación De Servicios &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
-					<li class="col-md-1 col-lg-1 col-xs-10 subtab-width"><a href="#tabs-2">Suministros &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
-					<li class="col-md-1 col-lg-1 col-xs-10 subtab-width"><a href="#tabs-3">Suministros de contrato &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
+					<li class="col-md-1 col-lg-1 col-xs-10 subtab-width"><a href="#tabs-5-1">Prestación De Servicios &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
+					<li class="col-md-1 col-lg-1 col-xs-10 subtab-width"><a href="#tabs-5-2">Suministros &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
+					<li class="col-md-1 col-lg-1 col-xs-10 subtab-width" disable="true"><a href="#tabs-5-3">Suministros de contrato &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
 				</ul>
 
-				<div id="tabs-1">
+				<div id="tabs-5-1">
 					<form @submit.prevent="CreateContrato(1)" accept-charset="utf-8">
 						<div class="row" style="margin-top: 30px">
 							<div class="form-group col-md-3">
@@ -73,7 +73,7 @@
 						</div>
 					</form>
 				</div>
-				<div id="tabs-2">
+				<div id="tabs-5-2">
 					<form @submit.prevent="CreateContrato(2)" accept-charset="utf-8">
 						<div class="row" style="margin-top: 30px">
 							<div class="form-group col-md-3">
@@ -100,7 +100,7 @@
 						</div>
 					</form>
 				</div>
-				<div id="tabs-3">
+				<div id="tabs-5-3">
 					@include('listasuministros')
 				</div>
 			</div>

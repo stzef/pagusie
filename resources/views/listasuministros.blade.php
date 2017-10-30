@@ -1,5 +1,5 @@
 
-<div v-if="contrato.cticontrato==2">
+<div >
 <form @submit.prevent="addSuminstro" accept-charset="utf-8">
 	<div class="row">
 		<div class="form-group col-md-5">
@@ -36,7 +36,7 @@
 </form>
 
 <hr>
-		<table v-if="suministros.suministrosSeleccionados.length!=0" class="table-striped table-bordered text-center" width="100%" cellspacing="0">
+		<!--<table v-if="suministros.suministrosSeleccionados.length!=0" class="table-striped table-bordered text-center" width="100%" cellspacing="0">
 			<thead>
 				<tr style="background-color: #f2f2f2;" align="center">
 					<td><strong>N°</strong></td>
@@ -73,10 +73,12 @@
 
 				</tr>
 			</tbody>
-		</table>
+		</table>-->
+		<table-suministros  :sumasuministros="suministros.sumaSuministros" :suministros="suministros.suministrosSeleccionados" v-on:eventsumiremove="removeSuministro" v-on:eventsumiedit="editSuministro" >
+		</table-suministros>
 <form @submit.prevent="createSuministros" accept-charset="utf-8">
 
-		<div class="form-group text-center" v-if="suministros.suministrosSeleccionados.length!=0">
+		<div class="form-group text-center" >
 			<div class="col-md-4 col-md-offset-4">
 				<button type="submit" class="btn btn-primary">
 					Guardar

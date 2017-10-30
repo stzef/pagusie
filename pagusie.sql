@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 25-10-2017 a las 00:52:46
+-- Tiempo de generación: 30-10-2017 a las 23:41:32
 -- Versión del servidor: 10.1.24-MariaDB
 -- Versión de PHP: 7.1.6
 
@@ -1258,6 +1258,9 @@ CREATE TABLE `colegio` (
   `direccion` varchar(255) NOT NULL,
   `nrector` varchar(255) NOT NULL,
   `nauxadmin` varchar(255) NOT NULL,
+  `telefono1` varchar(45) NOT NULL,
+  `telefono2` varchar(45) DEFAULT NULL,
+  `email` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -1266,8 +1269,8 @@ CREATE TABLE `colegio` (
 -- Volcado de datos para la tabla `colegio`
 --
 
-INSERT INTO `colegio` (`ccolegio`, `cciud`, `nombre`, `nit`, `dv`, `direccion`, `nrector`, `nauxadmin`, `created_at`, `updated_at`) VALUES
-(1, 1042, 'INSTITUCION EDUCATIVA TECNICA SUMAPAZ', 800029382, 7, 'CARRERA 25 Nº 5-43', 'RICARDO ELIAS MORALES RODRIGUEZ', 'JAIME AUGUSTO SALGADO DAZA', NULL, '2017-10-24 21:29:19');
+INSERT INTO `colegio` (`ccolegio`, `cciud`, `nombre`, `nit`, `dv`, `direccion`, `nrector`, `nauxadmin`, `telefono1`, `telefono2`, `email`, `created_at`, `updated_at`) VALUES
+(1, 1042, 'INSTITUCION EDUCATIVA TECNICA SUMAPAZ', 800029382, 7, 'Cra.25 No.6-43 Sede principal', 'RICARDO ELIAS MORALES RODRIGUEZ', 'JAIME AUGUSTO SALGADO DAZA', '2452305', '2450966', 'ricardomorales@yahoo.es', NULL, '2017-10-25 21:50:02');
 
 -- --------------------------------------------------------
 
@@ -1318,8 +1321,8 @@ CREATE TABLE `contrato_articulo_detalle` (
 --
 
 INSERT INTO `contrato_articulo_detalle` (`idcontrato_articulo_detalle`, `ccontra`, `carti`, `canti`, `vunita`, `vtotal`, `centrada`, `created_at`, `updated_at`) VALUES
-(1, 3, 1, 1, 2000.00, 200.00, 'ENT-2017-0001', NULL, NULL),
-(4, 1, 2, 130, 5000.00, 650000.00, 'ENT-2017-0002', '2017-10-24 12:48:50', '2017-10-24 12:48:50');
+(5, 1, 1, 65, 5000.00, 325000.00, 'ENT-2017-0002', '2017-10-25 19:51:22', '2017-10-25 19:51:22'),
+(6, 1, 2, 65, 5000.00, 325000.00, 'ENT-2017-0002', '2017-10-25 19:51:23', '2017-10-25 19:51:23');
 
 -- --------------------------------------------------------
 
@@ -1749,6 +1752,46 @@ INSERT INTO `reporte_comprobante_egreso` (`id`, `cdatos`, `vtdeduc`, `vneto`, `c
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `reporte_comprobante_entrada_almacen`
+--
+
+CREATE TABLE `reporte_comprobante_entrada_almacen` (
+  `id` int(11) NOT NULL,
+  `cdatos` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `reporte_comprobante_entrada_almacen`
+--
+
+INSERT INTO `reporte_comprobante_entrada_almacen` (`id`, `cdatos`, `created_at`, `updated_at`) VALUES
+(1, 9, '2017-10-25 21:26:28', '2017-10-25 21:26:28');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `reporte_comprobante_salida_almacen`
+--
+
+CREATE TABLE `reporte_comprobante_salida_almacen` (
+  `id` int(11) NOT NULL,
+  `cdatos` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `reporte_comprobante_salida_almacen`
+--
+
+INSERT INTO `reporte_comprobante_salida_almacen` (`id`, `cdatos`, `created_at`, `updated_at`) VALUES
+(1, 9, '2017-10-25 21:27:00', '2017-10-25 21:27:00');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `reporte_contrato_prestacion_servicio`
 --
 
@@ -1769,7 +1812,8 @@ INSERT INTO `reporte_contrato_prestacion_servicio` (`id`, `cdatos`, `created_at`
 (3, 16, '2017-09-07 22:25:59', '2017-09-07 22:25:59'),
 (4, 18, '2017-09-13 22:11:50', '2017-09-13 22:11:50'),
 (5, 19, '2017-09-13 22:32:40', '2017-09-13 22:32:40'),
-(6, 20, '2017-09-18 14:35:17', '2017-09-18 14:35:17');
+(6, 20, '2017-09-18 14:35:17', '2017-09-18 14:35:17'),
+(7, 25, '2017-10-25 20:12:04', '2017-10-25 20:12:04');
 
 -- --------------------------------------------------------
 
@@ -1783,6 +1827,13 @@ CREATE TABLE `reporte_contrato_suministro` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `reporte_contrato_suministro`
+--
+
+INSERT INTO `reporte_contrato_suministro` (`id`, `cdatos`, `created_at`, `updated_at`) VALUES
+(1, 9, '2017-10-25 21:27:42', '2017-10-25 21:27:42');
 
 -- --------------------------------------------------------
 
@@ -2202,6 +2253,20 @@ ALTER TABLE `reporte_comprobante_egreso`
   ADD KEY `fk_reporte_comprobante_egreso_datos_basicos1_idx` (`cdatos`);
 
 --
+-- Indices de la tabla `reporte_comprobante_entrada_almacen`
+--
+ALTER TABLE `reporte_comprobante_entrada_almacen`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_reporte_comprobante_entrada_almacen_datos_basicos1_idx` (`cdatos`);
+
+--
+-- Indices de la tabla `reporte_comprobante_salida_almacen`
+--
+ALTER TABLE `reporte_comprobante_salida_almacen`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_Reporte_comprobante_salida_almacen_datos_basicos1_idx` (`cdatos`);
+
+--
 -- Indices de la tabla `reporte_contrato_prestacion_servicio`
 --
 ALTER TABLE `reporte_contrato_prestacion_servicio`
@@ -2329,7 +2394,7 @@ ALTER TABLE `contratos`
 -- AUTO_INCREMENT de la tabla `contrato_articulo_detalle`
 --
 ALTER TABLE `contrato_articulo_detalle`
-  MODIFY `idcontrato_articulo_detalle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `idcontrato_articulo_detalle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT de la tabla `cuentas_bancos`
 --
@@ -2386,15 +2451,25 @@ ALTER TABLE `reporte_certificado_precio`
 ALTER TABLE `reporte_comprobante_egreso`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 --
+-- AUTO_INCREMENT de la tabla `reporte_comprobante_entrada_almacen`
+--
+ALTER TABLE `reporte_comprobante_entrada_almacen`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT de la tabla `reporte_comprobante_salida_almacen`
+--
+ALTER TABLE `reporte_comprobante_salida_almacen`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
 -- AUTO_INCREMENT de la tabla `reporte_contrato_prestacion_servicio`
 --
 ALTER TABLE `reporte_contrato_prestacion_servicio`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT de la tabla `reporte_contrato_suministro`
 --
 ALTER TABLE `reporte_contrato_suministro`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT de la tabla `reporte_disponibilidad_presupuestal`
 --
@@ -2534,6 +2609,18 @@ ALTER TABLE `reporte_certificado_precio`
 --
 ALTER TABLE `reporte_comprobante_egreso`
   ADD CONSTRAINT `fk_reporte_comprobante_egreso_datos_basicos1` FOREIGN KEY (`cdatos`) REFERENCES `datos_basicos` (`cdatos`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `reporte_comprobante_entrada_almacen`
+--
+ALTER TABLE `reporte_comprobante_entrada_almacen`
+  ADD CONSTRAINT `fk_reporte_comprobante_entrada_almacen_datos_basicos1` FOREIGN KEY (`cdatos`) REFERENCES `datos_basicos` (`cdatos`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `reporte_comprobante_salida_almacen`
+--
+ALTER TABLE `reporte_comprobante_salida_almacen`
+  ADD CONSTRAINT `fk_Reporte_comprobante_salida_almacen_datos_basicos1` FOREIGN KEY (`cdatos`) REFERENCES `datos_basicos` (`cdatos`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `reporte_contrato_prestacion_servicio`

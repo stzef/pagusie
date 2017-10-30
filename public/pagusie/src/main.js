@@ -7,6 +7,8 @@ import currencyFormat from './../../currencyFormat'
 import $ from 'jquery';
 //import 'datatables.net'
 import TableRubro from './TableRubro.vue';
+import TableImpuesto from './TableImpuesto.vue';
+import TableSuministros from './TableSuministros.vue';
 import VueGoodTable from 'vue-good-table';
 Vue.use(VueGoodTable);
 
@@ -18,6 +20,8 @@ var app=new Vue({
 		Datepicker,
 		Multiselect,
 		TableRubro,
+		TableImpuesto,
+		TableSuministros,
 	},
 
 	data : {
@@ -238,6 +242,7 @@ var app=new Vue({
 			suministrosSeleccionados:[],
 			sumaSuministros:undefined,
 			centrada:undefined,
+			show: 'hidden',
 			create:{
 				nunidad:undefined,
 				show:false,
@@ -315,13 +320,14 @@ var app=new Vue({
 		},
 		removeSuministro(index){
 			var vm = this
+			console.log('removesum',index)
 			vm.suministros.suministrosSeleccionados.splice(index,1);
 			alertify.success("Articulo Removido")
 			vm.sumarValorLista(this.suministros.suministrosSeleccionados,"vtotal","suministros.sumaSuministros")
 		},
 		editSuministro(index){
 			var vm = this
-			console.log("sumi",vm.suministros.suministrosSeleccionados[index])
+			console.log("sumi",vm.suministros.suministrosSeleccionados[index],index)
 			vm.suministros.carti=vm.suministros.suministrosSeleccionados[index].carti
 			vm.suministros.narticulo=vm.suministros.suministrosSeleccionados[index].narticulo
 			vm.suministros.cunidad=vm.suministros.suministrosSeleccionados[index].cunidad
@@ -367,6 +373,7 @@ var app=new Vue({
 	},
 	showDepartamentos ({ndepartamento}) {
 		var vm = this
+		//console.log("showDepartamentos",vm.valueDepartamento)
 		if(vm.valueDepartamento!=null){
 			vm.terceros.cdepar= vm.valueDepartamento.cdepar
 			vm.parametros.colegio.cdepar= vm.valueDepartamento.cdepar
@@ -429,13 +436,29 @@ var app=new Vue({
 			.then(response => {
 				return response.json()
 			}).then(ciudades => {
-				console.log("municipios",cdepar)
+				console.log("municipios",cdepar,'para',)
 				vm.ciudades =ciudades
-				if (vm.valueDepartamento.cdepar==29) {
-					vm.valueCiudad = vm.ciudades[26]
+				console.log("AA",this.valueDepartamento)
+				if (cdepar==this.parametros.colegio.ciudad.cdepar) {
+					console.log("HH",this.valueDepartamento.cdepar)
+					this.valueCiudad=this.parametros.colegio.ciudad
 				}else{
 					vm.valueCiudad = vm.ciudades[0]
+					console.log("JJ",this.valueDepartamento.cdepar)
 				}
+				/*var array=this.ciudades
+				console.log('aca',this.ciudades)
+				for (var i = array.length - 1; i >= 0; i--) {
+					alertify.success( array[i])
+				}
+				array.forEach(function (item, index, array) {
+					if (item.cciud==parametros.cciud) {
+						this.valueCiudad=item
+					}
+				})
+				if (vm.valueDepartamento.cdepar==29) {
+					vm.valueCiudad = vm.ciudades[26]
+				}*/
 			});
 		},// end ciudades function
 		// start getTercero function
@@ -1234,6 +1257,7 @@ var app=new Vue({
 						console.log("contrato",datosUpdate.contrato)
 						if (datosUpdate.contrato!=null) {
 							if (datosUpdate.contrato.cticontrato==1) {
+								jQuery("#tabsContrato").tabs("disable", 2);
 								this.contrato.ccontra=datosUpdate.contrato.ccontra
 								this.contrato.fechase=datosUpdate.contrato.fecha
 								this.contrato.textose=datosUpdate.contrato.texto
@@ -1243,6 +1267,7 @@ var app=new Vue({
 								document.querySelector("#valorTotalCSE").value=this.contrato.vttotalse
 								this.getCentrada()
 							}else{
+								jQuery("#tabsContrato").tabs("enable", 2);
 								this.contrato.ccontra=datosUpdate.contrato.ccontra
 								this.contrato.fechasu=datosUpdate.contrato.fecha
 								this.contrato.textosu=datosUpdate.contrato.texto
@@ -1272,7 +1297,6 @@ var app=new Vue({
 									this.sumarValorLista(this.suministros.suministrosSeleccionados,"vtotal","suministros.sumaSuministros")
 								}else{
 									this.getCentrada()
-
 								}
 							}
 						}else{
@@ -1381,16 +1405,71 @@ GetDatosDuplicar(cdatos){
 						}else{
 							document.querySelector("#vcheque").value=this.cheque.valor
 						}
+						if (datosUpdate.contrato!=null) {
+							if (datosUpdate.contrato.cticontrato==1) {
+								jQuery("#tabsContrato").tabs("disable", 2);
+								this.contrato.ccontra=undefined
+								this.contrato.fechase=datosUpdate.contrato.fecha
+								this.contrato.textose=datosUpdate.contrato.texto
+								this.contrato.cticontrato=datosUpdate.contrato.cticontrato
+								this.cticontratoSelected=datosUpdate.contrato.cticontrato
+								this.contrato.vttotalse=currencyFormat.format(datosUpdate.contrato.vttotal)
+								document.querySelector("#valorTotalCSE").value=this.contrato.vttotalse
+								this.getCentrada()
+							}else{
+								jQuery("#tabsContrato").tabs("enable", 2);
+								this.contrato.ccontra=undefined
+								this.contrato.fechasu=datosUpdate.contrato.fecha
+								this.contrato.textosu=datosUpdate.contrato.texto
+								this.contrato.cticontrato=datosUpdate.contrato.cticontrato
+								this.cticontratoSelected=datosUpdate.contrato.cticontrato
+								this.contrato.vttotalsu=currencyFormat.format(datosUpdate.contrato.vttotal)
+								document.querySelector("#valorTotalCSU").value=this.contrato.vttotalsu
+								if (datosUpdate.suministros.length!=0) {
+									this.suministros.centrada=datosUpdate.suministros[0].centrada
+									var arraySuministros=[]
+									this.datos.suministros.forEach(function (item, index, array) {
+										var suministros = new Object()
+										suministros.canti=item.canti
+										suministros.carti=item.carti
+										suministros.ccontra=item.ccontra
+										suministros.centrada=item.centrada
+										suministros.cunidad=item.articulo.cunidad
+										suministros.grupo=0
+										suministros.narticulo=item.articulo.narticulo
+										suministros.nunidad=item.articulo.unidad.nunidad
+										suministros.vigencia=datosUpdate.vigencia
+										suministros.vunita=currencyFormat.format(item.vunita)
+										suministros.vtotal=currencyFormat.format(item.vtotal)
+										arraySuministros.push(suministros)
+									})
+									this.suministros.suministrosSeleccionados=arraySuministros
+									this.sumarValorLista(this.suministros.suministrosSeleccionados,"vtotal","suministros.sumaSuministros")
+								}else{
+									this.getCentrada()
+								}
+							}
+						}else{
+							document.querySelector("#valorTotalCSE").value=this.datos.vtotal
+							document.querySelector("#valorTotalCSU").value=this.datos.vtotal
+							this.getCentrada()
+
+						}
 						this.GetConvocatorias()
+						document.querySelector("#valorSinIva").value=this.datos.viva
+						document.querySelector("#valorIva").value=this.datos.vsiva
+						document.querySelector("#valorTotal").value=this.datos.vtotal
+						document.querySelector("#valorBase").value=this.datos.vsiva
+						$("#vrubro").val(this.datos.vtotal)
 					})
-					.catch(function(error) {
-						console.warn(error)
-						alertify.error('No se encuentra data')
-					})
-				},
-				GetConvocatorias(){
-					var vm = this
-					var vigencia=vm.datos.vigencia
+.catch(function(error) {
+	console.warn(error)
+	alertify.error('No se encuentra data')
+})
+},
+GetConvocatorias(){
+	var vm = this
+	var vigencia=vm.datos.vigencia
 			 fetch("api/getconvocatoria?vigencia="+vigencia,{ //ruta
 			 	credentials: 'include',
 			 	type : "GET",
@@ -1410,10 +1489,12 @@ GetDatosDuplicar(cdatos){
 					if (opc==1) {
 						this.contrato.vttotalse=document.querySelector("#valorTotalCSE").value
 						this.contrato.cticontrato=1
+						jQuery("#tabsContrato").tabs("disable", 2);
 						contrato.fecha=moment(this.contrato.fechase, 'YYYY-MM-DD').format('YYYY-MM-DD')
 						contrato.vttotal=this.contrato.vttotalse
 						contrato.texto=this.contrato.textose
 					}else if (opc==2) {
+						jQuery("#tabsContrato").tabs("enable", 2);
 						this.contrato.vttotalsu=document.querySelector("#valorTotalCSU").value
 						this.contrato.cticontrato=2
 						contrato.fecha=moment(this.contrato.fechasu, 'YYYY-MM-DD').format('YYYY-MM-DD')
@@ -1716,19 +1797,9 @@ GetDatosDuplicar(cdatos){
 			}).then(response => {
 				return response.json()
 			}).then(parametros => {
-				console.log(parametros.colegio)
+				console.log('colegio',parametros.colegio)
+				console.log('extras',parametros.extras)
 				this.parametros.colegio = parametros.colegio
-				//this.valueCiudad=parametros.ciudad
-				/*var array=this.ciudades
-				console.log('aca',this.ciudades)
-				for (var i = array.length - 1; i >= 0; i--) {
-					alertify.success( array[i])
-				}
-				array.forEach(function (item, index, array) {
-					if (item.cciud==parametros.cciud) {
-						this.valueCiudad=item
-					}
-				})*/
 				if (parametros.extras!=undefined) {
 					this.parametros.extras=parametros.extras
 					if (this.pathname=='/') {
@@ -1743,7 +1814,7 @@ GetDatosDuplicar(cdatos){
 						this.contrato.textosu=this.parametros.extras[index].value_text
 					}
 				}
-
+				this.GetDepartamento()
 			});
 		},
 		GetDepartamento(){
@@ -1756,8 +1827,9 @@ GetDatosDuplicar(cdatos){
 				return response.json()
 			}).then(departamentos => {
 				vm.departamentos = departamentos
-				vm.valueDepartamento=departamentos[28]
-				console.log("departamentos")
+				console.log('departamentoss',this.departamentos)
+				//console.log('departamentosINI',this.parametros.colegio.ciudad.cdepar)
+				vm.valueDepartamento=departamentos[this.parametros.colegio.ciudad.cdepar-1]
 				this.GetCiudades()
 			});
 		},
@@ -1806,7 +1878,6 @@ GetDatosDuplicar(cdatos){
 				console.log(pathname)
 				this.pathname=pathname
 				if (pathname=='/parametros') {
-					this.GetDepartamento()
 					this.GetParametros()
 				}else if(pathname=='/'){
 					this.GetParametros()
@@ -1827,7 +1898,6 @@ GetDatosDuplicar(cdatos){
 					this.GetBancos()
 					this.GetConvocatorias()
 					this.GetTiDocumento()
-					
 				}else if (pathname=='/edit') {
 					this.GetDatosEdit()
 				}
@@ -1837,7 +1907,6 @@ GetDatosDuplicar(cdatos){
 	mounted (){
 		//$("#table").DataTable();
 		var vm = this
-		console.log("HP")
 		vm.checkURL()
 		var inputs = $(':input').keypress(function(e){
 			if (e.which == 13) {
@@ -1849,6 +1918,5 @@ GetDatosDuplicar(cdatos){
 			}
 		});
 	      //aca
-
 	  }
 	})

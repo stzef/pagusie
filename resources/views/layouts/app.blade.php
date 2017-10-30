@@ -182,12 +182,17 @@
 	$( function() {
 		var tabs = $( "#tabs" ).tabs();
 		var tabs = $( "#tabsContrato" ).tabs();
+		//var tabs = $( "#tabsContrato" ).tabs();
 		/*tabs.find( ".ui-tabs-nav" ).sortable({
 			axis: "x",
 			stop: function() {
 				tabs.tabs( "refresh" );
 			}
 		});*/
+	});
+</script>
+<script >
+	$( function() {
 	});
 </script>
 </body>
